@@ -1,0 +1,76 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/assets/icon16.png?v=2.0.0" type="image/png" sizes="16x16"><link rel="icon" href="/assets/icon32.png?v=2.0.0" type="image/png" sizes="32x32"><meta name="description" content="Mysql索引数据结构                           哈希表作为索引       哈希表可以完成索引的存储，每次在添加索引的时候需要计算指定列的hash值，取模运算后计算出下标，将元素插入下标位置即可。 适合场景： ​    等值查询 ​    表中的数据是无序数据（范围查找的时候比较浪费时间，需要挨个进行遍历操作） ​    在实际应">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mysql索引">
+<meta property="og:url" content="https://lutongtian.cn/2020/07/03/Mysql%E7%B4%A2%E5%BC%95/index.html">
+<meta property="og:site_name" content="O ever youthful O ever weeping">
+<meta property="og:description" content="Mysql索引数据结构                           哈希表作为索引       哈希表可以完成索引的存储，每次在添加索引的时候需要计算指定列的hash值，取模运算后计算出下标，将元素插入下标位置即可。 适合场景： ​    等值查询 ​    表中的数据是无序数据（范围查找的时候比较浪费时间，需要挨个进行遍历操作） ​    在实际应">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-07-03T06:02:45.000Z">
+<meta property="article:modified_time" content="2020-09-19T12:57:53.117Z">
+<meta property="article:author" content="zhen wu">
+<meta property="article:tag" content="mysql,索引">
+<meta name="twitter:card" content="summary"><meta name="keywords" content="zhen wu, O ever youthful O ever weeping"><meta name="description" content=""><title>Mysql索引 | O ever youthful O ever weeping</title><link ref="canonical" href="https://lutongtian.cn/2020/07/03/Mysql%E7%B4%A2%E5%BC%95/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.0.0"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">O ever youthful O ever weeping</div><div class="header-banner-info__subtitle"></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">Mysql索引</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-07-03</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-09-19</span></span></div></header><div class="post-body">
+        <h1 id="Mysql索引数据结构"   >
+          <a href="#Mysql索引数据结构" class="heading-link"><i class="fas fa-link"></i></a>Mysql索引数据结构</h1>
+      
+        <h2 id="哈希表作为索引"   >
+          <a href="#哈希表作为索引" class="heading-link"><i class="fas fa-link"></i></a>哈希表作为索引</h2>
+      <p>哈希表可以完成索引的存储，每次在添加索引的时候需要计算指定列的hash值，取模运算后计算出下标，将元素插入下标位置即可。</p>
+<p>适合场景：</p>
+<p>​    等值查询</p>
+<p>​    表中的数据是无序数据（范围查找的时候比较浪费时间，需要挨个进行遍历操作）</p>
+<p>​    在实际应用中，范围查询使用比较多，所以此时hash表不是特别合适</p>
+<p>​    且hash表再使用的时候，需要将全部的数据加载到内存，比较耗费内存的空间，也不是很合适。</p>
+
+        <h2 id="树"   >
+          <a href="#树" class="heading-link"><i class="fas fa-link"></i></a>树</h2>
+      <p>目前树有的结构：多叉树、二叉树、avl树、红黑树。</p>
+<p>多叉树（B树）：在树的结构中，左子树必须小于根节点，右子树必须大于根节点，从左到右必须有序。</p>
+<p>二叉树：二分查找树，比多叉树效率高，但很容易出现单方向子节点连续增加，变成链表。</p>
+<p>avl平衡树：要求左右子树必须严格一致，最高子树和最低子树高度差不超过1，若超过1，树就要进行旋转，数据量大时，树会频繁进行旋转，影响性能。</p>
+<p>红黑树：基于AVL树的升级，损失部分查询性能，来提升插入的性能，在红黑树种最低子树和最高子树高度差小于2倍即可。在插入的时候不需要进行N多次的旋转，而且还加入了变色的特性，来满足插入和查询性能的平衡。</p>
+<p>以上二叉树的变种都不适合作为mysql的索引</p>
+<p>​    一：树的深度无法控制，哪怕是红黑树，在最低深度为8时，也可能会进行16次的查询，严重影响性能。</p>
+<p>​    二：在插入数据这方面的性能都比较低。</p>
+<p>目前来看，B树是作为索引的最佳数据结构。</p>
+<p>B树的特点：</p>
+<p>​    1.所有的键值分布在整颗树种；</p>
+<p>​    2.搜索有可能在非叶子节点结束，在关键字全集内做一次查找，性能逼近二分查找；</p>
+<p>​    3.每个节点最多有m个子树；</p>
+<p>​    4.根节点至少有2个子树；</p>
+<p>​    5.分支节点至少拥有m/2个子树（除根节点和叶子节点之外都是分支节点）；</p>
+<p>​    6.所有叶子节点都在同一层，每个节点最多有m-1个key，并且升序排列；</p>
+<p>缺点：</p>
+<p>​    每个节点都有key值，同时也包含data，而每个页存储空间有限，如果data比较大会导致每个节点存储的key数量变小。</p>
+<p>​    当存储的数据量很大时，会导致树的深度较大，增大查询时磁盘IO次数，影响查询性能。</p>
+<p>B+树：</p>
+<p>​    1.每个节点可以包含更多的节点，这样做有两个原因，一个是树的高度降低，第二个原因是数据范围变成多个区间，区间越多，数据检索越快。</p>
+<p>​    2.非叶子节点存储key，叶子节点存储key和数据。</p>
+<p>​    3.叶子节点两两指针互相连接，顺序查询性能更高。</p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://lutongtian.cn">zhen wu</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://lutongtian.cn/2020/07/03/Mysql%E7%B4%A2%E5%BC%95/">https://lutongtian.cn/2020/07/03/Mysql%E7%B4%A2%E5%BC%95/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://lutongtian.cn/tags/mysql-%E7%B4%A2%E5%BC%95/">mysql,索引</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2020/08/25/Mysql%E9%94%81%E6%9C%BA%E5%88%B6/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">Mysql锁机制</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2020/06/26/Mysql%E7%BB%84%E4%BB%B6/"><span class="paginator-prev__text">Mysql组件</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Mysql索引数据结构"><span class="toc-number">1.</span> <span class="toc-text">
+          Mysql索引数据结构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#哈希表作为索引"><span class="toc-number">1.1.</span> <span class="toc-text">
+          哈希表作为索引</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#树"><span class="toc-number">1.2.</span> <span class="toc-text">
+          树</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/assets/author.png" alt="avatar"></div></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">9</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">1</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">4</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2020</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>zhen wu</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v4.2.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.0.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="/js/utils.js?v=2.0.0"></script><script src="/js/stun-boot.js?v=2.0.0"></script><script src="/js/scroll.js?v=2.0.0"></script><script src="/js/header.js?v=2.0.0"></script><script src="/js/sidebar.js?v=2.0.0"></script></body></html>

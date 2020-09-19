@@ -1,0 +1,167 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/assets/icon16.png?v=2.0.0" type="image/png" sizes="16x16"><link rel="icon" href="/assets/icon32.png?v=2.0.0" type="image/png" sizes="32x32"><meta name="description" content="Mysql 执行计划                           explain                           id:       ​    复杂语句中可能有多个id号。表示select子句的执行顺序。id号越大越先执行，id号相同，从上往下按序执行。                     select_type:">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mysql执行计划">
+<meta property="og:url" content="https://lutongtian.cn/2020/04/24/Mysql%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%92/index.html">
+<meta property="og:site_name" content="O ever youthful O ever weeping">
+<meta property="og:description" content="Mysql 执行计划                           explain                           id:       ​    复杂语句中可能有多个id号。表示select子句的执行顺序。id号越大越先执行，id号相同，从上往下按序执行。                     select_type:">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-04-24T02:06:25.000Z">
+<meta property="article:modified_time" content="2020-09-19T12:57:53.043Z">
+<meta property="article:author" content="zhen wu">
+<meta property="article:tag" content="mysql">
+<meta name="twitter:card" content="summary"><meta name="keywords" content="zhen wu, O ever youthful O ever weeping"><meta name="description" content=""><title>Mysql执行计划 | O ever youthful O ever weeping</title><link ref="canonical" href="https://lutongtian.cn/2020/04/24/Mysql%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%92/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.0.0"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">O ever youthful O ever weeping</div><div class="header-banner-info__subtitle"></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">Mysql执行计划</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-04-24</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-09-19</span></span></div></header><div class="post-body">
+        <h1 id="Mysql-执行计划"   >
+          <a href="#Mysql-执行计划" class="heading-link"><i class="fas fa-link"></i></a>Mysql 执行计划</h1>
+      
+        <h2 id="explain"   >
+          <a href="#explain" class="heading-link"><i class="fas fa-link"></i></a>explain</h2>
+      
+        <h3 id="id"   >
+          <a href="#id" class="heading-link"><i class="fas fa-link"></i></a>id:</h3>
+      <p>​    复杂语句中可能有多个id号。表示select子句的执行顺序。id号越大越先执行，id号相同，从上往下按序执行。</p>
+
+        <h3 id="select-type"   >
+          <a href="#select-type" class="heading-link"><i class="fas fa-link"></i></a>select_type:</h3>
+      <p>​    主要用来分辨查询类型，是普通查询还是联合查询或者是子查询</p>
+
+        <h4 id="SIMPLE"   >
+          <a href="#SIMPLE" class="heading-link"><i class="fas fa-link"></i></a>SIMPLE:</h4>
+      <p>​        表示简单的语句。</p>
+
+        <h4 id="PRIMARY"   >
+          <a href="#PRIMARY" class="heading-link"><i class="fas fa-link"></i></a>PRIMARY:</h4>
+      <p>​            查询中如果包含了任何复杂的子查询，最外层查询则被标记为primary。</p>
+
+        <h4 id="UNION："   >
+          <a href="#UNION：" class="heading-link"><i class="fas fa-link"></i></a>UNION：</h4>
+      <p>​            若第二个select出现在union后，则被标记为union。</p>
+
+        <h4 id="DEPENDENT-UNION"   >
+          <a href="#DEPENDENT-UNION" class="heading-link"><i class="fas fa-link"></i></a>DEPENDENT UNION:</h4>
+      <p>​            跟union类似，此处的depentent表示union或union all联合而成的结果会受外部表影响。</p>
+
+        <h4 id="UNION-RESULT"   >
+          <a href="#UNION-RESULT" class="heading-link"><i class="fas fa-link"></i></a>UNION RESULT:</h4>
+      <p>​            从union表中或者结果的select。</p>
+
+        <h4 id="SUBQUERY"   >
+          <a href="#SUBQUERY" class="heading-link"><i class="fas fa-link"></i></a>SUBQUERY:</h4>
+      <p>​            在select或where列表中包含子查询。</p>
+
+        <h4 id="DEPENDENT-SUBQUERY"   >
+          <a href="#DEPENDENT-SUBQUERY" class="heading-link"><i class="fas fa-link"></i></a>DEPENDENT SUBQUERY:</h4>
+      <p>​            SUBQUERY的子查询受到外部表查询的影响。</p>
+
+        <h4 id="DERIVED"   >
+          <a href="#DERIVED" class="heading-link"><i class="fas fa-link"></i></a>DERIVED:</h4>
+      <p>​            from子句出现的子查询，也叫派生类。</p>
+
+        <h4 id="UNCACHEABLE-SUBQUERY"   >
+          <a href="#UNCACHEABLE-SUBQUERY" class="heading-link"><i class="fas fa-link"></i></a>UNCACHEABLE SUBQUERY:</h4>
+      <p>​            表示子查询的结果不能被缓存。</p>
+
+        <h4 id="UNCACHEABLE-UNION"   >
+          <a href="#UNCACHEABLE-UNION" class="heading-link"><i class="fas fa-link"></i></a>UNCACHEABLE UNION:</h4>
+      <p>​            表示union的结果不能被缓存。</p>
+
+        <h3 id="table"   >
+          <a href="#table" class="heading-link"><i class="fas fa-link"></i></a>table:</h3>
+      <p>​    对应行正在访问哪个表，表名或者列名，可能是临时表或者union合并结果集。</p>
+<p>​    1.如果是具体的表名，则表名从实际的物理表中获取数据，也可以是表的别名。</p>
+<p>​    2.表名是derivenN的形式，表示使用了id为N的查询产生的衍生表。</p>
+<p>​    3.当有uion result 的时候，表名是union n1,n2等的形式，n1,n2表示参与union 的id。</p>
+
+        <h3 id="type"   >
+          <a href="#type" class="heading-link"><i class="fas fa-link"></i></a>type:</h3>
+      <p>​    type显示的是访问类型，访问类型表示我是以何种方式去访问我们的数据，最容易想的是全表扫描，直接暴力的遍历一张表去寻找需要的数据，效率非常低下，访问的类型有很多，效率是从最好到最坏依次是：</p>
+<p>system&gt;const&gt;eq_ref&gt;fulltext&gt;ref_or_null&gt;index_merge&gt;unique_subquery&gt;index_subquery&gt;range&gt;index&gt;all</p>
+<p>​    all:全表扫描，一般情况下出现这样的sql语句，而且数据量比较大的话那就需要优化了。</p>
+<p>​    index:全索引扫描。比all效率高，主要有两种情况，一种是当前的查询是覆盖索引，即我们需要的数据在索引中可以获取，或者是使用了索引进行排序，避免数据的重排序。</p>
+<p>​    range：表示利用索引查询的时候限制了范围，在指定范围内进行查询，这样避免了index的全索引扫描，适用的操作符：=，&lt;&gt;,&gt;,&gt;=,&lt;,&lt;=,is null,between,like,or in()</p>
+<p>​    index_subquery:利用索引来关联子查询，不用再扫描全表。</p>
+<p>​    unique_subquery:连接类型与index_subquery一样，只不过子查询关联的是唯一索引。</p>
+<p>​    ref_or_null：对于某个字段需要关联条件，也需要null值的情况下，查询优化器会选择这种查询方式。</p>
+<p>​    ref：使用了非唯一性索引进行数据的查找。</p>
+<p>​    eq_ref：使用唯一索引进行查找。</p>
+<p>​    const：这个表至多有一个匹配行。</p>
+<p>​    system:表里只有一行记录（等于系统表），这是const的特例，平时不会出现。</p>
+
+        <h3 id="possible-keys"   >
+          <a href="#possible-keys" class="heading-link"><i class="fas fa-link"></i></a>possible_keys:</h3>
+      <p>​    显示可能应用在这张表中的索引，一个或多个，查询涉及到的字段上若存在索引，则该索引会被列出，但不一定被查询实际使用。</p>
+
+        <h3 id="key"   >
+          <a href="#key" class="heading-link"><i class="fas fa-link"></i></a>key:</h3>
+      <p>​    实际使用的索引，如果为null，则没有使用索引，查询中使用了覆盖索引，则该索引和查询的select字段重叠。</p>
+
+        <h3 id="keylen"   >
+          <a href="#keylen" class="heading-link"><i class="fas fa-link"></i></a>keylen:</h3>
+      <p>​    表示索引中使用的字节数，可以通过key_len计算查询中使用的索引长度，在不损失净度的情况下长度越短越好。</p>
+
+        <h3 id="ref"   >
+          <a href="#ref" class="heading-link"><i class="fas fa-link"></i></a>ref:</h3>
+      <p>​    显示索引的哪一列被使用了，如果可能的话，是一个常数。</p>
+
+        <h3 id="rows"   >
+          <a href="#rows" class="heading-link"><i class="fas fa-link"></i></a>rows:</h3>
+      <p>​    根据表中的统计信息及索引的使用情况大致估算出找出所需记录需要读取的行数，此参数很重要，直接反应的sql找出了多少数据，在完成目的的情况下越少越好。</p>
+
+        <h3 id="filtered"   >
+          <a href="#filtered" class="heading-link"><i class="fas fa-link"></i></a>filtered:</h3>
+      
+        <h3 id="Extra"   >
+          <a href="#Extra" class="heading-link"><i class="fas fa-link"></i></a>Extra:</h3>
+      <p>​    包含额外的信息。</p>
+<p>​    using filesort：说明mysql不能根据索引进行排序，只能通过排序算法进行排序，会消耗额外的位置。</p>
+<p>​    using temporary：建立临时表来保存中间结果，查询完成之后临时表删除。</p>
+<p>​    using index：这个表示当前的查询时覆盖索引的，直接从索引中读取数据，而不用访问数据表，如果同时出现using where 表明索引被用来执行索引键值的查找，如果没有，表明索引被用来读取数据，而不是真正的查找。</p>
+<p>​    using where : 使用where 条件过滤。</p>
+<p>​    using join buffer: 使用连接缓存。</p>
+<p>​    impossible where :where语句的结果总是false。</p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://lutongtian.cn">zhen wu</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://lutongtian.cn/2020/04/24/Mysql%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%92/">https://lutongtian.cn/2020/04/24/Mysql%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%92/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://lutongtian.cn/tags/mysql/">mysql</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2020/05/06/mysql%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E6%80%A7/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">mysql事务隔离性</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2020/04/02/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E4%B8%89%E8%8C%83%E5%BC%8F/"><span class="paginator-prev__text">数据库设计三范式</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Mysql-执行计划"><span class="toc-number">1.</span> <span class="toc-text">
+          Mysql 执行计划</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#explain"><span class="toc-number">1.1.</span> <span class="toc-text">
+          explain</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#id"><span class="toc-number">1.1.1.</span> <span class="toc-text">
+          id:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#select-type"><span class="toc-number">1.1.2.</span> <span class="toc-text">
+          select_type:</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#SIMPLE"><span class="toc-number">1.1.2.1.</span> <span class="toc-text">
+          SIMPLE:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#PRIMARY"><span class="toc-number">1.1.2.2.</span> <span class="toc-text">
+          PRIMARY:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#UNION："><span class="toc-number">1.1.2.3.</span> <span class="toc-text">
+          UNION：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DEPENDENT-UNION"><span class="toc-number">1.1.2.4.</span> <span class="toc-text">
+          DEPENDENT UNION:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#UNION-RESULT"><span class="toc-number">1.1.2.5.</span> <span class="toc-text">
+          UNION RESULT:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SUBQUERY"><span class="toc-number">1.1.2.6.</span> <span class="toc-text">
+          SUBQUERY:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DEPENDENT-SUBQUERY"><span class="toc-number">1.1.2.7.</span> <span class="toc-text">
+          DEPENDENT SUBQUERY:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DERIVED"><span class="toc-number">1.1.2.8.</span> <span class="toc-text">
+          DERIVED:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#UNCACHEABLE-SUBQUERY"><span class="toc-number">1.1.2.9.</span> <span class="toc-text">
+          UNCACHEABLE SUBQUERY:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#UNCACHEABLE-UNION"><span class="toc-number">1.1.2.10.</span> <span class="toc-text">
+          UNCACHEABLE UNION:</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#table"><span class="toc-number">1.1.3.</span> <span class="toc-text">
+          table:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#type"><span class="toc-number">1.1.4.</span> <span class="toc-text">
+          type:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#possible-keys"><span class="toc-number">1.1.5.</span> <span class="toc-text">
+          possible_keys:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#key"><span class="toc-number">1.1.6.</span> <span class="toc-text">
+          key:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#keylen"><span class="toc-number">1.1.7.</span> <span class="toc-text">
+          keylen:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ref"><span class="toc-number">1.1.8.</span> <span class="toc-text">
+          ref:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#rows"><span class="toc-number">1.1.9.</span> <span class="toc-text">
+          rows:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#filtered"><span class="toc-number">1.1.10.</span> <span class="toc-text">
+          filtered:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Extra"><span class="toc-number">1.1.11.</span> <span class="toc-text">
+          Extra:</span></a></li></ol></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/assets/author.png" alt="avatar"></div></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">9</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">1</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">4</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2020</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>zhen wu</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v4.2.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.0.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="/js/utils.js?v=2.0.0"></script><script src="/js/stun-boot.js?v=2.0.0"></script><script src="/js/scroll.js?v=2.0.0"></script><script src="/js/header.js?v=2.0.0"></script><script src="/js/sidebar.js?v=2.0.0"></script></body></html>
