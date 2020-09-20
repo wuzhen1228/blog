@@ -1,0 +1,91 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/assets/icon16.png?v=2.0.0" type="image/png" sizes="16x16"><link rel="icon" href="/assets/icon32.png?v=2.0.0" type="image/png" sizes="32x32"><meta name="description" content="JVM知识体系                            类加载过程         加载过程 Loading：双亲委派 Linking Verification：校验，符合不符合class标准 Preparation：把class静态变量赋默认值 Resolution：Class常量值用的符号引用，转换成内存地址   initializing：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JVM知识体系">
+<meta property="og:url" content="www.lutongtian.club/2020/08/05/JVM%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB/index.html">
+<meta property="og:site_name" content="O ever youthful O ever weeping">
+<meta property="og:description" content="JVM知识体系                            类加载过程         加载过程 Loading：双亲委派 Linking Verification：校验，符合不符合class标准 Preparation：把class静态变量赋默认值 Resolution：Class常量值用的符号引用，转换成内存地址   initializing：">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="/05/JVM%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB/D:%5Cstudy%5CMarkdown%5Cimages%5Cimage-20200707184416318.png">
+<meta property="og:image" content="/05/JVM%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB/D:%5Cstudy%5CMarkdown%5Cimages%5Cimage-20200707214902079.png">
+<meta property="og:image" content="/05/JVM%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB/D:%5Cstudy%5CMarkdown%5Cimages%5Cimage-20200707215246317.png">
+<meta property="og:image" content="/05/JVM%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB/D:%5Cstudy%5CMarkdown%5Cimages%5Cimage-20200707231850298.png">
+<meta property="article:published_time" content="2020-08-05T08:22:38.000Z">
+<meta property="article:modified_time" content="2020-08-05T08:22:38.000Z">
+<meta property="article:author" content="zhen wu">
+<meta property="article:tag" content="JVM">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="/05/JVM%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB/D:%5Cstudy%5CMarkdown%5Cimages%5Cimage-20200707184416318.png"><meta name="keywords" content="zhen wu, O ever youthful O ever weeping"><meta name="description" content=""><title>JVM知识体系 | O ever youthful O ever weeping</title><link ref="canonical" href="www.lutongtian.club/2020/08/05/JVM%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.0.0"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">O ever youthful O ever weeping</div><div class="header-banner-info__subtitle"></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">JVM知识体系</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-08-05</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-08-05</span></span></div></header><div class="post-body">
+        <h1 id="JVM知识体系">
+          <a href="#JVM知识体系" class="heading-link"><i class="fas fa-link"></i></a>JVM知识体系</h1>
+      <p><img src="/05/JVM%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB/D:%5Cstudy%5CMarkdown%5Cimages%5Cimage-20200707184416318.png" alt="image-20200707184416318"></p>
+
+        <h2 id="类加载过程">
+          <a href="#类加载过程" class="heading-link"><i class="fas fa-link"></i></a>类加载过程</h2>
+      <p><img src="/05/JVM%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB/D:%5Cstudy%5CMarkdown%5Cimages%5Cimage-20200707214902079.png" alt="image-20200707214902079"></p>
+<ol>
+<li>加载过程<ol>
+<li>Loading：双亲委派</li>
+<li>Linking<ol>
+<li>Verification：校验，符合不符合class标准</li>
+<li>Preparation：把class静态变量赋默认值</li>
+<li>Resolution：Class常量值用的符号引用，转换成内存地址</li>
+</ol>
+</li>
+<li>initializing：静态变量赋值为初始值。</li>
+</ol>
+</li>
+</ol>
+
+        <h3 id="类加载器">
+          <a href="#类加载器" class="heading-link"><i class="fas fa-link"></i></a>类加载器</h3>
+      <p><img src="/05/JVM%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB/D:%5Cstudy%5CMarkdown%5Cimages%5Cimage-20200707215246317.png" alt="image-20200707215246317"></p>
+<p>class漏到内存后，有两块内容，class内容放到内存，还有会生成一个class类对象，这个对象指向内存中的内容。</p>
+<p>双亲委派机制：</p>
+<p>​    如果有一个类A，需要漏到内存，会先从Custom加载器查询，如果没查询到，就委托给APP加载器，一直到Bootstrap，还没找到，就从Bootstrap加载器开始实际加载类A，如果Bootstrap发现类A不在自己加载的职责范围内，就委托给EXT加载器，一直到Custom加载器。</p>
+<p>每个加载器都有自己的缓存，记录自己加载的类。</p>
+<p>为什么要做双亲委派，不直接都漏到同一个内存？</p>
+<p>​    主要是为了安全，比如自定义实现一个java.lang.String类，会覆盖掉原java的类库</p>
+
+        <h2 id="自定义类加载器">
+          <a href="#自定义类加载器" class="heading-link"><i class="fas fa-link"></i></a>自定义类加载器</h2>
+      <p>使用ClassLoadr的loadClass方法，读取自己写的class。</p>
+<p>继承ClassLoader类，重写findClass方法，把class文件转成二进制流，再调用defineClass，生成class对象</p>
+
+        <h2 id="懒加载">
+          <a href="#懒加载" class="heading-link"><i class="fas fa-link"></i></a>懒加载</h2>
+      <p>JVM规范并没有规定什么时候加载类</p>
+<p>但是严格规定了什么时候必须初始化</p>
+
+        <h2 id="解释器">
+          <a href="#解释器" class="heading-link"><i class="fas fa-link"></i></a>解释器</h2>
+      <p><img src="/05/JVM%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB/D:%5Cstudy%5CMarkdown%5Cimages%5Cimage-20200707231850298.png" alt="image-20200707231850298"></p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="www.lutongtian.club">zhen wu</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="www.lutongtian.club/2020/08/05/JVM%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB/">www.lutongtian.club/2020/08/05/JVM%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="www.lutongtian.club/tags/JVM/">JVM</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2020/08/08/JVM%E8%B0%83%E4%BC%98/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">JVM调优</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2020/08/01/JAVA%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/"><span class="paginator-prev__text">JAVA内存模型</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#JVM知识体系"><span class="toc-number">1.</span> <span class="toc-text">
+          JVM知识体系</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#类加载过程"><span class="toc-number">1.1.</span> <span class="toc-text">
+          类加载过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#类加载器"><span class="toc-number">1.1.1.</span> <span class="toc-text">
+          类加载器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#自定义类加载器"><span class="toc-number">1.2.</span> <span class="toc-text">
+          自定义类加载器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#懒加载"><span class="toc-number">1.3.</span> <span class="toc-text">
+          懒加载</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解释器"><span class="toc-number">1.4.</span> <span class="toc-text">
+          解释器</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/assets/author.png" alt="avatar"></div></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">15</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">3</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">6</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2020</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>zhen wu</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v4.2.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.0.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="/js/utils.js?v=2.0.0"></script><script src="/js/stun-boot.js?v=2.0.0"></script><script src="/js/scroll.js?v=2.0.0"></script><script src="/js/header.js?v=2.0.0"></script><script src="/js/sidebar.js?v=2.0.0"></script></body></html>

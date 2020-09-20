@@ -271,4 +271,45 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.0"></he
 <td>荣盛家园小区</td>
 </tr>
 </tbody></table></div>
-</div></div></article></section><nav class="paginator"><div class="paginator-inner"><a class="extend prev" rel="prev" href="/"><i class="fas fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span></div></nav></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><section class="sidebar-toc hide"></section><!-- ov = overview--><section class="sidebar-ov"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/assets/author.png" alt="avatar"></div></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">14</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">1</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">5</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2020</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>zhen wu</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v4.2.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.0.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="/js/utils.js?v=2.0.0"></script><script src="/js/stun-boot.js?v=2.0.0"></script><script src="/js/scroll.js?v=2.0.0"></script><script src="/js/header.js?v=2.0.0"></script><script src="/js/sidebar.js?v=2.0.0"></script></body></html>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/03/15/kafka%E4%BB%8B%E7%BB%8D/">kafka介绍</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-03-15</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-03-15</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h1 id="kafka介绍">
+          <a href="#kafka介绍" class="heading-link"><i class="fas fa-link"></i></a>kafka介绍</h1>
+      <p>提供了消息的订阅与发布的消息队列，用作系统间解耦、异步通信、削峰填谷等作用</p>
+
+        <h2 id="常见的消息队列工作模式分为两种">
+          <a href="#常见的消息队列工作模式分为两种" class="heading-link"><i class="fas fa-link"></i></a>常见的消息队列工作模式分为两种</h2>
+      
+        <h3 id="一：">
+          <a href="#一：" class="heading-link"><i class="fas fa-link"></i></a>一：</h3>
+      <p>至多一次，消息生产者将数据写入消息系统，然后由消费者负责去拉消息服务器中的消息，一旦消息被确认消费后，由消息服务器主动删除队列中的数据，这种消费方式一般只允许被一个消费者消费，并且消息队列中的数据不允许被重复消费。</p>
+
+        <h3 id="二：">
+          <a href="#二：" class="heading-link"><i class="fas fa-link"></i></a>二：</h3>
+      <p>没有限制，同上诉消费形式不同，生产者发布完数据以后，该消息可以被多个消费者同时消费，并且同一个消费者可以多次消费消息服务器中的同一个记录，主要是因为消息服务器一般可以长时间存储海量消息</p>
+
+        <h2 id="kafka集群">
+          <a href="#kafka集群" class="heading-link"><i class="fas fa-link"></i></a>kafka集群</h2>
+      <p>是以Topic形式负责分类集群中的Record，没一个Record属于一个Topic，每个Topic底层都会对应一族分区的日志用于持久化Topic中的Record。</p>
+
+        <h2 id="分区">
+          <a href="#分区" class="heading-link"><i class="fas fa-link"></i></a>分区</h2>
+      <p>生产者把key进行hash运算，把消息均匀的分散到不同分区，可以把相同的key的消息发送到相同的分区</p>
+<p>每个Topic都有一个Broker，负责存储Topic的分区数据，每个Topic会有多个副本（备份），多个Broker会根据设置的副本数量，互相备份。</p>
+<p>如果集群中的某个Broker宕机了，集群中的剩余Broker进行选举。</p>
+<p><img src="/15/kafka%E4%BB%8B%E7%BB%8D/kafka%E4%BB%8B%E7%BB%8D%5Cimage-20200710203308209.png" alt="image-20200710203308209"></p>
+
+        <h2 id="生产者-amp-消费者">
+          <a href="#生产者-amp-消费者" class="heading-link"><i class="fas fa-link"></i></a>生产者&amp;消费者</h2>
+      <p>消费者对单个分区也是分别独立的，每个消费者会有自己的消费偏移量（序号）</p>
+<p>消费者使用Consumer  Group名称标记自己，Topic中的每条记录都会传递到每个Consumer Group中的一个消费者实例，如果所有消费者都具有相同的ConsumerGroup。</p>
+<p><img src="/15/kafka%E4%BB%8B%E7%BB%8D/kafka%E4%BB%8B%E7%BB%8D%5Cimage-20200710210219279.png" alt="image-20200710210219279"></p>
+<p>分区会根据消费组和组内的消费者实例进行均分</p>
+<p>如果消费者实例有个挂掉了。那这时候如果有空闲实例，则会连接空闲的消费者实例</p>
+
+        <h2 id="高性能-顺序写-amp-mmap">
+          <a href="#高性能-顺序写-amp-mmap" class="heading-link"><i class="fas fa-link"></i></a>高性能-顺序写&amp;mmap</h2>
+      <p>高吞吐量，所有的消息是以日志是以保存或者缓存在磁盘上的，可以支持百万级的写入请求</p>
+<p>为了优化写入速度，采用了技术顺序写入和MMFile。</p>
+<p>技术顺序写入：因为硬盘是机械结构，每次读写都会寻址-&gt;写入，寻址的动作是非常耗时的，如果采用顺序I/O，会省去大量的内存开销和寻址时间，但kafka的数据并不是实时的写入硬盘中的。</p>
+<p>利用OS中的Pagecache提高IO效率。MMF是直接调用的一个进程和内核共享的内存区域，直接把数据写到这个内存区域，然后由OS去把内存中的数据持久化到磁盘。</p>
+</div></div></article></section><nav class="paginator"><div class="paginator-inner"><a class="extend prev" rel="prev" href="/"><i class="fas fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span></div></nav></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><section class="sidebar-toc hide"></section><!-- ov = overview--><section class="sidebar-ov"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/assets/author.png" alt="avatar"></div></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">15</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">3</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">6</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2020</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>zhen wu</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v4.2.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.0.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="/js/utils.js?v=2.0.0"></script><script src="/js/stun-boot.js?v=2.0.0"></script><script src="/js/scroll.js?v=2.0.0"></script><script src="/js/header.js?v=2.0.0"></script><script src="/js/sidebar.js?v=2.0.0"></script></body></html>
