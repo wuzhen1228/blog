@@ -1,0 +1,97 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/assets/icon16.png?v=2.0.0" type="image/png" sizes="16x16"><link rel="icon" href="/assets/icon32.png?v=2.0.0" type="image/png" sizes="32x32"><meta name="description" content="锁       synchronize是可重入锁，在同一个类中，在调用有锁的方法时，发现自己已经有这把锁，就是可重入。 程序发生异常，默认锁会被释放。 synchronized底层实现 JDK早期是重量级OS 后来的改进有了锁升级的概念：  sync（object），markword并没有在object上加锁，只记录了线程ID，偏向锁。  如果有线程争用，则">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多线程-锁">
+<meta property="og:url" content="www.lutongtian.club/2020/01/15/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E5%A4%9A%E7%BA%BF%E7%A8%8B-%E9%94%81/index.html">
+<meta property="og:site_name" content="O ever youthful O ever weeping">
+<meta property="og:description" content="锁       synchronize是可重入锁，在同一个类中，在调用有锁的方法时，发现自己已经有这把锁，就是可重入。 程序发生异常，默认锁会被释放。 synchronized底层实现 JDK早期是重量级OS 后来的改进有了锁升级的概念：  sync（object），markword并没有在object上加锁，只记录了线程ID，偏向锁。  如果有线程争用，则">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-01-15T15:40:23.000Z">
+<meta property="article:modified_time" content="2020-01-15T15:40:23.000Z">
+<meta property="article:author" content="zhen wu">
+<meta property="article:tag" content="Thread">
+<meta name="twitter:card" content="summary"><meta name="keywords" content="zhen wu, O ever youthful O ever weeping"><meta name="description" content=""><title>多线程-锁 | O ever youthful O ever weeping</title><link ref="canonical" href="www.lutongtian.club/2020/01/15/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E5%A4%9A%E7%BA%BF%E7%A8%8B-%E9%94%81/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.0.0"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">O ever youthful O ever weeping</div><div class="header-banner-info__subtitle"></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">多线程-锁</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-01-15</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-01-15</span></span></div></header><div class="post-body">
+        <h2 id="锁">
+          <a href="#锁" class="heading-link"><i class="fas fa-link"></i></a>锁</h2>
+      <p>synchronize是可重入锁，在同一个类中，在调用有锁的方法时，发现自己已经有这把锁，就是可重入。</p>
+<p>程序发生异常，默认锁会被释放。</p>
+<p>synchronized底层实现</p>
+<p>JDK早期是重量级OS</p>
+<p>后来的改进有了锁升级的概念：</p>
+<ol>
+<li><p>sync（object），markword并没有在object上加锁，只记录了线程ID，偏向锁。</p>
+</li>
+<li><p>如果有线程争用，则升级为自旋锁（CAS）。自旋锁是在发现另一个线程已经占用了锁，则会产生等待循环申请锁资源，默认是进行10次自旋，若还得不到锁资源，则升级为重量级锁-OS。</p>
+<p>自旋锁的优点是锁的竞争是在用户态，缺点是会占用CPU。</p>
+<p>重量级锁会在内核态。</p>
+<p>执行时间短选择用自旋锁。</p>
+<p>执行时间长，线程多用系统锁。</p>
+</li>
+</ol>
+
+        <h2 id="jdk中提供的锁">
+          <a href="#jdk中提供的锁" class="heading-link"><i class="fas fa-link"></i></a>jdk中提供的锁</h2>
+      
+        <h2 id="ntrantLock">
+          <a href="#ntrantLock" class="heading-link"><i class="fas fa-link"></i></a>ntrantLock</h2>
+      <p>可重入锁：锁一次之后对同样的锁再锁一次。</p>
+<p>可以替代synchronize。但是必须使用try finally，进行unlock。</p>
+<p> 比sync强大的地方：</p>
+<p>​    可以使用trylock，可尝试进行获取锁，若没得到锁，程序则继续运行。</p>
+<p>​    可以使用lockInterruptibly接收线程外的interrupt命令，打断该线程的等待。</p>
+<p>​    可以在创建ReentrantLock对象时对fair属性赋值为true，表示该锁是公平锁。公平锁就是线程不会直接争夺CPU资源，而是先在队列中看前面有没有正在等待的线程，排队执行。</p>
+
+        <h2 id="ConuntDownLatch">
+          <a href="#ConuntDownLatch" class="heading-link"><i class="fas fa-link"></i></a>ConuntDownLatch</h2>
+      <p>门栓，控制线程阻塞，比join灵活。</p>
+
+        <h2 id="CyclicBarrier">
+          <a href="#CyclicBarrier" class="heading-link"><i class="fas fa-link"></i></a>CyclicBarrier</h2>
+      <p>控制线程数，当线程数到指定数(parties)的时候，线程同时启动。未达到指定数，则线程会阻塞。比如启动100个线程，parties设置20，那每到20个线程的时候，同时解除20个线程的阻塞。</p>
+
+        <h2 id="ReadWriteLock">
+          <a href="#ReadWriteLock" class="heading-link"><i class="fas fa-link"></i></a>ReadWriteLock</h2>
+      <p>共享锁（读锁）和排他锁（写锁）</p>
+<p>实现ReetrantReadWriteLock。</p>
+<p>读锁：如果在申请锁资源时，发现是读锁，那就可以直接运行，不需要进行锁资源的争夺。</p>
+<p>写锁：与读锁相反，就是必须要进行等待锁资源释放。</p>
+
+        <h2 id="Semaphore">
+          <a href="#Semaphore" class="heading-link"><i class="fas fa-link"></i></a>Semaphore</h2>
+      <p>限流作用，设置Semaphore的数量，线程调用时，执行acquire方法，会从Semaphore的数量中-1，如果Semaphore的数量是0，则后续线程阻塞，直到其他线程结束，并调用release方法释放资源。</p>
+<p>也可以设置Semaphore是否为公平锁。</p>
+
+        <h2 id="LockSupport">
+          <a href="#LockSupport" class="heading-link"><i class="fas fa-link"></i></a>LockSupport</h2>
+      <p>使用LockSupport.park阻塞线程，unpark唤醒线程，相对于线程本身使用的wait、notify方法，很灵活。<br>unpark可以在park之前使用，可以直接放行，不在阻塞。<br>LockSupport是用c或者c++实现的</p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="www.lutongtian.club">zhen wu</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="www.lutongtian.club/2020/01/15/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E5%A4%9A%E7%BA%BF%E7%A8%8B-%E9%94%81/">www.lutongtian.club/2020/01/15/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E5%A4%9A%E7%BA%BF%E7%A8%8B-%E9%94%81/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="www.lutongtian.club/tags/Thread/">Thread</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2020/01/16/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E5%A4%9A%E7%BA%BF%E7%A8%8B-volatile/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">多线程-volatile</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2020/01/15/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E5%A4%9A%E7%BA%BF%E7%A8%8B-%E5%90%AF%E5%8A%A8%E4%B8%8E%E6%8E%A5%E5%8F%A3/"><span class="paginator-prev__text">多线程-启动与接口</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#锁"><span class="toc-number">1.</span> <span class="toc-text">
+          锁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#jdk中提供的锁"><span class="toc-number">2.</span> <span class="toc-text">
+          jdk中提供的锁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ntrantLock"><span class="toc-number">3.</span> <span class="toc-text">
+          ntrantLock</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ConuntDownLatch"><span class="toc-number">4.</span> <span class="toc-text">
+          ConuntDownLatch</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CyclicBarrier"><span class="toc-number">5.</span> <span class="toc-text">
+          CyclicBarrier</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ReadWriteLock"><span class="toc-number">6.</span> <span class="toc-text">
+          ReadWriteLock</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Semaphore"><span class="toc-number">7.</span> <span class="toc-text">
+          Semaphore</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LockSupport"><span class="toc-number">8.</span> <span class="toc-text">
+          LockSupport</span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/assets/author.png" alt="avatar"></div></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">29</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">8</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">12</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2020</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>zhen wu</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v4.2.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.0.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="/js/utils.js?v=2.0.0"></script><script src="/js/stun-boot.js?v=2.0.0"></script><script src="/js/scroll.js?v=2.0.0"></script><script src="/js/header.js?v=2.0.0"></script><script src="/js/sidebar.js?v=2.0.0"></script></body></html>

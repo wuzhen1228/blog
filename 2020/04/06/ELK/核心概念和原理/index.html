@@ -1,0 +1,84 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/assets/icon16.png?v=2.0.0" type="image/png" sizes="16x16"><link rel="icon" href="/assets/icon32.png?v=2.0.0" type="image/png" sizes="32x32"><meta name="description" content="念和原理       1.什么是搜索：通过一个关键词或一段描述，得到你想要的结果。 2.如何实现搜索功能： ​    关系型数据库：性能差，不可靠，结果不准确（相关度低） 3.倒排索引、Lucene和全文检索？ ​    倒排索引的数据结构： ​        1.包含这个关键词的document list ​        2.关键词在每个doc中出现的次">
+<meta property="og:type" content="article">
+<meta property="og:title" content="核心概念和原理">
+<meta property="og:url" content="www.lutongtian.club/2020/04/06/ELK/%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E5%92%8C%E5%8E%9F%E7%90%86/index.html">
+<meta property="og:site_name" content="O ever youthful O ever weeping">
+<meta property="og:description" content="念和原理       1.什么是搜索：通过一个关键词或一段描述，得到你想要的结果。 2.如何实现搜索功能： ​    关系型数据库：性能差，不可靠，结果不准确（相关度低） 3.倒排索引、Lucene和全文检索？ ​    倒排索引的数据结构： ​        1.包含这个关键词的document list ​        2.关键词在每个doc中出现的次">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-04-06T05:02:32.000Z">
+<meta property="article:modified_time" content="2020-04-06T05:02:32.000Z">
+<meta property="article:author" content="zhen wu">
+<meta property="article:tag" content="ELK">
+<meta property="article:tag" content="搜索">
+<meta name="twitter:card" content="summary"><meta name="keywords" content="zhen wu, O ever youthful O ever weeping"><meta name="description" content=""><title>核心概念和原理 | O ever youthful O ever weeping</title><link ref="canonical" href="www.lutongtian.club/2020/04/06/ELK/%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E5%92%8C%E5%8E%9F%E7%90%86/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.0.0"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">O ever youthful O ever weeping</div><div class="header-banner-info__subtitle"></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">核心概念和原理</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-04-06</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-04-06</span></span></div></header><div class="post-body">
+        <h2 id="念和原理">
+          <a href="#念和原理" class="heading-link"><i class="fas fa-link"></i></a>念和原理</h2>
+      <p>1.什么是搜索：通过一个关键词或一段描述，得到你想要的结果。</p>
+<p>2.如何实现搜索功能：</p>
+<p>​    关系型数据库：性能差，不可靠，结果不准确（相关度低）</p>
+<p>3.倒排索引、Lucene和全文检索？</p>
+<p>​    倒排索引的数据结构：</p>
+<p>​        1.包含这个关键词的document list</p>
+<p>​        2.关键词在每个doc中出现的次数</p>
+<p>​        3.关键词在整个索引中出现的次数</p>
+<p>​        4.关键词在当前doc中出现的次数</p>
+<p>​        5.每个doc的长度，越长相关度越低</p>
+<p>​        6.包含这个关键词的所有doc的平均长度</p>
+<p>​    Lucene： jar包，帮我们创建倒排索引，提供了复杂的API。</p>
+<p>​    如果Lucene做集群实现搜索：    </p>
+<p>​        1.节点一旦宕机，数据丢失。</p>
+<p>​        2.自己维护。（自己创建管理索引）单台节点的承载请求的能力是有限的，需要人工做负载。</p>
+<p>4.Elasticsearch：分布式、高性能、高可用、可伸缩、易维护。</p>
+<p>​    分布式的搜索和数据分析引擎：</p>
+<p>​    优点：</p>
+<p>​        1.面向开发者友好，屏蔽了Lucene的复杂特性，集群自动发现（cluster discovery）</p>
+<p>​        2.自动维护数据在多个节点上建立</p>
+<p>​        3.会帮我做搜索请求的负载均衡</p>
+<p>​        4.自动维护冗余副本，保证了部分节点宕机的情况下仍然不会有任何数据丢失</p>
+<p>​        5.基于Lucene提供了很多高级功能：符合查询、聚合分析、基于地理位置。</p>
+<p>​        6.对于大公司可以构建几百台服务器的大型分布式集群，处理PB级别数据。</p>
+<p>​        7.相对于传统数据库，提供了全文检索，同义词处理，相关度排名，聚合分析以及海量数据的近实时处理，这些传统数据库做不到。</p>
+<p>​    应用领域：</p>
+<p>​        1.百度（全文检索、高亮、搜索推荐）</p>
+<p>​        2.各大网站的用户行为日志（用户点击、浏览、收藏、评论）</p>
+<p>​        3. BI系统，数据分析，数据挖掘统计</p>
+<p>​        4.Github：代码托管凭证，几千亿行代码</p>
+<p>​        5.ELK：（Elasticsearch（数据存储）Logstash（日志采集）Kibana（可视化））</p>
+<p>5.ES核心概念：</p>
+<p>​    1.Cluster：集群，每个集群至少包含两个节点。</p>
+<p>​    2.Node：集群中的每个节点，一个节点不代表一台服务器。</p>
+<p>​    3.Field：一个数据字段，与index和type一起，可以定位一个doc</p>
+<p>​    4.Document： ES最小的数据单元  Json格式</p>
+<p>​    5.Type ： 逻辑上的数据分类</p>
+<p>​    6.Index ：一类相同或者类型的doc，比如一个员工索引，商品索引</p>
+<p>Shard分片：</p>
+<pre><code>1. 一个index包含多个shard，默认5P，默认每个P分配一个R，P的数量在创建索引的时候设置，如果想修改，需要重建索引。
+
+   2. 每个Shard都是一个Lucene实例，有完整的创建索引的处理请求能力。
+   3. ES会自动为nodes上为我们做shard均衡。
+   4. 一个doc是不可能同时存在多个Pshard中的，但是可以存在多个RShard中。
+   5. P和对应的R不能同时存在同一个节点。所以最低的可用配置是两台节点，互为主备。</code></pre></div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="www.lutongtian.club">zhen wu</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="www.lutongtian.club/2020/04/06/ELK/%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E5%92%8C%E5%8E%9F%E7%90%86/">www.lutongtian.club/2020/04/06/ELK/%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E5%92%8C%E5%8E%9F%E7%90%86/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="www.lutongtian.club/tags/ELK/">ELK</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="www.lutongtian.club/tags/%E6%90%9C%E7%B4%A2/">搜索</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2020/04/24/Mysql%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%92/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">Mysql执行计划</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2020/04/02/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E4%B8%89%E8%8C%83%E5%BC%8F/"><span class="paginator-prev__text">数据库设计三范式</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#念和原理"><span class="toc-number">1.</span> <span class="toc-text">
+          念和原理</span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/assets/author.png" alt="avatar"></div></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">29</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">8</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">12</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2020</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>zhen wu</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v4.2.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.0.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="/js/utils.js?v=2.0.0"></script><script src="/js/stun-boot.js?v=2.0.0"></script><script src="/js/scroll.js?v=2.0.0"></script><script src="/js/header.js?v=2.0.0"></script><script src="/js/sidebar.js?v=2.0.0"></script></body></html>

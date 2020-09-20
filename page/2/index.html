@@ -27,7 +27,27 @@ var CONFIG = {
   sourcePath: {"js":"js","css":"css","images":"images"},
 };
 
-window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">O ever youthful O ever weeping</div><div class="header-banner-info__subtitle"></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content content-home" id="content"><section class="postlist"><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/06/03/Mysql%E6%97%A5%E5%BF%97/">Mysql日志</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-06-03</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-06-03</span></span></div></header><div class="post-body"><div class="post-excerpt">
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">O ever youthful O ever weeping</div><div class="header-banner-info__subtitle"></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content content-home" id="content"><section class="postlist"><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/06/05/Mysql%E6%A1%86%E6%9E%B6/">Mysql框架</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-06-05</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-06-05</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h1 id="Mysql框架">
+          <a href="#Mysql框架" class="heading-link"><i class="fas fa-link"></i></a>Mysql框架</h1>
+      <p>客户端 -&gt; mysql server -&gt; 连接器（控制用户的连接） -&gt; 分析器（词法分析、语法分析） -&gt; 优化器（优化SQL语句，规定流程执行） -&gt; 执行器（SQL语句的实际执行组件）-&gt; 存储引擎（不同的存放位置，不同的文件格式） </p>
+<p>客户端 -&gt;连接器：采用数据库连接池，减少频繁的开关连接；</p>
+<p>优化器：可以查看SQL语句的执行计划，可以采用对应的优化点，来加快查询；</p>
+<p>存储引擎：innoDB（磁盘），MyISAM（磁盘），memory（内存）；</p>
+
+        <h2 id="索引文件">
+          <a href="#索引文件" class="heading-link"><i class="fas fa-link"></i></a>索引文件</h2>
+      <p>不同的存储引擎，数据文件和索引文件存放的位置是不同的，因此有了分类：</p>
+<p>​    聚簇索引：数据和文件放在一起，innoDB；</p>
+<p>​          .frm：存放的是表结构；</p>
+<p>​          .ibd：存放数据文件和索引文件；</p>
+<p>​        mysql的innoDB存储引擎默认情况会把所有的数据文件放到表空间中，不会为没一个单独的表存放一份数据文件，如果需要把每个表单独使用文件保存，设置如下属性：</p>
+<p>​    set global innodb_file_per_table = on;</p>
+<p>​    非聚簇索引：数据和索引单独一个文件，MyISAM；</p>
+<p>​        .frm：存放表结构；</p>
+<p>​        .MYI：存放索引数据；</p>
+<p>​        .MYD：存放实际数据；</p>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/06/03/Mysql%E6%97%A5%E5%BF%97/">Mysql日志</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-06-03</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-06-03</span></span></div></header><div class="post-body"><div class="post-excerpt">
         <h1 id="Mysql日志">
           <a href="#Mysql日志" class="heading-link"><i class="fas fa-link"></i></a>Mysql日志</h1>
       
@@ -235,7 +255,54 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.0"></he
 <p>​    using where : 使用where 条件过滤。</p>
 <p>​    using join buffer: 使用连接缓存。</p>
 <p>​    impossible where :where语句的结果总是false。</p>
-</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/04/02/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E4%B8%89%E8%8C%83%E5%BC%8F/">数据库设计三范式</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-04-02</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-04-02</span></span></div></header><div class="post-body"><div class="post-excerpt">
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/04/06/ELK/%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E5%92%8C%E5%8E%9F%E7%90%86/">核心概念和原理</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-04-06</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-04-06</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h2 id="念和原理">
+          <a href="#念和原理" class="heading-link"><i class="fas fa-link"></i></a>念和原理</h2>
+      <p>1.什么是搜索：通过一个关键词或一段描述，得到你想要的结果。</p>
+<p>2.如何实现搜索功能：</p>
+<p>​    关系型数据库：性能差，不可靠，结果不准确（相关度低）</p>
+<p>3.倒排索引、Lucene和全文检索？</p>
+<p>​    倒排索引的数据结构：</p>
+<p>​        1.包含这个关键词的document list</p>
+<p>​        2.关键词在每个doc中出现的次数</p>
+<p>​        3.关键词在整个索引中出现的次数</p>
+<p>​        4.关键词在当前doc中出现的次数</p>
+<p>​        5.每个doc的长度，越长相关度越低</p>
+<p>​        6.包含这个关键词的所有doc的平均长度</p>
+<p>​    Lucene： jar包，帮我们创建倒排索引，提供了复杂的API。</p>
+<p>​    如果Lucene做集群实现搜索：    </p>
+<p>​        1.节点一旦宕机，数据丢失。</p>
+<p>​        2.自己维护。（自己创建管理索引）单台节点的承载请求的能力是有限的，需要人工做负载。</p>
+<p>4.Elasticsearch：分布式、高性能、高可用、可伸缩、易维护。</p>
+<p>​    分布式的搜索和数据分析引擎：</p>
+<p>​    优点：</p>
+<p>​        1.面向开发者友好，屏蔽了Lucene的复杂特性，集群自动发现（cluster discovery）</p>
+<p>​        2.自动维护数据在多个节点上建立</p>
+<p>​        3.会帮我做搜索请求的负载均衡</p>
+<p>​        4.自动维护冗余副本，保证了部分节点宕机的情况下仍然不会有任何数据丢失</p>
+<p>​        5.基于Lucene提供了很多高级功能：符合查询、聚合分析、基于地理位置。</p>
+<p>​        6.对于大公司可以构建几百台服务器的大型分布式集群，处理PB级别数据。</p>
+<p>​        7.相对于传统数据库，提供了全文检索，同义词处理，相关度排名，聚合分析以及海量数据的近实时处理，这些传统数据库做不到。</p>
+<p>​    应用领域：</p>
+<p>​        1.百度（全文检索、高亮、搜索推荐）</p>
+<p>​        2.各大网站的用户行为日志（用户点击、浏览、收藏、评论）</p>
+<p>​        3. BI系统，数据分析，数据挖掘统计</p>
+<p>​        4.Github：代码托管凭证，几千亿行代码</p>
+<p>​        5.ELK：（Elasticsearch（数据存储）Logstash（日志采集）Kibana（可视化））</p>
+<p>5.ES核心概念：</p>
+<p>​    1.Cluster：集群，每个集群至少包含两个节点。</p>
+<p>​    2.Node：集群中的每个节点，一个节点不代表一台服务器。</p>
+<p>​    3.Field：一个数据字段，与index和type一起，可以定位一个doc</p>
+<p>​    4.Document： ES最小的数据单元  Json格式</p>
+<p>​    5.Type ： 逻辑上的数据分类</p>
+<p>​    6.Index ：一类相同或者类型的doc，比如一个员工索引，商品索引</p>
+<p>Shard分片：</p>
+<pre><code>1. 一个index包含多个shard，默认5P，默认每个P分配一个R，P的数量在创建索引的时候设置，如果想修改，需要重建索引。
+
+   2. 每个Shard都是一个Lucene实例，有完整的创建索引的处理请求能力。
+   3. ES会自动为nodes上为我们做shard均衡。
+   4. 一个doc是不可能同时存在多个Pshard中的，但是可以存在多个RShard中。
+   5. P和对应的R不能同时存在同一个节点。所以最低的可用配置是两台节点，互为主备。</code></pre></div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/04/02/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E4%B8%89%E8%8C%83%E5%BC%8F/">数据库设计三范式</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-04-02</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-04-02</span></span></div></header><div class="post-body"><div class="post-excerpt">
         <h2 id="数据库设计三范式">
           <a href="#数据库设计三范式" class="heading-link"><i class="fas fa-link"></i></a>数据库设计三范式</h2>
       <p>三范式的主要作用是减少数据库中数据冗余。</p>
@@ -408,87 +475,4 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.0"></he
 <li>过期时间</li>
 <li>多线程（守护线程）  定时增加过期时间</li>
 </ol>
-</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/02/20/Redis%E4%BB%8B%E7%BB%8D/">Redis介绍</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-02-20</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-02-20</span></span></div></header><div class="post-body"><div class="post-excerpt">
-        <h1 id="Redis">
-          <a href="#Redis" class="heading-link"><i class="fas fa-link"></i></a>Redis</h1>
-      
-        <h2 id="常识">
-          <a href="#常识" class="heading-link"><i class="fas fa-link"></i></a>常识</h2>
-      
-        <h3 id="磁盘：">
-          <a href="#磁盘：" class="heading-link"><i class="fas fa-link"></i></a>磁盘：</h3>
-      <p>寻址：ms</p>
-<p>带宽：G/M</p>
-
-        <h3 id="内存：">
-          <a href="#内存：" class="heading-link"><i class="fas fa-link"></i></a>内存：</h3>
-      <p>寻址：ns</p>
-<p>带宽：很大</p>
-<p>秒》毫秒》微妙》纳秒   磁盘比内存在寻址上慢了10W倍</p>
-
-        <h3 id="IO-buffer：成本问题">
-          <a href="#IO-buffer：成本问题" class="heading-link"><i class="fas fa-link"></i></a>IO buffer：成本问题</h3>
-      <p>磁盘与磁道，扇区，一个扇区 512byte，带来一个成本变大：索引，4K对齐，无论读多少，都是最少从4K从磁盘拿</p>
-<p>数据库：表很大的时候，性能会下降？</p>
-<p>​    如果表有索引，增删改会变慢，</p>
-<p>​    查询速度，一个或少量查询，依然很快，并发大的时候会受硬盘带宽影响速度</p>
-
-        <h2 id="Redis基础数据类型">
-          <a href="#Redis基础数据类型" class="heading-link"><i class="fas fa-link"></i></a>Redis基础数据类型</h2>
-      
-        <h3 id="String">
-          <a href="#String" class="heading-link"><i class="fas fa-link"></i></a>String</h3>
-      <p>存的是字节数组，没有存字符，是为了保证二进制安全</p>
-
-        <h3 id="hash">
-          <a href="#hash" class="heading-link"><i class="fas fa-link"></i></a>hash</h3>
-      <p>k-v键值对</p>
-<p>应用场景：</p>
-<p>​    点赞，商品详情等等。</p>
-
-        <h3 id="list">
-          <a href="#list" class="heading-link"><i class="fas fa-link"></i></a>list</h3>
-      <p>双向链表</p>
-<p>实现栈：同向命令，lpush-lpop，rpush-rpop</p>
-<p>队列：反向命令，lpush-rpop,rpush-lpop</p>
-<p>数组：可以操纵元素下标，lset</p>
-<p>阻塞队列：单播队列，FIFO</p>
-
-        <h3 id="set">
-          <a href="#set" class="heading-link"><i class="fas fa-link"></i></a>set</h3>
-      <p>集合，不允许重复值，无序</p>
-<p>可以做交集并集差集</p>
-<p>随机事件：SRANDMEMBER</p>
-<p>应用场景：抽奖，如果奖品少，用户多，那就用正数，奖品多，用户少，用负数</p>
-
-        <h3 id="sort-set">
-          <a href="#sort-set" class="heading-link"><i class="fas fa-link"></i></a>sort set</h3>
-      <p>和set相比，有序，每个元素会有score，根据score进行排序。</p>
-<p>排序是怎么实现的？</p>
-<p>​    使用跳表</p>
-<p>增删改查的速度？</p>
-<p>应用场景：排行榜</p>
-
-        <h3 id="bit-map">
-          <a href="#bit-map" class="heading-link"><i class="fas fa-link"></i></a>bit map</h3>
-      <p>setbit：创建一个bit</p>
-<p>bitcount：查询一个字节内出现了几次1或0</p>
-<p>bitpos：查询一个字节内从头开始，第几位是1或0.</p>
-<p>bitop：对字节进行位于运算。保存到新的key。</p>
-<p>场景：</p>
-<p>统计用户登录天数：</p>
-<p>​    用客户名或者客户ID做KEY，bit的位数是天</p>
-<p>一年活跃用户统计：</p>
-<p>用年月日做key，把用户ID转成不同的bit位数，如果登录过，就设置为1，然后用bitop做或运算，取值范围就是一年的key，然后用bitcount取出所有destkey的值</p>
-<p><img src="/20/Redis%E4%BB%8B%E7%BB%8D/image-20200711214530080.png" alt="Redis介绍"></p>
-
-        <h4 id="对比memcache">
-          <a href="#对比memcache" class="heading-link"><i class="fas fa-link"></i></a>对比memcache</h4>
-      <p>memcache  也是键值对，但是value没有数据类型的概念，类型不是很重要，重要的是redis对每种类型都有自己的方法。</p>
-
-        <h2 id="Redis概念">
-          <a href="#Redis概念" class="heading-link"><i class="fas fa-link"></i></a>Redis概念</h2>
-      <p>单进程，单线程，单实例</p>
-<p>并发很多的请求，如何变的很快</p>
-<p>所有的客户端请求都会先到内核，内核用epoll与redis交互</p>
-</div></div></article></section><nav class="paginator"><div class="paginator-inner"><a class="extend prev" rel="prev" href="/"><i class="fas fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span></div></nav></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><section class="sidebar-toc hide"></section><!-- ov = overview--><section class="sidebar-ov"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/assets/author.png" alt="avatar"></div></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">19</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">4</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">7</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2020</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>zhen wu</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v4.2.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.0.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="/js/utils.js?v=2.0.0"></script><script src="/js/stun-boot.js?v=2.0.0"></script><script src="/js/scroll.js?v=2.0.0"></script><script src="/js/header.js?v=2.0.0"></script><script src="/js/sidebar.js?v=2.0.0"></script></body></html>
+</div></div></article></section><nav class="paginator"><div class="paginator-inner"><a class="extend prev" rel="prev" href="/"><i class="fas fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/"><i class="fas fa-angle-right"></i></a></div></nav></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><section class="sidebar-toc hide"></section><!-- ov = overview--><section class="sidebar-ov"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/assets/author.png" alt="avatar"></div></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">29</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">8</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">12</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2020</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>zhen wu</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v4.2.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.0.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="/js/utils.js?v=2.0.0"></script><script src="/js/stun-boot.js?v=2.0.0"></script><script src="/js/scroll.js?v=2.0.0"></script><script src="/js/header.js?v=2.0.0"></script><script src="/js/sidebar.js?v=2.0.0"></script></body></html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/assets/icon16.png?v=2.0.0" type="image/png" sizes="16x16"><link rel="icon" href="/assets/icon32.png?v=2.0.0" type="image/png" sizes="32x32"><meta name="description" content="JAVA设计模式                           单例模式 Singleton       单例模式是只有一个实例对象，分为饿汉式和懒汉式。最简单的单例是饿汉式，在项目启动时，就生成一个实例对象。 懒汉式是只想在使用时才生成实例对象，但会带来线程不安全的问题，可使用双重校验方式判断当前是否已存在实例对象，再进行创建或直接使用，双重校验是指">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java-设计模式">
+<meta property="og:url" content="www.lutongtian.club/2019/12/12/Java/Java-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/index.html">
+<meta property="og:site_name" content="O ever youthful O ever weeping">
+<meta property="og:description" content="JAVA设计模式                           单例模式 Singleton       单例模式是只有一个实例对象，分为饿汉式和懒汉式。最简单的单例是饿汉式，在项目启动时，就生成一个实例对象。 懒汉式是只想在使用时才生成实例对象，但会带来线程不安全的问题，可使用双重校验方式判断当前是否已存在实例对象，再进行创建或直接使用，双重校验是指">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="/12/Java/Java-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/C:%5CUsers%5C92048%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200701014928832.png">
+<meta property="og:image" content="/12/Java/Java-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/C:%5CUsers%5C92048%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200701225038088.png">
+<meta property="article:published_time" content="2019-12-12T08:46:53.000Z">
+<meta property="article:modified_time" content="2019-12-12T08:46:53.000Z">
+<meta property="article:author" content="zhen wu">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="/12/Java/Java-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/C:%5CUsers%5C92048%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200701014928832.png"><meta name="keywords" content="zhen wu, O ever youthful O ever weeping"><meta name="description" content=""><title>Java-设计模式 | O ever youthful O ever weeping</title><link ref="canonical" href="www.lutongtian.club/2019/12/12/Java/Java-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.0.0"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">O ever youthful O ever weeping</div><div class="header-banner-info__subtitle"></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">Java-设计模式</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2019-12-12</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2019-12-12</span></span></div></header><div class="post-body">
+        <h1 id="JAVA设计模式">
+          <a href="#JAVA设计模式" class="heading-link"><i class="fas fa-link"></i></a>JAVA设计模式</h1>
+      
+        <h2 id="单例模式-Singleton">
+          <a href="#单例模式-Singleton" class="heading-link"><i class="fas fa-link"></i></a>单例模式 Singleton</h2>
+      <p>单例模式是只有一个实例对象，分为饿汉式和懒汉式。最简单的单例是饿汉式，在项目启动时，就生成一个实例对象。</p>
+<p>懒汉式是只想在使用时才生成实例对象，但会带来线程不安全的问题，可使用双重校验方式判断当前是否已存在实例对象，再进行创建或直接使用，双重校验是指外层校验先判断实例是否为空，然后对当前类加锁，再进行一次空判断，可保证在多线程情况下依旧只有一个实例。但该方式会导致执行效率的下降。</p>
+<p>也可使用枚举单例，枚举类型不仅可以解决线程同步问题，还可以防止反序列化。</p>
+
+        <h2 id="策略模式-Strategy">
+          <a href="#策略模式-Strategy" class="heading-link"><i class="fas fa-link"></i></a>策略模式 Strategy</h2>
+      <p>策略模式其实是把if或者switch进行了封装，主要是用于算法族方面，让程序结构更灵活，有更好的扩展性。</p>
+
+        <h2 id="工厂模式-Factory">
+          <a href="#工厂模式-Factory" class="heading-link"><i class="fas fa-link"></i></a>工厂模式 Factory</h2>
+      <p>普通工厂模式是把new对象的代码封装到了类中。</p>
+
+        <h2 id="门面模式-Facade-amp-调停者-Mediator">
+          <a href="#门面模式-Facade-amp-调停者-Mediator" class="heading-link"><i class="fas fa-link"></i></a>门面模式 Facade &amp; 调停者 Mediator</h2>
+      <p>两个模式其实意思是一样的，在多个模块中，可以每个模块与其他模块都有互相的访问请求，这个模式就是抽出一个专用的地，作为其他模块的中间模块，处理或转发请求。也就是消息中间件MQ。</p>
+
+        <h2 id="装饰器-Decorator">
+          <a href="#装饰器-Decorator" class="heading-link"><i class="fas fa-link"></i></a>装饰器 Decorator</h2>
+      <p>装饰器模式是为某个对象添加单一的职责，比如new两杯咖啡，一杯咖啡加糖，一杯咖啡加水，装饰器的职责就是加糖或加水的行为等等。</p>
+
+        <h2 id="责任链-ChainOfResponsibility">
+          <a href="#责任链-ChainOfResponsibility" class="heading-link"><i class="fas fa-link"></i></a>责任链 ChainOfResponsibility</h2>
+      <p>责任链模式是把一串动作添加到一个列表中依次执行，比如喝水的动作，首先要开瓶盖，然后拿到嘴边，倒水，合上瓶盖这四个动作，那这四个动作就是四个方法，在需要进行喝水时，把这四个方法添加到一个list中，依次执行，就是责任链。</p>
+
+        <h2 id="观察者-Observer">
+          <a href="#观察者-Observer" class="heading-link"><i class="fas fa-link"></i></a>观察者 Observer</h2>
+      <p>观察者模式是在某个被观察的对象中，加入观察者对象，如果被观察对象的某个方法被调用，观察者会进行一系列动作。</p>
+
+        <h2 id="组合模式-Composite">
+          <a href="#组合模式-Composite" class="heading-link"><i class="fas fa-link"></i></a>组合模式 Composite</h2>
+      <p>组合模式就是模拟树状结构。。。</p>
+
+        <h2 id="享元模式-Flyweight">
+          <a href="#享元模式-Flyweight" class="heading-link"><i class="fas fa-link"></i></a>享元模式 Flyweight</h2>
+      <p>这个模式主要是一个池的概念，把可能会重用的对象放到一个池子中，若再调用直接从池子中获取，不再新生成对象，类似于jvm的常量池。</p>
+
+        <h2 id="代理模式-Proxy">
+          <a href="#代理模式-Proxy" class="heading-link"><i class="fas fa-link"></i></a>代理模式 Proxy</h2>
+      <p>静态代理：代理一个类，可通过代理类直接访问被代理的类</p>
+<p>动态代理：用Proxy类的newProxyInstance方法生成代理对象，newProxyInstance有三个参数：</p>
+<p>​    ClassLoader：类加载器</p>
+<p>​    Class[]：要实现的接口类</p>
+<p>​    InvocationHandler：重写该接口中的invoke方法，目的是在该接口中的方法被调用时，被调用前后可插入一些相关代码，比如记录调用日志等。</p>
+<p>或者可以用cglib实现动态代理。cglib不需要代理接口，但不能代理final类，jdk的动态代理可以代理final类。</p>
+<p>两种方式底层都是通过asm解析class二进制码生成代理类的。</p>
+<p>AOP也是基于动态代理实现</p>
+
+        <h2 id="迭代器-Iterator">
+          <a href="#迭代器-Iterator" class="heading-link"><i class="fas fa-link"></i></a>迭代器 Iterator</h2>
+      <p>迭代器模式是遍历数组或链表使用，实现了iterator接口的类，都可以使用iterator进行遍历。</p>
+
+        <h2 id="访问者-visitor">
+          <a href="#访问者-visitor" class="heading-link"><i class="fas fa-link"></i></a>访问者 visitor</h2>
+      <p>在结构不变的情况下动态改变对于内部元素的动作。</p>
+<p>主要用于编译器上。</p>
+
+        <h2 id="构建器-Builder">
+          <a href="#构建器-Builder" class="heading-link"><i class="fas fa-link"></i></a>构建器 Builder</h2>
+      <p>主要负责构建复杂对象。</p>
+<p>比如一个创建一个电脑对象，需要new键盘，new鼠标，new显示器等等，如果一个一个new，会很麻烦，可以使用构建器模式，实现Computer c = create.mouse().create.keyboard().create();这样的方式，实现类中要创建Computer对象。</p>
+<p><img src="/12/Java/Java-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/C:%5CUsers%5C92048%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200701014928832.png" alt="image-20200701014928832"></p>
+
+        <h2 id="适配器-Adapter">
+          <a href="#适配器-Adapter" class="heading-link"><i class="fas fa-link"></i></a>适配器 Adapter</h2>
+      <p>简称接口转换器，如果一个接口不能直接访问一个另外一个类，加入这个类，就是Adapter。</p>
+
+        <h2 id="桥接-Bridge">
+          <a href="#桥接-Bridge" class="heading-link"><i class="fas fa-link"></i></a>桥接 Bridge</h2>
+      <p>双纬度扩展，分离抽象与具体，用聚合的方式连接抽象与具体。</p>
+
+        <h2 id="命令模式-Command">
+          <a href="#命令模式-Command" class="heading-link"><i class="fas fa-link"></i></a>命令模式 Command</h2>
+      <p>封装命令，主要是在对一个对象的属性改变时，会记录改变的内容，并可以调用undo方法，撤回本次改变。</p>
+
+        <h2 id="原型模式-Prototype">
+          <a href="#原型模式-Prototype" class="heading-link"><i class="fas fa-link"></i></a>原型模式 Prototype</h2>
+      <p>java中自带原型模式，实现原型模式需要实现标记型接口Cloneable，一般会重写clone方法。需要区分深克隆和浅克隆。</p>
+
+        <h2 id="备忘录-Memento">
+          <a href="#备忘录-Memento" class="heading-link"><i class="fas fa-link"></i></a>备忘录 Memento</h2>
+      <p>记录状态，便于回滚，主要用于记录快照（瞬时状态）、存盘。可以用于游戏的存档。</p>
+<p>需要实现序列化接口，使用ObjectOutputStream方法把要保存的属性存到磁盘，在通过input方法载入。</p>
+
+        <h2 id="模版方法-TemplateMethod">
+          <a href="#模版方法-TemplateMethod" class="heading-link"><i class="fas fa-link"></i></a>模版方法 TemplateMethod</h2>
+      <p>钩子函数</p>
+
+        <h2 id="状态模式-State">
+          <a href="#状态模式-State" class="heading-link"><i class="fas fa-link"></i></a>状态模式 State</h2>
+      <p>根据状态决定行为，如果一个类中的逻辑，需要根据某个状态做出不同的行为，比如一个开瓶盖的动作，矿泉水需要用拧的，听装可乐需要用扣的。可以把矿泉水和可乐抽象出一个水的类，在调用开瓶盖的动作时，会根据当前是什么水，做出不同行为。</p>
+
+        <h2 id="解释器-Intepreter">
+          <a href="#解释器-Intepreter" class="heading-link"><i class="fas fa-link"></i></a>解释器 Intepreter</h2>
+      <p>用来解释脚本语言，比如模拟一个正则表达式</p>
+
+        <h2 id="设计模式列表">
+          <a href="#设计模式列表" class="heading-link"><i class="fas fa-link"></i></a>设计模式列表</h2>
+      <p><img src="/12/Java/Java-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/C:%5CUsers%5C92048%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200701225038088.png" alt="image-20200701225038088"></p>
+
+        <h2 id="面向对象六大原则">
+          <a href="#面向对象六大原则" class="heading-link"><i class="fas fa-link"></i></a>面向对象六大原则</h2>
+      <p>可维护性：修改功能，需要改动的地方越少，可维护性就越好。</p>
+<p>可复用性：代码可以被以后重复使用，写出自己总结的类库。</p>
+<p>可扩展性：添加功能无需修改原来代码。</p>
+<p>灵活性：代码接口可以灵活调用。</p>
+<p>单一职责原则：一个类别太大，负责单一的职责。高内聚，低耦合。</p>
+<p>开闭原则：对扩展开放，对修改关闭，抽象化，多态是开闭原则的关键。</p>
+<p>里式替换原则：所有使用父类的地方，必须能够透明的使用子类对象。</p>
+<p>依赖倒置原则：依赖抽象，不依赖具体。面向抽象编程。</p>
+<p>接口隔离原则：每个接口应该承担独立的角色，不干不该自己干的事。避免子类实现不需要实现的方法。</p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="www.lutongtian.club">zhen wu</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="www.lutongtian.club/2019/12/12/Java/Java-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">www.lutongtian.club/2019/12/12/Java/Java-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="www.lutongtian.club/tags/Java/">Java</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2020/01/15/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E5%A4%9A%E7%BA%BF%E7%A8%8B-%E5%90%AF%E5%8A%A8%E4%B8%8E%E6%8E%A5%E5%8F%A3/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">多线程-启动与接口</span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#JAVA设计模式"><span class="toc-number">1.</span> <span class="toc-text">
+          JAVA设计模式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#单例模式-Singleton"><span class="toc-number">1.1.</span> <span class="toc-text">
+          单例模式 Singleton</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#策略模式-Strategy"><span class="toc-number">1.2.</span> <span class="toc-text">
+          策略模式 Strategy</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工厂模式-Factory"><span class="toc-number">1.3.</span> <span class="toc-text">
+          工厂模式 Factory</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#门面模式-Facade-amp-调停者-Mediator"><span class="toc-number">1.4.</span> <span class="toc-text">
+          门面模式 Facade &amp; 调停者 Mediator</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#装饰器-Decorator"><span class="toc-number">1.5.</span> <span class="toc-text">
+          装饰器 Decorator</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#责任链-ChainOfResponsibility"><span class="toc-number">1.6.</span> <span class="toc-text">
+          责任链 ChainOfResponsibility</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#观察者-Observer"><span class="toc-number">1.7.</span> <span class="toc-text">
+          观察者 Observer</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#组合模式-Composite"><span class="toc-number">1.8.</span> <span class="toc-text">
+          组合模式 Composite</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#享元模式-Flyweight"><span class="toc-number">1.9.</span> <span class="toc-text">
+          享元模式 Flyweight</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#代理模式-Proxy"><span class="toc-number">1.10.</span> <span class="toc-text">
+          代理模式 Proxy</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#迭代器-Iterator"><span class="toc-number">1.11.</span> <span class="toc-text">
+          迭代器 Iterator</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#访问者-visitor"><span class="toc-number">1.12.</span> <span class="toc-text">
+          访问者 visitor</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#构建器-Builder"><span class="toc-number">1.13.</span> <span class="toc-text">
+          构建器 Builder</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#适配器-Adapter"><span class="toc-number">1.14.</span> <span class="toc-text">
+          适配器 Adapter</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#桥接-Bridge"><span class="toc-number">1.15.</span> <span class="toc-text">
+          桥接 Bridge</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#命令模式-Command"><span class="toc-number">1.16.</span> <span class="toc-text">
+          命令模式 Command</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#原型模式-Prototype"><span class="toc-number">1.17.</span> <span class="toc-text">
+          原型模式 Prototype</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#备忘录-Memento"><span class="toc-number">1.18.</span> <span class="toc-text">
+          备忘录 Memento</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#模版方法-TemplateMethod"><span class="toc-number">1.19.</span> <span class="toc-text">
+          模版方法 TemplateMethod</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#状态模式-State"><span class="toc-number">1.20.</span> <span class="toc-text">
+          状态模式 State</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解释器-Intepreter"><span class="toc-number">1.21.</span> <span class="toc-text">
+          解释器 Intepreter</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#设计模式列表"><span class="toc-number">1.22.</span> <span class="toc-text">
+          设计模式列表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#面向对象六大原则"><span class="toc-number">1.23.</span> <span class="toc-text">
+          面向对象六大原则</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/assets/author.png" alt="avatar"></div></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">29</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">8</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">12</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2020</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>zhen wu</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v4.2.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.0.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="/js/utils.js?v=2.0.0"></script><script src="/js/stun-boot.js?v=2.0.0"></script><script src="/js/scroll.js?v=2.0.0"></script><script src="/js/header.js?v=2.0.0"></script><script src="/js/sidebar.js?v=2.0.0"></script></body></html>
