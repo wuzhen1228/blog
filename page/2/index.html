@@ -27,26 +27,50 @@ var CONFIG = {
   sourcePath: {"js":"js","css":"css","images":"images"},
 };
 
-window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">O ever youthful O ever weeping</div><div class="header-banner-info__subtitle"></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content content-home" id="content"><section class="postlist"><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/06/05/Mysql%E6%A1%86%E6%9E%B6/">Mysql框架</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-06-05</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-06-05</span></span></div></header><div class="post-body"><div class="post-excerpt">
-        <h1 id="Mysql框架">
-          <a href="#Mysql框架" class="heading-link"><i class="fas fa-link"></i></a>Mysql框架</h1>
-      <p>客户端 -&gt; mysql server -&gt; 连接器（控制用户的连接） -&gt; 分析器（词法分析、语法分析） -&gt; 优化器（优化SQL语句，规定流程执行） -&gt; 执行器（SQL语句的实际执行组件）-&gt; 存储引擎（不同的存放位置，不同的文件格式） </p>
-<p>客户端 -&gt;连接器：采用数据库连接池，减少频繁的开关连接；</p>
-<p>优化器：可以查看SQL语句的执行计划，可以采用对应的优化点，来加快查询；</p>
-<p>存储引擎：innoDB（磁盘），MyISAM（磁盘），memory（内存）；</p>
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">O ever youthful O ever weeping</div><div class="header-banner-info__subtitle"></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content content-home" id="content"><section class="postlist"><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/06/03/Mysql%E6%97%A5%E5%BF%97/">Mysql日志</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-06-03</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-06-03</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h1 id="Mysql日志">
+          <a href="#Mysql日志" class="heading-link"><i class="fas fa-link"></i></a>Mysql日志</h1>
+      
+        <h2 id="Redo日志–innodb存储引擎的日志文件">
+          <a href="#Redo日志–innodb存储引擎的日志文件" class="heading-link"><i class="fas fa-link"></i></a>Redo日志–innodb存储引擎的日志文件</h2>
+      <p>​    当发生数据修改的时候，innodb引擎会先将记录写到redo log中，并更新内存，此时更新就算是完成了，同时innodb引擎会在合适的时机将记录操作到磁盘中。</p>
+<p>​    redo log是固定大小的，是循环写的过程。</p>
+<p>​    有了redo log后，innodb就可以保证即使数据库发生异常重启，之前的记录也不会丢失，叫做creash-safe。</p>
 
-        <h2 id="索引文件">
-          <a href="#索引文件" class="heading-link"><i class="fas fa-link"></i></a>索引文件</h2>
-      <p>不同的存储引擎，数据文件和索引文件存放的位置是不同的，因此有了分类：</p>
-<p>​    聚簇索引：数据和文件放在一起，innoDB；</p>
-<p>​          .frm：存放的是表结构；</p>
-<p>​          .ibd：存放数据文件和索引文件；</p>
-<p>​        mysql的innoDB存储引擎默认情况会把所有的数据文件放到表空间中，不会为没一个单独的表存放一份数据文件，如果需要把每个表单独使用文件保存，设置如下属性：</p>
-<p>​    set global innodb_file_per_table = on;</p>
-<p>​    非聚簇索引：数据和索引单独一个文件，MyISAM；</p>
-<p>​        .frm：存放表结构；</p>
-<p>​        .MYI：存放索引数据；</p>
-<p>​        .MYD：存放实际数据；</p>
+        <h3 id="redo-log实现">
+          <a href="#redo-log实现" class="heading-link"><i class="fas fa-link"></i></a>redo log实现</h3>
+      <p>1.客户端提交</p>
+<p>2.记录到redo log buffer中</p>
+<p>3.由redo log buffer 提交到 os buffer中</p>
+<p>4.由os buffer进行磁盘持久化</p>
+<p>由于内存交互是非常快的，所以以上过程会非常短。</p>
+<p><strong>redo log 也可以称为前滚日志。</strong></p>
+
+        <h2 id="undo-log">
+          <a href="#undo-log" class="heading-link"><i class="fas fa-link"></i></a>undo log</h2>
+      <p>​    undo log 是为了实现事物的原子性，在mysql数据库inndoDB存储引擎中，还用undo log来实现多版本并发控制（简称：MVCC）</p>
+<p>​    在操作任何数据之前，首先将数据备份到一个地方（undo log）。然后进行数据的修改，如果出现了错误或者用户执行了rollback语句，系统可以利用undo log中的备份降数据恢复到事务开始之前的状态</p>
+<p>​    注意：undo log是逻辑日志，可以理解为：</p>
+<p>​    -当delete一条记录时，undo log中会记录一条对应的insert记录。</p>
+<p><strong>undo log 也可以称为回滚日志。</strong></p>
+
+        <h2 id="binlog-服务端的日志文件">
+          <a href="#binlog-服务端的日志文件" class="heading-link"><i class="fas fa-link"></i></a>binlog-服务端的日志文件</h2>
+      <p>​    binlog是server层的日志，主要做mysql功能层面的事情。</p>
+<p>​    与redo log 的区别：</p>
+<p>​        1.redo是innodb独有的，binlog是所有引擎都可以使用的。</p>
+<p>​        2.redo是物理日志，记录的是在某个数据页上做了什么修改，binlog是逻辑日志，记录的是这个语句的原始逻辑。</p>
+<p>​        3.redo是循环写的，空间会用完，binlog是可以追加写的，不会覆盖之前的日志信息。</p>
+<p>binlog 默认是不开启的，如果要开启需要在mysql中设置。</p>
+
+        <h2 id="数据更新流程">
+          <a href="#数据更新流程" class="heading-link"><i class="fas fa-link"></i></a>数据更新流程</h2>
+      <p>执行流程:</p>
+<p>​    1.执行器先从引擎中找到数据，如果在内存中，直接返回，如果不在内存中，查询后返回。</p>
+<p>​    2.执行器拿到数据之后会先修改数据，然后调用引擎接口重新吸入数据。</p>
+<p>​    3.引擎降数据更新到内存，同时写数据导redo中，此时处于prepare阶段，并通知执行器执行完成，随时可以操作。</p>
+<p>​    4.执行器生成这个操作的binlog。</p>
+<p>​    5.执行器调用引擎的事务提交接口，引擎把刚刚写完的redolog改成commit状态，更新完成。</p>
 </div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/05/06/mysql%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E6%80%A7/">mysql事务隔离性</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-05-06</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-05-06</span></span></div></header><div class="post-body"><div class="post-excerpt">
         <h1 id="Mysql事务隔离测试">
           <a href="#Mysql事务隔离测试" class="heading-link"><i class="fas fa-link"></i></a>Mysql事务隔离测试</h1>
@@ -319,7 +343,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.0"></he
 <pre><code>1.    单点故障
 
    2.    容量有限
-   3.    压力</code></pre>
+      3.    压力</code></pre>
         <h2 id="AKF">
           <a href="#AKF" class="heading-link"><i class="fas fa-link"></i></a>AKF</h2>
       <p>区分XYZ轴</p>
@@ -363,9 +387,9 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.0"></he
 <pre><code>1.    阻止并发到达DB
 
    2.    所有请求都会get key，所有都get到空之后，使用setnx加锁，锁要设置过期时间，如1秒。
-   3.    如果获取锁成功了，那就去DB重新取数据，在set到key中
-   4.    如果失败了，就随机睡眠1秒以内，然后再第2个步骤
-   5.    如果第三步去DB拉数据失败了，就启用多线程，主线程去获取DB数据，子线程（如0.5秒）去监控是否拉取成功，没成功就更新锁的过期时间。</code></pre>
+      3.    如果获取锁成功了，那就去DB重新取数据，在set到key中
+         4.    如果失败了，就随机睡眠1秒以内，然后再第2个步骤
+            5.    如果第三步去DB拉数据失败了，就启用多线程，主线程去获取DB数据，子线程（如0.5秒）去监控是否拉取成功，没成功就更新锁的过期时间。</code></pre>
         <h3 id="缓存穿透：">
           <a href="#缓存穿透：" class="heading-link"><i class="fas fa-link"></i></a>缓存穿透：</h3>
       <p>从业务层接收查询的是系统里根本不存在的数据。</p>
