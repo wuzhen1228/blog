@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/assets/icon16.png?v=2.0.0" type="image/png" sizes="16x16"><link rel="icon" href="/assets/icon32.png?v=2.0.0" type="image/png" sizes="32x32"><meta name="description" content="Mysql日志                           Redo日志–innodb存储引擎的日志文件       ​    当发生数据修改的时候，innodb引擎会先将记录写到redo log中，并更新内存，此时更新就算是完成了，同时innodb引擎会在合适的时机将记录操作到磁盘中。 ​    redo log是固定大小的，是循环写的过程。 ​">
 <meta property="og:type" content="article">
 <meta property="og:title" content="mysql日志">
-<meta property="og:url" content="https://lutongtian.cn/2020/09/03/Mysql%E6%97%A5%E5%BF%97/index.html">
+<meta property="og:url" content="www.lutongtian.club/2020/09/03/Mysql%E6%97%A5%E5%BF%97/index.html">
 <meta property="og:site_name" content="O ever youthful O ever weeping">
 <meta property="og:description" content="Mysql日志                           Redo日志–innodb存储引擎的日志文件       ​    当发生数据修改的时候，innodb引擎会先将记录写到redo log中，并更新内存，此时更新就算是完成了，同时innodb引擎会在合适的时机将记录操作到磁盘中。 ​    redo log是固定大小的，是循环写的过程。 ​">
 <meta property="og:locale" content="zh_CN">
@@ -9,7 +9,7 @@
 <meta property="article:modified_time" content="2020-09-03T12:50:32.000Z">
 <meta property="article:author" content="zhen wu">
 <meta property="article:tag" content="Mysql">
-<meta name="twitter:card" content="summary"><meta name="keywords" content="zhen wu, O ever youthful O ever weeping"><meta name="description" content=""><title>mysql日志 | O ever youthful O ever weeping</title><link ref="canonical" href="https://lutongtian.cn/2020/09/03/Mysql%E6%97%A5%E5%BF%97/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.0.0"><script>var Stun = window.Stun || {};
+<meta name="twitter:card" content="summary"><meta name="keywords" content="zhen wu, O ever youthful O ever weeping"><meta name="description" content=""><title>mysql日志 | O ever youthful O ever weeping</title><link ref="canonical" href="www.lutongtian.club/2020/09/03/Mysql%E6%97%A5%E5%BF%97/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.0.0"><script>var Stun = window.Stun || {};
 var CONFIG = {
   root: '/',
   algolia: undefined,
@@ -33,16 +33,16 @@ var CONFIG = {
 };
 
 window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">O ever youthful O ever weeping</div><div class="header-banner-info__subtitle"></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">mysql日志</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-09-03</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-09-03</span></span></div></header><div class="post-body">
-        <h1 id="Mysql日志"   >
+        <h1 id="Mysql日志">
           <a href="#Mysql日志" class="heading-link"><i class="fas fa-link"></i></a>Mysql日志</h1>
       
-        <h2 id="Redo日志–innodb存储引擎的日志文件"   >
+        <h2 id="Redo日志–innodb存储引擎的日志文件">
           <a href="#Redo日志–innodb存储引擎的日志文件" class="heading-link"><i class="fas fa-link"></i></a>Redo日志–innodb存储引擎的日志文件</h2>
       <p>​    当发生数据修改的时候，innodb引擎会先将记录写到redo log中，并更新内存，此时更新就算是完成了，同时innodb引擎会在合适的时机将记录操作到磁盘中。</p>
 <p>​    redo log是固定大小的，是循环写的过程。</p>
 <p>​    有了redo log后，innodb就可以保证即使数据库发生异常重启，之前的记录也不会丢失，叫做creash-safe。</p>
 
-        <h3 id="redo-log实现"   >
+        <h3 id="redo-log实现">
           <a href="#redo-log实现" class="heading-link"><i class="fas fa-link"></i></a>redo log实现</h3>
       <p>1.客户端提交</p>
 <p>2.记录到redo log buffer中</p>
@@ -51,7 +51,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.0"></he
 <p>由于内存交互是非常快的，所以以上过程会非常短。</p>
 <p><strong>redo log 也可以称为前滚日志。</strong></p>
 
-        <h2 id="undo-log"   >
+        <h2 id="undo-log">
           <a href="#undo-log" class="heading-link"><i class="fas fa-link"></i></a>undo log</h2>
       <p>​    undo log 是为了实现事物的原子性，在mysql数据库inndoDB存储引擎中，还用undo log来实现多版本并发控制（简称：MVCC）</p>
 <p>​    在操作任何数据之前，首先将数据备份到一个地方（undo log）。然后进行数据的修改，如果出现了错误或者用户执行了rollback语句，系统可以利用undo log中的备份降数据恢复到事务开始之前的状态</p>
@@ -59,7 +59,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.0"></he
 <p>​    -当delete一条记录时，undo log中会记录一条对应的insert记录。</p>
 <p><strong>undo log 也可以称为回滚日志。</strong></p>
 
-        <h2 id="binlog-服务端的日志文件"   >
+        <h2 id="binlog-服务端的日志文件">
           <a href="#binlog-服务端的日志文件" class="heading-link"><i class="fas fa-link"></i></a>binlog-服务端的日志文件</h2>
       <p>​    binlog是server层的日志，主要做mysql功能层面的事情。</p>
 <p>​    与redo log 的区别：</p>
@@ -68,7 +68,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.0"></he
 <p>​        3.redo是循环写的，空间会用完，binlog是可以追加写的，不会覆盖之前的日志信息。</p>
 <p>binlog 默认是不开启的，如果要开启需要在mysql中设置。</p>
 
-        <h2 id="数据更新流程"   >
+        <h2 id="数据更新流程">
           <a href="#数据更新流程" class="heading-link"><i class="fas fa-link"></i></a>数据更新流程</h2>
       <p>执行流程:</p>
 <p>​    1.执行器先从引擎中找到数据，如果在内存中，直接返回，如果不在内存中，查询后返回。</p>
@@ -76,7 +76,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.0"></he
 <p>​    3.引擎降数据更新到内存，同时写数据导redo中，此时处于prepare阶段，并通知执行器执行完成，随时可以操作。</p>
 <p>​    4.执行器生成这个操作的binlog。</p>
 <p>​    5.执行器调用引擎的事务提交接口，引擎把刚刚写完的redolog改成commit状态，更新完成。</p>
-</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://lutongtian.cn">zhen wu</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://lutongtian.cn/2020/09/03/Mysql%E6%97%A5%E5%BF%97/">https://lutongtian.cn/2020/09/03/Mysql%E6%97%A5%E5%BF%97/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://lutongtian.cn/tags/Mysql/">Mysql</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2020/09/19/JVM%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">JVM运行时数据区</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2020/08/25/Mysql%E9%94%81%E6%9C%BA%E5%88%B6/"><span class="paginator-prev__text">Mysql锁机制</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Mysql日志"><span class="toc-number">1.</span> <span class="toc-text">
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="www.lutongtian.club">zhen wu</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="www.lutongtian.club/2020/09/03/Mysql%E6%97%A5%E5%BF%97/">www.lutongtian.club/2020/09/03/Mysql%E6%97%A5%E5%BF%97/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="www.lutongtian.club/tags/Mysql/">Mysql</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2020/09/19/JVM%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">JVM运行时数据区</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2020/08/25/Mysql%E9%94%81%E6%9C%BA%E5%88%B6/"><span class="paginator-prev__text">Mysql锁机制</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Mysql日志"><span class="toc-number">1.</span> <span class="toc-text">
           Mysql日志</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Redo日志–innodb存储引擎的日志文件"><span class="toc-number">1.1.</span> <span class="toc-text">
           Redo日志–innodb存储引擎的日志文件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#redo-log实现"><span class="toc-number">1.1.1.</span> <span class="toc-text">
           redo log实现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undo-log"><span class="toc-number">1.2.</span> <span class="toc-text">

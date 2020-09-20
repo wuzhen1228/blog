@@ -1,10 +1,10 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/assets/icon16.png?v=2.0.0" type="image/png" sizes="16x16"><link rel="icon" href="/assets/icon32.png?v=2.0.0" type="image/png" sizes="32x32"><meta property="og:type" content="website">
 <meta property="og:title" content="O ever youthful O ever weeping">
-<meta property="og:url" content="https://lutongtian.cn/page/2/index.html">
+<meta property="og:url" content="www.lutongtian.club/page/2/index.html">
 <meta property="og:site_name" content="O ever youthful O ever weeping">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:author" content="zhen wu">
-<meta name="twitter:card" content="summary"><meta name="keywords" content="zhen wu, O ever youthful O ever weeping"><meta name="description" content=""><title>O ever youthful O ever weeping</title><link ref="canonical" href="https://lutongtian.cn/page/2/index.html"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.0.0"><script>var Stun = window.Stun || {};
+<meta name="twitter:card" content="summary"><meta name="keywords" content="zhen wu, O ever youthful O ever weeping"><meta name="description" content=""><title>O ever youthful O ever weeping</title><link ref="canonical" href="www.lutongtian.club/page/2/index.html"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.0.0"><script>var Stun = window.Stun || {};
 var CONFIG = {
   root: '/',
   algolia: undefined,
@@ -28,14 +28,14 @@ var CONFIG = {
 };
 
 window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">O ever youthful O ever weeping</div><div class="header-banner-info__subtitle"></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content content-home" id="content"><section class="postlist"><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/06/05/Mysql%E6%A1%86%E6%9E%B6/">Mysql框架</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-06-05</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-06-05</span></span></div></header><div class="post-body"><div class="post-excerpt">
-        <h1 id="Mysql框架"   >
+        <h1 id="Mysql框架">
           <a href="#Mysql框架" class="heading-link"><i class="fas fa-link"></i></a>Mysql框架</h1>
       <p>客户端 -&gt; mysql server -&gt; 连接器（控制用户的连接） -&gt; 分析器（词法分析、语法分析） -&gt; 优化器（优化SQL语句，规定流程执行） -&gt; 执行器（SQL语句的实际执行组件）-&gt; 存储引擎（不同的存放位置，不同的文件格式） </p>
 <p>客户端 -&gt;连接器：采用数据库连接池，减少频繁的开关连接；</p>
 <p>优化器：可以查看SQL语句的执行计划，可以采用对应的优化点，来加快查询；</p>
 <p>存储引擎：innoDB（磁盘），MyISAM（磁盘），memory（内存）；</p>
 
-        <h2 id="索引文件"   >
+        <h2 id="索引文件">
           <a href="#索引文件" class="heading-link"><i class="fas fa-link"></i></a>索引文件</h2>
       <p>不同的存储引擎，数据文件和索引文件存放的位置是不同的，因此有了分类：</p>
 <p>​    聚簇索引：数据和文件放在一起，innoDB；</p>
@@ -48,7 +48,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.0"></he
 <p>​        .MYI：存放索引数据；</p>
 <p>​        .MYD：存放实际数据；</p>
 </div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/05/06/mysql%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E6%80%A7/">mysql事务隔离性</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-05-06</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-05-06</span></span></div></header><div class="post-body"><div class="post-excerpt">
-        <h1 id="Mysql事务隔离测试"   >
+        <h1 id="Mysql事务隔离测试">
           <a href="#Mysql事务隔离测试" class="heading-link"><i class="fas fa-link"></i></a>Mysql事务隔离测试</h1>
       <p>1.测试事物隔离性，要先关闭mysql的自动提交。</p>
 <p>2.要打开两个命令窗口，分别关闭自动提交和修改事物隔离机制。</p>
@@ -103,68 +103,68 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.0"></he
 <p>8.结语</p>
 <p>​    隔离级别升到seariable后，以上情况都不会再出现。</p>
 </div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/04/24/Mysql%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%92/">Mysql执行计划</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-04-24</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-04-24</span></span></div></header><div class="post-body"><div class="post-excerpt">
-        <h1 id="Mysql-执行计划"   >
+        <h1 id="Mysql-执行计划">
           <a href="#Mysql-执行计划" class="heading-link"><i class="fas fa-link"></i></a>Mysql 执行计划</h1>
       
-        <h2 id="explain"   >
+        <h2 id="explain">
           <a href="#explain" class="heading-link"><i class="fas fa-link"></i></a>explain</h2>
       
-        <h3 id="id"   >
+        <h3 id="id">
           <a href="#id" class="heading-link"><i class="fas fa-link"></i></a>id:</h3>
       <p>​    复杂语句中可能有多个id号。表示select子句的执行顺序。id号越大越先执行，id号相同，从上往下按序执行。</p>
 
-        <h3 id="select-type"   >
+        <h3 id="select-type">
           <a href="#select-type" class="heading-link"><i class="fas fa-link"></i></a>select_type:</h3>
       <p>​    主要用来分辨查询类型，是普通查询还是联合查询或者是子查询</p>
 
-        <h4 id="SIMPLE"   >
+        <h4 id="SIMPLE">
           <a href="#SIMPLE" class="heading-link"><i class="fas fa-link"></i></a>SIMPLE:</h4>
       <p>​        表示简单的语句。</p>
 
-        <h4 id="PRIMARY"   >
+        <h4 id="PRIMARY">
           <a href="#PRIMARY" class="heading-link"><i class="fas fa-link"></i></a>PRIMARY:</h4>
       <p>​            查询中如果包含了任何复杂的子查询，最外层查询则被标记为primary。</p>
 
-        <h4 id="UNION："   >
+        <h4 id="UNION：">
           <a href="#UNION：" class="heading-link"><i class="fas fa-link"></i></a>UNION：</h4>
       <p>​            若第二个select出现在union后，则被标记为union。</p>
 
-        <h4 id="DEPENDENT-UNION"   >
+        <h4 id="DEPENDENT-UNION">
           <a href="#DEPENDENT-UNION" class="heading-link"><i class="fas fa-link"></i></a>DEPENDENT UNION:</h4>
       <p>​            跟union类似，此处的depentent表示union或union all联合而成的结果会受外部表影响。</p>
 
-        <h4 id="UNION-RESULT"   >
+        <h4 id="UNION-RESULT">
           <a href="#UNION-RESULT" class="heading-link"><i class="fas fa-link"></i></a>UNION RESULT:</h4>
       <p>​            从union表中或者结果的select。</p>
 
-        <h4 id="SUBQUERY"   >
+        <h4 id="SUBQUERY">
           <a href="#SUBQUERY" class="heading-link"><i class="fas fa-link"></i></a>SUBQUERY:</h4>
       <p>​            在select或where列表中包含子查询。</p>
 
-        <h4 id="DEPENDENT-SUBQUERY"   >
+        <h4 id="DEPENDENT-SUBQUERY">
           <a href="#DEPENDENT-SUBQUERY" class="heading-link"><i class="fas fa-link"></i></a>DEPENDENT SUBQUERY:</h4>
       <p>​            SUBQUERY的子查询受到外部表查询的影响。</p>
 
-        <h4 id="DERIVED"   >
+        <h4 id="DERIVED">
           <a href="#DERIVED" class="heading-link"><i class="fas fa-link"></i></a>DERIVED:</h4>
       <p>​            from子句出现的子查询，也叫派生类。</p>
 
-        <h4 id="UNCACHEABLE-SUBQUERY"   >
+        <h4 id="UNCACHEABLE-SUBQUERY">
           <a href="#UNCACHEABLE-SUBQUERY" class="heading-link"><i class="fas fa-link"></i></a>UNCACHEABLE SUBQUERY:</h4>
       <p>​            表示子查询的结果不能被缓存。</p>
 
-        <h4 id="UNCACHEABLE-UNION"   >
+        <h4 id="UNCACHEABLE-UNION">
           <a href="#UNCACHEABLE-UNION" class="heading-link"><i class="fas fa-link"></i></a>UNCACHEABLE UNION:</h4>
       <p>​            表示union的结果不能被缓存。</p>
 
-        <h3 id="table"   >
+        <h3 id="table">
           <a href="#table" class="heading-link"><i class="fas fa-link"></i></a>table:</h3>
       <p>​    对应行正在访问哪个表，表名或者列名，可能是临时表或者union合并结果集。</p>
 <p>​    1.如果是具体的表名，则表名从实际的物理表中获取数据，也可以是表的别名。</p>
 <p>​    2.表名是derivenN的形式，表示使用了id为N的查询产生的衍生表。</p>
 <p>​    3.当有uion result 的时候，表名是union n1,n2等的形式，n1,n2表示参与union 的id。</p>
 
-        <h3 id="type"   >
+        <h3 id="type">
           <a href="#type" class="heading-link"><i class="fas fa-link"></i></a>type:</h3>
       <p>​    type显示的是访问类型，访问类型表示我是以何种方式去访问我们的数据，最容易想的是全表扫描，直接暴力的遍历一张表去寻找需要的数据，效率非常低下，访问的类型有很多，效率是从最好到最坏依次是：</p>
 <p>system&gt;const&gt;eq_ref&gt;fulltext&gt;ref_or_null&gt;index_merge&gt;unique_subquery&gt;index_subquery&gt;range&gt;index&gt;all</p>
@@ -179,30 +179,30 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.0"></he
 <p>​    const：这个表至多有一个匹配行。</p>
 <p>​    system:表里只有一行记录（等于系统表），这是const的特例，平时不会出现。</p>
 
-        <h3 id="possible-keys"   >
+        <h3 id="possible-keys">
           <a href="#possible-keys" class="heading-link"><i class="fas fa-link"></i></a>possible_keys:</h3>
       <p>​    显示可能应用在这张表中的索引，一个或多个，查询涉及到的字段上若存在索引，则该索引会被列出，但不一定被查询实际使用。</p>
 
-        <h3 id="key"   >
+        <h3 id="key">
           <a href="#key" class="heading-link"><i class="fas fa-link"></i></a>key:</h3>
       <p>​    实际使用的索引，如果为null，则没有使用索引，查询中使用了覆盖索引，则该索引和查询的select字段重叠。</p>
 
-        <h3 id="keylen"   >
+        <h3 id="keylen">
           <a href="#keylen" class="heading-link"><i class="fas fa-link"></i></a>keylen:</h3>
       <p>​    表示索引中使用的字节数，可以通过key_len计算查询中使用的索引长度，在不损失净度的情况下长度越短越好。</p>
 
-        <h3 id="ref"   >
+        <h3 id="ref">
           <a href="#ref" class="heading-link"><i class="fas fa-link"></i></a>ref:</h3>
       <p>​    显示索引的哪一列被使用了，如果可能的话，是一个常数。</p>
 
-        <h3 id="rows"   >
+        <h3 id="rows">
           <a href="#rows" class="heading-link"><i class="fas fa-link"></i></a>rows:</h3>
       <p>​    根据表中的统计信息及索引的使用情况大致估算出找出所需记录需要读取的行数，此参数很重要，直接反应的sql找出了多少数据，在完成目的的情况下越少越好。</p>
 
-        <h3 id="filtered"   >
+        <h3 id="filtered">
           <a href="#filtered" class="heading-link"><i class="fas fa-link"></i></a>filtered:</h3>
       
-        <h3 id="Extra"   >
+        <h3 id="Extra">
           <a href="#Extra" class="heading-link"><i class="fas fa-link"></i></a>Extra:</h3>
       <p>​    包含额外的信息。</p>
 <p>​    using filesort：说明mysql不能根据索引进行排序，只能通过排序算法进行排序，会消耗额外的位置。</p>
@@ -212,7 +212,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.0"></he
 <p>​    using join buffer: 使用连接缓存。</p>
 <p>​    impossible where :where语句的结果总是false。</p>
 </div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/04/02/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E4%B8%89%E8%8C%83%E5%BC%8F/">数据库设计三范式</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-04-02</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-04-02</span></span></div></header><div class="post-body"><div class="post-excerpt">
-        <h2 id="数据库设计三范式"   >
+        <h2 id="数据库设计三范式">
           <a href="#数据库设计三范式" class="heading-link"><i class="fas fa-link"></i></a>数据库设计三范式</h2>
       <p>三范式的主要作用是减少数据库中数据冗余。</p>
 <p><strong>第一范式：确认每列保持原子性，例如收货地址，把省、市、区拆分成三个字段，分别保存相应数据。</strong></p>

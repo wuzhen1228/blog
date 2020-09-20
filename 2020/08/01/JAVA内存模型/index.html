@@ -1,19 +1,19 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/assets/icon16.png?v=2.0.0" type="image/png" sizes="16x16"><link rel="icon" href="/assets/icon32.png?v=2.0.0" type="image/png" sizes="32x32"><meta name="description" content="JAVA内存模型                           硬件层并发优化基础                           存储器的层次结构                            cache line padding       利用MESI（缓存一致性协议），对齐cpu缓存头，不被其他数据干扰，提高效率，在变量前后增加 p">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JAVA内存模型">
-<meta property="og:url" content="https://lutongtian.cn/2020/08/01/JAVA%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/index.html">
+<meta property="og:url" content="www.lutongtian.club/2020/08/01/JAVA%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/index.html">
 <meta property="og:site_name" content="O ever youthful O ever weeping">
 <meta property="og:description" content="JAVA内存模型                           硬件层并发优化基础                           存储器的层次结构                            cache line padding       利用MESI（缓存一致性协议），对齐cpu缓存头，不被其他数据干扰，提高效率，在变量前后增加 p">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://lutongtian.cn/.cn//%5Cimages%5Cimage-20200707234920046.png">
-<meta property="og:image" content="https://lutongtian.cn/.cn//D:%5Cstudy%5CMarkdown%5Cimages%5Cimage-20200708001829005.png">
-<meta property="og:image" content="https://lutongtian.cn/.cn//%5Cimages%5Cimage-20200708143902762.png">
+<meta property="og:image" content="/.club/2020/08//%5Cimages%5Cimage-20200707234920046.png">
+<meta property="og:image" content="/.club/2020/08//D:%5Cstudy%5CMarkdown%5Cimages%5Cimage-20200708001829005.png">
+<meta property="og:image" content="/.club/2020/08//%5Cimages%5Cimage-20200708143902762.png">
 <meta property="article:published_time" content="2020-08-01T05:23:26.000Z">
 <meta property="article:modified_time" content="2020-09-20T07:23:38.318Z">
 <meta property="article:author" content="zhen wu">
 <meta property="article:tag" content="JVM">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://lutongtian.cn/.cn//%5Cimages%5Cimage-20200707234920046.png"><meta name="keywords" content="zhen wu, O ever youthful O ever weeping"><meta name="description" content=""><title>JAVA内存模型 | O ever youthful O ever weeping</title><link ref="canonical" href="https://lutongtian.cn/2020/08/01/JAVA%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.0.0"><script>var Stun = window.Stun || {};
+<meta name="twitter:image" content="/.club/2020/08//%5Cimages%5Cimage-20200707234920046.png"><meta name="keywords" content="zhen wu, O ever youthful O ever weeping"><meta name="description" content=""><title>JAVA内存模型 | O ever youthful O ever weeping</title><link ref="canonical" href="www.lutongtian.club/2020/08/01/JAVA%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.0.0"><script>var Stun = window.Stun || {};
 var CONFIG = {
   root: '/',
   algolia: undefined,
@@ -45,12 +45,12 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.0"></he
       
         <h3 id="存储器的层次结构">
           <a href="#存储器的层次结构" class="heading-link"><i class="fas fa-link"></i></a>存储器的层次结构</h3>
-      <p><img src="/.cn//%5Cimages%5Cimage-20200707234920046.png" alt="image-20200707234920046"></p>
+      <p><img src="/.club/2020/08//%5Cimages%5Cimage-20200707234920046.png" alt="image-20200707234920046"></p>
 
         <h3 id="cache-line-padding">
           <a href="#cache-line-padding" class="heading-link"><i class="fas fa-link"></i></a>cache line padding</h3>
       <p>利用MESI（缓存一致性协议），对齐cpu缓存头，不被其他数据干扰，提高效率，在变量前后增加 public long p1,p2,p3…..p7</p>
-<p><img src="/.cn//D:%5Cstudy%5CMarkdown%5Cimages%5Cimage-20200708001829005.png" alt="image-20200708001829005"></p>
+<p><img src="/.club/2020/08//D:%5Cstudy%5CMarkdown%5Cimages%5Cimage-20200708001829005.png" alt="image-20200708001829005"></p>
 
         <h2 id="CPU乱序">
           <a href="#CPU乱序" class="heading-link"><i class="fas fa-link"></i></a>CPU乱序</h2>
@@ -77,7 +77,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.0"></he
 
         <h2 id="java并发内存模型">
           <a href="#java并发内存模型" class="heading-link"><i class="fas fa-link"></i></a>java并发内存模型</h2>
-      <p><img src="/.cn//%5Cimages%5Cimage-20200708143902762.png" alt="image-20200708143902762"></p>
+      <p><img src="/.club/2020/08//%5Cimages%5Cimage-20200708143902762.png" alt="image-20200708143902762"></p>
 
         <h2 id="对象的创建过程">
           <a href="#对象的创建过程" class="heading-link"><i class="fas fa-link"></i></a>对象的创建过程</h2>
@@ -118,7 +118,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.0"></he
 <li>句柄池</li>
 <li>直接指针 ClassPointer</li>
 </ol>
-</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://lutongtian.cn">zhen wu</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://lutongtian.cn/2020/08/01/JAVA%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/">https://lutongtian.cn/2020/08/01/JAVA%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://lutongtian.cn/tags/JVM/">JVM</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2020/08/25/Mysql%E9%94%81%E6%9C%BA%E5%88%B6/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">Mysql锁机制</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2020/07/03/Mysql%E7%B4%A2%E5%BC%95/"><span class="paginator-prev__text">Mysql索引</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#JAVA内存模型"><span class="toc-number">1.</span> <span class="toc-text">
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="www.lutongtian.club">zhen wu</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="www.lutongtian.club/2020/08/01/JAVA%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/">www.lutongtian.club/2020/08/01/JAVA%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="www.lutongtian.club/tags/JVM/">JVM</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2020/08/25/Mysql%E9%94%81%E6%9C%BA%E5%88%B6/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">Mysql锁机制</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2020/07/03/Mysql%E7%B4%A2%E5%BC%95/"><span class="paginator-prev__text">Mysql索引</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#JAVA内存模型"><span class="toc-number">1.</span> <span class="toc-text">
           JAVA内存模型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#硬件层并发优化基础"><span class="toc-number">1.1.</span> <span class="toc-text">
           硬件层并发优化基础</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#存储器的层次结构"><span class="toc-number">1.1.1.</span> <span class="toc-text">
           存储器的层次结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#cache-line-padding"><span class="toc-number">1.1.2.</span> <span class="toc-text">
