@@ -312,4 +312,159 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.0"></he
 <p>为了优化写入速度，采用了技术顺序写入和MMFile。</p>
 <p>技术顺序写入：因为硬盘是机械结构，每次读写都会寻址-&gt;写入，寻址的动作是非常耗时的，如果采用顺序I/O，会省去大量的内存开销和寻址时间，但kafka的数据并不是实时的写入硬盘中的。</p>
 <p>利用OS中的Pagecache提高IO效率。MMF是直接调用的一个进程和内核共享的内存区域，直接把数据写到这个内存区域，然后由OS去把内存中的数据持久化到磁盘。</p>
-</div></div></article></section><nav class="paginator"><div class="paginator-inner"><a class="extend prev" rel="prev" href="/"><i class="fas fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span></div></nav></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><section class="sidebar-toc hide"></section><!-- ov = overview--><section class="sidebar-ov"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/assets/author.png" alt="avatar"></div></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">15</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">3</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">6</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2020</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>zhen wu</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v4.2.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.0.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="/js/utils.js?v=2.0.0"></script><script src="/js/stun-boot.js?v=2.0.0"></script><script src="/js/scroll.js?v=2.0.0"></script><script src="/js/header.js?v=2.0.0"></script><script src="/js/sidebar.js?v=2.0.0"></script></body></html>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/02/24/Redis%E9%9B%86%E7%BE%A4%E6%A6%82%E5%BF%B5/">Redis集群概念</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-02-24</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-02-24</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h1 id="Redis集群">
+          <a href="#Redis集群" class="heading-link"><i class="fas fa-link"></i></a>Redis集群</h1>
+      <p>单机的问题：</p>
+<pre><code>1.    单点故障
+
+   2.    容量有限
+   3.    压力</code></pre>
+        <h2 id="AKF">
+          <a href="#AKF" class="heading-link"><i class="fas fa-link"></i></a>AKF</h2>
+      <p>区分XYZ轴</p>
+<p>X轴：横向扩展多个redis服务，把查询和增删改分开。全量镜像数据。</p>
+<p>Y轴：纵向扩展，每个redis服务存储不同的数据。</p>
+<p>Z轴：按照优先级逻辑，再拆分。</p>
+
+        <h2 id="CAP">
+          <a href="#CAP" class="heading-link"><i class="fas fa-link"></i></a>CAP</h2>
+      <p>保证高可用，分区容错，弱一致性</p>
+<p>弱一致性：异步方式向其他redis同步数据。</p>
+<p>分区容错：各种原因导致与主机断开连接，采用选举的方式，选择新的主机，最好使用奇数台机器，方便选举。</p>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/02/23/Redis%E6%8C%81%E4%B9%85%E5%8C%96/">Redis持久化</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-02-23</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-02-23</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h1 id="Redis">
+          <a href="#Redis" class="heading-link"><i class="fas fa-link"></i></a>Redis</h1>
+      
+        <h2 id="RedisDB持久化">
+          <a href="#RedisDB持久化" class="heading-link"><i class="fas fa-link"></i></a>RedisDB持久化</h2>
+      <p>时点性的进行快照</p>
+<p>使用内核的fork(copy on write)指令，创建一个子进程，子进程执行持久化到db.file，这样做的原因是父子进程对数据的修改，互相都看不到，是因为key是存在虚拟内存中，但value是放在物理内存中的，如果主进程在子进程备份过程中修改了value，主进程的key会指向新的物理内存中的值，但子进程还是指向原来的value。</p>
+<p>以上说的是bgsave，redis是可以正常使用的。</p>
+<p>redis还提供了普通save，会导致redis不可用，这种情况下就是关机维护之类的，确定不用了。就用这个save。</p>
+
+        <h2 id="AOF">
+          <a href="#AOF" class="heading-link"><i class="fas fa-link"></i></a>AOF</h2>
+      <p>因为DB还是会丢失数据，所以有了AOF的技术。</p>
+<p>redis的写操作记录到文件中，如果rdb和aof同时开启，只会用aof恢复。</p>
+<p>redis4.0之后，因为全量恢复aof日志，会慢，所以会先把时间节点最近的rdb重写到aof日志中，再把增量的数据append到aof中。</p>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/02/21/Redis%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF%E7%A9%BF%E9%80%8F%E9%9B%AA%E5%B4%A9/">Redis缓存击穿穿透雪崩</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-02-21</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-02-21</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h1 id="Redis三大问题">
+          <a href="#Redis三大问题" class="heading-link"><i class="fas fa-link"></i></a>Redis三大问题</h1>
+      
+        <h3 id="缓存击穿：">
+          <a href="#缓存击穿：" class="heading-link"><i class="fas fa-link"></i></a>缓存击穿：</h3>
+      <ol>
+<li>key有过期时间</li>
+<li>开启LRU或者LFU</li>
+</ol>
+<p>如果key过期了，然后有大量流量突然访问这个key，流量就会访问数据库。</p>
+<p>解决方案：</p>
+<pre><code>1.    阻止并发到达DB
+
+   2.    所有请求都会get key，所有都get到空之后，使用setnx加锁，锁要设置过期时间，如1秒。
+   3.    如果获取锁成功了，那就去DB重新取数据，在set到key中
+   4.    如果失败了，就随机睡眠1秒以内，然后再第2个步骤
+   5.    如果第三步去DB拉数据失败了，就启用多线程，主线程去获取DB数据，子线程（如0.5秒）去监控是否拉取成功，没成功就更新锁的过期时间。</code></pre>
+        <h3 id="缓存穿透：">
+          <a href="#缓存穿透：" class="heading-link"><i class="fas fa-link"></i></a>缓存穿透：</h3>
+      <p>从业务层接收查询的是系统里根本不存在的数据。</p>
+<p>解决方案：使用布隆过滤器。</p>
+<p>问题：布隆过滤器只能增加，不能删除，更换过滤器，布谷鸟，或者布隆过滤器+</p>
+
+        <h3 id="缓存雪崩：">
+          <a href="#缓存雪崩：" class="heading-link"><i class="fas fa-link"></i></a>缓存雪崩：</h3>
+      <p>大量Key同时失效，简介造成大量的访问到达DB。</p>
+<p>解决方案：使用随机过期时间，在原过期时间上随机加几分钟，再使用缓存击穿的方案，慢慢过渡。</p>
+
+        <h3 id="分布式锁：">
+          <a href="#分布式锁：" class="heading-link"><i class="fas fa-link"></i></a>分布式锁：</h3>
+      <ol>
+<li>setnx</li>
+<li>过期时间</li>
+<li>多线程（守护线程）  定时增加过期时间</li>
+</ol>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/02/20/Redis%E4%BB%8B%E7%BB%8D/">Redis介绍</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-02-20</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-02-20</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h1 id="Redis">
+          <a href="#Redis" class="heading-link"><i class="fas fa-link"></i></a>Redis</h1>
+      
+        <h2 id="常识">
+          <a href="#常识" class="heading-link"><i class="fas fa-link"></i></a>常识</h2>
+      
+        <h3 id="磁盘：">
+          <a href="#磁盘：" class="heading-link"><i class="fas fa-link"></i></a>磁盘：</h3>
+      <p>寻址：ms</p>
+<p>带宽：G/M</p>
+
+        <h3 id="内存：">
+          <a href="#内存：" class="heading-link"><i class="fas fa-link"></i></a>内存：</h3>
+      <p>寻址：ns</p>
+<p>带宽：很大</p>
+<p>秒》毫秒》微妙》纳秒   磁盘比内存在寻址上慢了10W倍</p>
+
+        <h3 id="IO-buffer：成本问题">
+          <a href="#IO-buffer：成本问题" class="heading-link"><i class="fas fa-link"></i></a>IO buffer：成本问题</h3>
+      <p>磁盘与磁道，扇区，一个扇区 512byte，带来一个成本变大：索引，4K对齐，无论读多少，都是最少从4K从磁盘拿</p>
+<p>数据库：表很大的时候，性能会下降？</p>
+<p>​    如果表有索引，增删改会变慢，</p>
+<p>​    查询速度，一个或少量查询，依然很快，并发大的时候会受硬盘带宽影响速度</p>
+
+        <h2 id="Redis基础数据类型">
+          <a href="#Redis基础数据类型" class="heading-link"><i class="fas fa-link"></i></a>Redis基础数据类型</h2>
+      
+        <h3 id="String">
+          <a href="#String" class="heading-link"><i class="fas fa-link"></i></a>String</h3>
+      <p>存的是字节数组，没有存字符，是为了保证二进制安全</p>
+
+        <h3 id="hash">
+          <a href="#hash" class="heading-link"><i class="fas fa-link"></i></a>hash</h3>
+      <p>k-v键值对</p>
+<p>应用场景：</p>
+<p>​    点赞，商品详情等等。</p>
+
+        <h3 id="list">
+          <a href="#list" class="heading-link"><i class="fas fa-link"></i></a>list</h3>
+      <p>双向链表</p>
+<p>实现栈：同向命令，lpush-lpop，rpush-rpop</p>
+<p>队列：反向命令，lpush-rpop,rpush-lpop</p>
+<p>数组：可以操纵元素下标，lset</p>
+<p>阻塞队列：单播队列，FIFO</p>
+
+        <h3 id="set">
+          <a href="#set" class="heading-link"><i class="fas fa-link"></i></a>set</h3>
+      <p>集合，不允许重复值，无序</p>
+<p>可以做交集并集差集</p>
+<p>随机事件：SRANDMEMBER</p>
+<p>应用场景：抽奖，如果奖品少，用户多，那就用正数，奖品多，用户少，用负数</p>
+
+        <h3 id="sort-set">
+          <a href="#sort-set" class="heading-link"><i class="fas fa-link"></i></a>sort set</h3>
+      <p>和set相比，有序，每个元素会有score，根据score进行排序。</p>
+<p>排序是怎么实现的？</p>
+<p>​    使用跳表</p>
+<p>增删改查的速度？</p>
+<p>应用场景：排行榜</p>
+
+        <h3 id="bit-map">
+          <a href="#bit-map" class="heading-link"><i class="fas fa-link"></i></a>bit map</h3>
+      <p>setbit：创建一个bit</p>
+<p>bitcount：查询一个字节内出现了几次1或0</p>
+<p>bitpos：查询一个字节内从头开始，第几位是1或0.</p>
+<p>bitop：对字节进行位于运算。保存到新的key。</p>
+<p>场景：</p>
+<p>统计用户登录天数：</p>
+<p>​    用客户名或者客户ID做KEY，bit的位数是天</p>
+<p>一年活跃用户统计：</p>
+<p>用年月日做key，把用户ID转成不同的bit位数，如果登录过，就设置为1，然后用bitop做或运算，取值范围就是一年的key，然后用bitcount取出所有destkey的值</p>
+<p><img src="/20/Redis%E4%BB%8B%E7%BB%8D/image-20200711214530080.png" alt="Redis介绍"></p>
+
+        <h4 id="对比memcache">
+          <a href="#对比memcache" class="heading-link"><i class="fas fa-link"></i></a>对比memcache</h4>
+      <p>memcache  也是键值对，但是value没有数据类型的概念，类型不是很重要，重要的是redis对每种类型都有自己的方法。</p>
+
+        <h2 id="Redis概念">
+          <a href="#Redis概念" class="heading-link"><i class="fas fa-link"></i></a>Redis概念</h2>
+      <p>单进程，单线程，单实例</p>
+<p>并发很多的请求，如何变的很快</p>
+<p>所有的客户端请求都会先到内核，内核用epoll与redis交互</p>
+</div></div></article></section><nav class="paginator"><div class="paginator-inner"><a class="extend prev" rel="prev" href="/"><i class="fas fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span></div></nav></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><section class="sidebar-toc hide"></section><!-- ov = overview--><section class="sidebar-ov"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/assets/author.png" alt="avatar"></div></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">19</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">4</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">7</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2020</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>zhen wu</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v4.2.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.0.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="/js/utils.js?v=2.0.0"></script><script src="/js/stun-boot.js?v=2.0.0"></script><script src="/js/scroll.js?v=2.0.0"></script><script src="/js/header.js?v=2.0.0"></script><script src="/js/sidebar.js?v=2.0.0"></script></body></html>
