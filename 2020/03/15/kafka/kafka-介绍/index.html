@@ -1,0 +1,87 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/assets/icon16.png?v=2.0.0" type="image/png" sizes="16x16"><link rel="icon" href="/assets/icon32.png?v=2.0.0" type="image/png" sizes="32x32"><meta name="description" content="kafka介绍       提供了消息的订阅与发布的消息队列，用作系统间解耦、异步通信、削峰填谷等作用                     常见的消息队列工作模式分为两种                           一：       至多一次，消息生产者将数据写入消息系统，然后由消费者负责去拉消息服务器中的消息，一旦消息被确认消费后，由消息服务器">
+<meta property="og:type" content="article">
+<meta property="og:title" content="kafka介绍">
+<meta property="og:url" content="www.lutongtian.club/2020/03/15/kafka/kafka-%E4%BB%8B%E7%BB%8D/index.html">
+<meta property="og:site_name" content="O ever youthful O ever weeping">
+<meta property="og:description" content="kafka介绍       提供了消息的订阅与发布的消息队列，用作系统间解耦、异步通信、削峰填谷等作用                     常见的消息队列工作模式分为两种                           一：       至多一次，消息生产者将数据写入消息系统，然后由消费者负责去拉消息服务器中的消息，一旦消息被确认消费后，由消息服务器">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="/15/kafka/kafka-%E4%BB%8B%E7%BB%8D/kafka%5Cimg1.png">
+<meta property="og:image" content="/15/kafka/kafka-%E4%BB%8B%E7%BB%8D/kafka%5Cimage-20200710210219279.png">
+<meta property="article:published_time" content="2020-03-15T12:21:26.000Z">
+<meta property="article:modified_time" content="2020-03-15T12:21:26.000Z">
+<meta property="article:author" content="zhen wu">
+<meta property="article:tag" content="kafka">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="/15/kafka/kafka-%E4%BB%8B%E7%BB%8D/kafka%5Cimg1.png"><meta name="keywords" content="zhen wu, O ever youthful O ever weeping"><meta name="description" content=""><title>kafka介绍 | O ever youthful O ever weeping</title><link ref="canonical" href="www.lutongtian.club/2020/03/15/kafka/kafka-%E4%BB%8B%E7%BB%8D/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.0.0"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">O ever youthful O ever weeping</div><div class="header-banner-info__subtitle"></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">kafka介绍</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-03-15</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-03-15</span></span></div></header><div class="post-body">
+        <h1 id="kafka介绍">
+          <a href="#kafka介绍" class="heading-link"><i class="fas fa-link"></i></a>kafka介绍</h1>
+      <p>提供了消息的订阅与发布的消息队列，用作系统间解耦、异步通信、削峰填谷等作用</p>
+
+        <h2 id="常见的消息队列工作模式分为两种">
+          <a href="#常见的消息队列工作模式分为两种" class="heading-link"><i class="fas fa-link"></i></a>常见的消息队列工作模式分为两种</h2>
+      
+        <h3 id="一：">
+          <a href="#一：" class="heading-link"><i class="fas fa-link"></i></a>一：</h3>
+      <p>至多一次，消息生产者将数据写入消息系统，然后由消费者负责去拉消息服务器中的消息，一旦消息被确认消费后，由消息服务器主动删除队列中的数据，这种消费方式一般只允许被一个消费者消费，并且消息队列中的数据不允许被重复消费。</p>
+
+        <h3 id="二：">
+          <a href="#二：" class="heading-link"><i class="fas fa-link"></i></a>二：</h3>
+      <p>没有限制，同上诉消费形式不同，生产者发布完数据以后，该消息可以被多个消费者同时消费，并且同一个消费者可以多次消费消息服务器中的同一个记录，主要是因为消息服务器一般可以长时间存储海量消息</p>
+
+        <h2 id="kafka集群">
+          <a href="#kafka集群" class="heading-link"><i class="fas fa-link"></i></a>kafka集群</h2>
+      <p>是以Topic形式负责分类集群中的Record，没一个Record属于一个Topic，每个Topic底层都会对应一族分区的日志用于持久化Topic中的Record。</p>
+
+        <h2 id="分区">
+          <a href="#分区" class="heading-link"><i class="fas fa-link"></i></a>分区</h2>
+      <p>生产者把key进行hash运算，把消息均匀的分散到不同分区，可以把相同的key的消息发送到相同的分区</p>
+<p>每个Topic都有一个Broker，负责存储Topic的分区数据，每个Topic会有多个副本（备份），多个Broker会根据设置的副本数量，互相备份。</p>
+<p>如果集群中的某个Broker宕机了，集群中的剩余Broker进行选举。</p>
+<p><img src="/15/kafka/kafka-%E4%BB%8B%E7%BB%8D/kafka%5Cimg1.png" alt="img1"></p>
+
+        <h2 id="生产者-amp-消费者">
+          <a href="#生产者-amp-消费者" class="heading-link"><i class="fas fa-link"></i></a>生产者&amp;消费者</h2>
+      <p>消费者对单个分区也是分别独立的，每个消费者会有自己的消费偏移量（序号）</p>
+<p>消费者使用Consumer  Group名称标记自己，Topic中的每条记录都会传递到每个Consumer Group中的一个消费者实例，如果所有消费者都具有相同的ConsumerGroup。</p>
+<p><img src="/15/kafka/kafka-%E4%BB%8B%E7%BB%8D/kafka%5Cimage-20200710210219279.png" alt="image-20200710210219279"></p>
+<p>分区会根据消费组和组内的消费者实例进行均分</p>
+<p>如果消费者实例有个挂掉了。那这时候如果有空闲实例，则会连接空闲的消费者实例</p>
+
+        <h2 id="高性能-顺序写-amp-mmap">
+          <a href="#高性能-顺序写-amp-mmap" class="heading-link"><i class="fas fa-link"></i></a>高性能-顺序写&amp;mmap</h2>
+      <p>高吞吐量，所有的消息是以日志是以保存或者缓存在磁盘上的，可以支持百万级的写入请求</p>
+<p>为了优化写入速度，采用了技术顺序写入和MMFile。</p>
+<p>技术顺序写入：因为硬盘是机械结构，每次读写都会寻址-&gt;写入，寻址的动作是非常耗时的，如果采用顺序I/O，会省去大量的内存开销和寻址时间，但kafka的数据并不是实时的写入硬盘中的。</p>
+<p>利用OS中的Pagecache提高IO效率。MMF是直接调用的一个进程和内核共享的内存区域，直接把数据写到这个内存区域，然后由OS去把内存中的数据持久化到磁盘。</p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="www.lutongtian.club">zhen wu</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="www.lutongtian.club/2020/03/15/kafka/kafka-%E4%BB%8B%E7%BB%8D/">www.lutongtian.club/2020/03/15/kafka/kafka-%E4%BB%8B%E7%BB%8D/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="www.lutongtian.club/tags/kafka/">kafka</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2020/04/02/Mysql/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E4%B8%89%E8%8C%83%E5%BC%8F/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">数据库设计三范式</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2020/02/24/Redis/Redis-%E9%9B%86%E7%BE%A4%E6%A6%82%E5%BF%B5/"><span class="paginator-prev__text">Redis集群概念</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#kafka介绍"><span class="toc-number">1.</span> <span class="toc-text">
+          kafka介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#常见的消息队列工作模式分为两种"><span class="toc-number">1.1.</span> <span class="toc-text">
+          常见的消息队列工作模式分为两种</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一："><span class="toc-number">1.1.1.</span> <span class="toc-text">
+          一：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二："><span class="toc-number">1.1.2.</span> <span class="toc-text">
+          二：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#kafka集群"><span class="toc-number">1.2.</span> <span class="toc-text">
+          kafka集群</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分区"><span class="toc-number">1.3.</span> <span class="toc-text">
+          分区</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#生产者-amp-消费者"><span class="toc-number">1.4.</span> <span class="toc-text">
+          生产者&amp;消费者</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#高性能-顺序写-amp-mmap"><span class="toc-number">1.5.</span> <span class="toc-text">
+          高性能-顺序写&amp;mmap</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/assets/author.png" alt="avatar"></div></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">30</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">8</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">12</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2020</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>zhen wu</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v4.2.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.0.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="/js/utils.js?v=2.0.0"></script><script src="/js/stun-boot.js?v=2.0.0"></script><script src="/js/scroll.js?v=2.0.0"></script><script src="/js/header.js?v=2.0.0"></script><script src="/js/sidebar.js?v=2.0.0"></script></body></html>

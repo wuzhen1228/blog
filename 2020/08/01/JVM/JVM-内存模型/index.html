@@ -1,0 +1,135 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/assets/icon16.png?v=2.0.0" type="image/png" sizes="16x16"><link rel="icon" href="/assets/icon32.png?v=2.0.0" type="image/png" sizes="32x32"><meta name="description" content="JAVA内存模型                           硬件层并发优化基础                           存储器的层次结构                             cache line padding       利用MESI（缓存一致性协议），对齐cpu缓存头，不被其他数据干扰，提高效率，在变量前后增加">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JAVA内存模型">
+<meta property="og:url" content="www.lutongtian.club/2020/08/01/JVM/JVM-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/index.html">
+<meta property="og:site_name" content="O ever youthful O ever weeping">
+<meta property="og:description" content="JAVA内存模型                           硬件层并发优化基础                           存储器的层次结构                             cache line padding       利用MESI（缓存一致性协议），对齐cpu缓存头，不被其他数据干扰，提高效率，在变量前后增加">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="/2020/08/01/JVM/JVM-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/image-20200707234920046.png">
+<meta property="og:image" content="/2020/08/01/JVM/JVM-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/image-20200708001829005.png">
+<meta property="article:published_time" content="2020-08-01T05:23:26.000Z">
+<meta property="article:modified_time" content="2020-08-01T05:23:26.000Z">
+<meta property="article:author" content="zhen wu">
+<meta property="article:tag" content="JVM">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="/2020/08/01/JVM/JVM-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/image-20200707234920046.png"><meta name="keywords" content="zhen wu, O ever youthful O ever weeping"><meta name="description" content=""><title>JAVA内存模型 | O ever youthful O ever weeping</title><link ref="canonical" href="www.lutongtian.club/2020/08/01/JVM/JVM-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.0.0"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">O ever youthful O ever weeping</div><div class="header-banner-info__subtitle"></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">JAVA内存模型</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-08-01</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-08-01</span></span></div></header><div class="post-body">
+        <h1 id="JAVA内存模型">
+          <a href="#JAVA内存模型" class="heading-link"><i class="fas fa-link"></i></a>JAVA内存模型</h1>
+      
+        <h2 id="硬件层并发优化基础">
+          <a href="#硬件层并发优化基础" class="heading-link"><i class="fas fa-link"></i></a>硬件层并发优化基础</h2>
+      
+        <h3 id="存储器的层次结构">
+          <a href="#存储器的层次结构" class="heading-link"><i class="fas fa-link"></i></a>存储器的层次结构</h3>
+      <img src="/2020/08/01/JVM/JVM-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/image-20200707234920046.png" class title="存储器的层次结构">
+
+
+        <h3 id="cache-line-padding">
+          <a href="#cache-line-padding" class="heading-link"><i class="fas fa-link"></i></a>cache line padding</h3>
+      <p>利用MESI（缓存一致性协议），对齐cpu缓存头，不被其他数据干扰，提高效率，在变量前后增加 public long p1,p2,p3…..p7</p>
+<img src="/2020/08/01/JVM/JVM-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/image-20200708001829005.png" class title="缓存一致性">
+
+
+        <h2 id="CPU乱序">
+          <a href="#CPU乱序" class="heading-link"><i class="fas fa-link"></i></a>CPU乱序</h2>
+      <p>CPU为了提高执行执行效率，会在一条执行执行过程中，去同时执行另一条指令，前提是，两条指令没依赖关系。</p>
+<p>如何保证不乱序：volatile</p>
+<p>volatile:</p>
+<pre><code>1.    有序性保障
+            1.    intel lock ，汇编指令
+         2.    CPU内存屏障
+             1.    sfence：存屏障，在sfence指令前的写操作必须在sfence写操作后的操作前完成。
+             2.    lfence：读屏障，同sfence。
+             3.    mfence：读写屏障，同sfence。</code></pre>
+        <h2 id="volatile的实现细节">
+          <a href="#volatile的实现细节" class="heading-link"><i class="fas fa-link"></i></a>volatile的实现细节</h2>
+      <p>字节码层面：ACC_VOLATILE</p>
+<p>JVM层面：volatile内存区的读写都加屏障</p>
+<p>OS和硬件层面：lock 指令</p>
+
+        <h2 id="synchronize的实现细节">
+          <a href="#synchronize的实现细节" class="heading-link"><i class="fas fa-link"></i></a>synchronize的实现细节</h2>
+      <p>字节码层面：加入monitorenter monitorexit  </p>
+<p>JVM层面：C   C++调用了操作系统提供的同步机制</p>
+<p>OS和硬件层面：lock 指令</p>
+
+        <h2 id="java并发内存模型">
+          <a href="#java并发内存模型" class="heading-link"><i class="fas fa-link"></i></a>java并发内存模型</h2>
+      
+
+
+        <h2 id="对象的创建过程">
+          <a href="#对象的创建过程" class="heading-link"><i class="fas fa-link"></i></a>对象的创建过程</h2>
+      <ol>
+<li>class loading</li>
+<li>class linking（verif，prepar，resolu）</li>
+<li>init   静态变量设初始值，同时执行静态语句块</li>
+<li>申请对象内存</li>
+<li>成员变量赋默认值</li>
+<li>调用构造方法<ol>
+<li>成员变量顺序赋初始值</li>
+<li>执行构造方法语句</li>
+</ol>
+</li>
+</ol>
+
+        <h3 id="对象在内存中的布局">
+          <a href="#对象在内存中的布局" class="heading-link"><i class="fas fa-link"></i></a>对象在内存中的布局</h3>
+      <p>普通对象：</p>
+<pre><code>1.    对象头：markword 8，标识一些对象的状态
+
+   2.    ClassPointer指针：指向XX.class，为4字节，如果不开启jvm的UseCompreessedClassointers为8字节
+            3.    实例数据：成员变量，引用类型，开启Oops为4字节，不开启为8字节
+         4.    Padding对齐，8的倍数。</code></pre><p>数组对象：</p>
+<p>​    比普通对象多个数组长度（4字节）</p>
+
+        <h3 id="对象头具体包括什么">
+          <a href="#对象头具体包括什么" class="heading-link"><i class="fas fa-link"></i></a>对象头具体包括什么</h3>
+      <p>markword 8个字节 64位</p>
+<p>有1位代表是不是偏向锁</p>
+<p>有两位代表对象有没有被锁定（sync）</p>
+<p>4位代表GC分代年龄</p>
+<p>其他的是根据锁的不同，存储不同的东西。</p>
+
+        <h3 id="对象定位">
+          <a href="#对象定位" class="heading-link"><i class="fas fa-link"></i></a>对象定位</h3>
+      <ol>
+<li>句柄池</li>
+<li>直接指针 ClassPointer</li>
+</ol>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="www.lutongtian.club">zhen wu</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="www.lutongtian.club/2020/08/01/JVM/JVM-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/">www.lutongtian.club/2020/08/01/JVM/JVM-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="www.lutongtian.club/tags/JVM/">JVM</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2020/08/05/JVM/JVM-%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">JVM知识体系</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2020/08/01/JVM/JVM-GC-%E8%B0%83%E4%BC%98/"><span class="paginator-prev__text">JVM-GC调优</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#JAVA内存模型"><span class="toc-number">1.</span> <span class="toc-text">
+          JAVA内存模型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#硬件层并发优化基础"><span class="toc-number">1.1.</span> <span class="toc-text">
+          硬件层并发优化基础</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#存储器的层次结构"><span class="toc-number">1.1.1.</span> <span class="toc-text">
+          存储器的层次结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#cache-line-padding"><span class="toc-number">1.1.2.</span> <span class="toc-text">
+          cache line padding</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CPU乱序"><span class="toc-number">1.2.</span> <span class="toc-text">
+          CPU乱序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#volatile的实现细节"><span class="toc-number">1.3.</span> <span class="toc-text">
+          volatile的实现细节</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#synchronize的实现细节"><span class="toc-number">1.4.</span> <span class="toc-text">
+          synchronize的实现细节</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#java并发内存模型"><span class="toc-number">1.5.</span> <span class="toc-text">
+          java并发内存模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#对象的创建过程"><span class="toc-number">1.6.</span> <span class="toc-text">
+          对象的创建过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#对象在内存中的布局"><span class="toc-number">1.6.1.</span> <span class="toc-text">
+          对象在内存中的布局</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#对象头具体包括什么"><span class="toc-number">1.6.2.</span> <span class="toc-text">
+          对象头具体包括什么</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#对象定位"><span class="toc-number">1.6.3.</span> <span class="toc-text">
+          对象定位</span></a></li></ol></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/assets/author.png" alt="avatar"></div></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">30</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">8</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">12</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2020</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>zhen wu</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v4.2.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.0.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="/js/utils.js?v=2.0.0"></script><script src="/js/stun-boot.js?v=2.0.0"></script><script src="/js/scroll.js?v=2.0.0"></script><script src="/js/header.js?v=2.0.0"></script><script src="/js/sidebar.js?v=2.0.0"></script></body></html>

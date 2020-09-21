@@ -1,0 +1,134 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/assets/icon16.png?v=2.0.0" type="image/png" sizes="16x16"><link rel="icon" href="/assets/icon32.png?v=2.0.0" type="image/png" sizes="32x32"><meta name="description" content="Redis                           常识                           磁盘：       寻址：ms 带宽：G&#x2F;M                     内存：       寻址：ns 带宽：很大 秒》毫秒》微妙》纳秒   磁盘比内存在寻址上慢了10W倍                     IO bu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis介绍">
+<meta property="og:url" content="www.lutongtian.club/2020/02/20/Redis/Redis-%E4%BB%8B%E7%BB%8D/index.html">
+<meta property="og:site_name" content="O ever youthful O ever weeping">
+<meta property="og:description" content="Redis                           常识                           磁盘：       寻址：ms 带宽：G&#x2F;M                     内存：       寻址：ns 带宽：很大 秒》毫秒》微妙》纳秒   磁盘比内存在寻址上慢了10W倍                     IO bu">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="/20/Redis/Redis-%E4%BB%8B%E7%BB%8D/image-20200711214530080.png">
+<meta property="article:published_time" content="2020-02-20T09:37:54.000Z">
+<meta property="article:modified_time" content="2020-02-20T09:37:54.000Z">
+<meta property="article:author" content="zhen wu">
+<meta property="article:tag" content="Redis">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="/20/Redis/Redis-%E4%BB%8B%E7%BB%8D/image-20200711214530080.png"><meta name="keywords" content="zhen wu, O ever youthful O ever weeping"><meta name="description" content=""><title>Redis介绍 | O ever youthful O ever weeping</title><link ref="canonical" href="www.lutongtian.club/2020/02/20/Redis/Redis-%E4%BB%8B%E7%BB%8D/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.0.0"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">O ever youthful O ever weeping</div><div class="header-banner-info__subtitle"></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">Redis介绍</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-02-20</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-02-20</span></span></div></header><div class="post-body">
+        <h1 id="Redis">
+          <a href="#Redis" class="heading-link"><i class="fas fa-link"></i></a>Redis</h1>
+      
+        <h2 id="常识">
+          <a href="#常识" class="heading-link"><i class="fas fa-link"></i></a>常识</h2>
+      
+        <h3 id="磁盘：">
+          <a href="#磁盘：" class="heading-link"><i class="fas fa-link"></i></a>磁盘：</h3>
+      <p>寻址：ms</p>
+<p>带宽：G/M</p>
+
+        <h3 id="内存：">
+          <a href="#内存：" class="heading-link"><i class="fas fa-link"></i></a>内存：</h3>
+      <p>寻址：ns</p>
+<p>带宽：很大</p>
+<p>秒》毫秒》微妙》纳秒   磁盘比内存在寻址上慢了10W倍</p>
+
+        <h3 id="IO-buffer：成本问题">
+          <a href="#IO-buffer：成本问题" class="heading-link"><i class="fas fa-link"></i></a>IO buffer：成本问题</h3>
+      <p>磁盘与磁道，扇区，一个扇区 512byte，带来一个成本变大：索引，4K对齐，无论读多少，都是最少从4K从磁盘拿</p>
+<p>数据库：表很大的时候，性能会下降？</p>
+<p>​    如果表有索引，增删改会变慢，</p>
+<p>​    查询速度，一个或少量查询，依然很快，并发大的时候会受硬盘带宽影响速度</p>
+
+        <h2 id="Redis基础数据类型">
+          <a href="#Redis基础数据类型" class="heading-link"><i class="fas fa-link"></i></a>Redis基础数据类型</h2>
+      
+        <h3 id="String">
+          <a href="#String" class="heading-link"><i class="fas fa-link"></i></a>String</h3>
+      <p>存的是字节数组，没有存字符，是为了保证二进制安全</p>
+
+        <h3 id="hash">
+          <a href="#hash" class="heading-link"><i class="fas fa-link"></i></a>hash</h3>
+      <p>k-v键值对</p>
+<p>应用场景：</p>
+<p>​    点赞，商品详情等等。</p>
+
+        <h3 id="list">
+          <a href="#list" class="heading-link"><i class="fas fa-link"></i></a>list</h3>
+      <p>双向链表</p>
+<p>实现栈：同向命令，lpush-lpop，rpush-rpop</p>
+<p>队列：反向命令，lpush-rpop,rpush-lpop</p>
+<p>数组：可以操纵元素下标，lset</p>
+<p>阻塞队列：单播队列，FIFO</p>
+
+        <h3 id="set">
+          <a href="#set" class="heading-link"><i class="fas fa-link"></i></a>set</h3>
+      <p>集合，不允许重复值，无序</p>
+<p>可以做交集并集差集</p>
+<p>随机事件：SRANDMEMBER</p>
+<p>应用场景：抽奖，如果奖品少，用户多，那就用正数，奖品多，用户少，用负数</p>
+
+        <h3 id="sort-set">
+          <a href="#sort-set" class="heading-link"><i class="fas fa-link"></i></a>sort set</h3>
+      <p>和set相比，有序，每个元素会有score，根据score进行排序。</p>
+<p>排序是怎么实现的？</p>
+<p>​    使用跳表</p>
+<p>增删改查的速度？</p>
+<p>应用场景：排行榜</p>
+
+        <h3 id="bit-map">
+          <a href="#bit-map" class="heading-link"><i class="fas fa-link"></i></a>bit map</h3>
+      <p>setbit：创建一个bit</p>
+<p>bitcount：查询一个字节内出现了几次1或0</p>
+<p>bitpos：查询一个字节内从头开始，第几位是1或0.</p>
+<p>bitop：对字节进行位于运算。保存到新的key。</p>
+<p>场景：</p>
+<p>统计用户登录天数：</p>
+<p>​    用客户名或者客户ID做KEY，bit的位数是天</p>
+<p>一年活跃用户统计：</p>
+<p>用年月日做key，把用户ID转成不同的bit位数，如果登录过，就设置为1，然后用bitop做或运算，取值范围就是一年的key，然后用bitcount取出所有destkey的值</p>
+<p><img src="/20/Redis/Redis-%E4%BB%8B%E7%BB%8D/image-20200711214530080.png" alt="Redis介绍"></p>
+
+        <h4 id="对比memcache">
+          <a href="#对比memcache" class="heading-link"><i class="fas fa-link"></i></a>对比memcache</h4>
+      <p>memcache  也是键值对，但是value没有数据类型的概念，类型不是很重要，重要的是redis对每种类型都有自己的方法。</p>
+
+        <h2 id="Redis概念">
+          <a href="#Redis概念" class="heading-link"><i class="fas fa-link"></i></a>Redis概念</h2>
+      <p>单进程，单线程，单实例</p>
+<p>并发很多的请求，如何变的很快</p>
+<p>所有的客户端请求都会先到内核，内核用epoll与redis交互</p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="www.lutongtian.club">zhen wu</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="www.lutongtian.club/2020/02/20/Redis/Redis-%E4%BB%8B%E7%BB%8D/">www.lutongtian.club/2020/02/20/Redis/Redis-%E4%BB%8B%E7%BB%8D/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="www.lutongtian.club/tags/Redis/">Redis</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2020/02/21/Redis/Redis-%E5%87%BB%E7%A9%BF%E7%A9%BF%E9%80%8F%E9%9B%AA%E5%B4%A9/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">Redis缓存击穿穿透雪崩</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2020/01/20/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E5%A4%9A%E7%BA%BF%E7%A8%8B-%E7%BA%BF%E7%A8%8B%E6%B1%A0/"><span class="paginator-prev__text">多线程-线程池</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Redis"><span class="toc-number">1.</span> <span class="toc-text">
+          Redis</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#常识"><span class="toc-number">1.1.</span> <span class="toc-text">
+          常识</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#磁盘："><span class="toc-number">1.1.1.</span> <span class="toc-text">
+          磁盘：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#内存："><span class="toc-number">1.1.2.</span> <span class="toc-text">
+          内存：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IO-buffer：成本问题"><span class="toc-number">1.1.3.</span> <span class="toc-text">
+          IO buffer：成本问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis基础数据类型"><span class="toc-number">1.2.</span> <span class="toc-text">
+          Redis基础数据类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#String"><span class="toc-number">1.2.1.</span> <span class="toc-text">
+          String</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hash"><span class="toc-number">1.2.2.</span> <span class="toc-text">
+          hash</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#list"><span class="toc-number">1.2.3.</span> <span class="toc-text">
+          list</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#set"><span class="toc-number">1.2.4.</span> <span class="toc-text">
+          set</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sort-set"><span class="toc-number">1.2.5.</span> <span class="toc-text">
+          sort set</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#bit-map"><span class="toc-number">1.2.6.</span> <span class="toc-text">
+          bit map</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#对比memcache"><span class="toc-number">1.2.6.1.</span> <span class="toc-text">
+          对比memcache</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis概念"><span class="toc-number">1.3.</span> <span class="toc-text">
+          Redis概念</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/assets/author.png" alt="avatar"></div></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">30</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">8</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">12</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2020</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>zhen wu</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v4.2.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.0.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="/js/utils.js?v=2.0.0"></script><script src="/js/stun-boot.js?v=2.0.0"></script><script src="/js/scroll.js?v=2.0.0"></script><script src="/js/header.js?v=2.0.0"></script><script src="/js/sidebar.js?v=2.0.0"></script></body></html>
