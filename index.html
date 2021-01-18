@@ -27,7 +27,119 @@ var CONFIG = {
   sourcePath: {"js":"js","css":"css","images":"images"},
 };
 
-window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">O ever youthful O ever weeping</div><div class="header-banner-info__subtitle"></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content content-home" id="content"><section class="postlist"><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/08/25/Mysql/Mysql-%E9%94%81%E6%9C%BA%E5%88%B6/">Mysql锁机制</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-08-25</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-08-25</span></span></div></header><div class="post-body"><div class="post-excerpt">
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">O ever youthful O ever weeping</div><div class="header-banner-info__subtitle"></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content content-home" id="content"><section class="postlist"><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2021/01/18/Quartz/quartz-%E6%A1%86%E6%9E%B6/">quartz框架介绍</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2021-01-18</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2021-01-18</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h1 id="Quartz框架">
+          <a href="#Quartz框架" class="heading-link"><i class="fas fa-link"></i></a>Quartz框架</h1>
+      
+        <h3 id="简介：">
+          <a href="#简介：" class="heading-link"><i class="fas fa-link"></i></a>简介：</h3>
+      <p>Quartz是一个贼好用的定时任务框架。简介就这些吧，我觉着足够详细了。</p>
+<p>现在公司的定时任务还是使用Spring自带的Scheduler，虽然一些任务运行时通过代码逻辑保证了分布式任务的数据一致性等问题，但是出现一些极端情况，比如程序崩溃，可能会导致一些数据的丢失问题或数据不完整等问题。</p>
+<p>当然代码非常健壮，可能不会出啥问题，但是要投入更多的劳动力，肯定是不合适的。</p>
+
+        <h3 id="直接上手：">
+          <a href="#直接上手：" class="heading-link"><i class="fas fa-link"></i></a>直接上手：</h3>
+      <p>pom依赖，主要就这俩：</p>
+<figure class="highlight"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.quartz-scheduler&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;quartz-jobs&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;2.2.1&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.quartz-scheduler&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;quartz&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;2.3.2&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></div></figure>
+
+<p>首先创建个类，这个类就是任务执行的类，加上Job接口，重写它的execute方法，就行了</p>
+<figure class="highlight java"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloJob</span> <span class="keyword">implements</span> <span class="title">Job</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">(JobExecutionContext jobExecutionContext)</span> <span class="keyword">throws</span> JobExecutionException </span>&#123;</span><br><span class="line">        <span class="comment">// 具体业务逻辑</span></span><br><span class="line">        System.out.println(<span class="string">"Quartz已执行...."</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></div></figure>
+
+<p>然后创建一个Manager类，这个类就是任务管理类，主要是两项，一个Detail一个Trigger，Detail是调度业务逻辑，Trigger是调度触发器。</p>
+
+        <h4 id="Detail是啥：">
+          <a href="#Detail是啥：" class="heading-link"><i class="fas fa-link"></i></a>Detail是啥：</h4>
+      <p>​    在JobDetail源码中可以看到这句话</p>
+<img src="/2021/01/18/Quartz/quartz-%E6%A1%86%E6%9E%B6/image-20201202162352152.png" class title="Detail">
+
+<p>大概意思就是Quartz会通过反射创建一个job实例，我们需要实现job接口，Quartz就会创建一个实例了，下边也说了一些Quartz应该定义的一些属性，比如组和实例名称之类的。</p>
+<p>比较重要的是最后一段话，多个Trigger可以指向相同的job，但一个Trigger只能指向一个job。</p>
+
+        <h4 id="Trigger是啥：">
+          <a href="#Trigger是啥：" class="heading-link"><i class="fas fa-link"></i></a>Trigger是啥：</h4>
+      <p>Trigger主要是写一些任务相关的触发机制，比如什么时候开始这个任务，什么时候关闭这个任务，每隔多久执行一次等等。ScheduleBuilder类中可以看到有四种触发方式。</p>
+<img src="/2021/01/18/Quartz/quartz-%E6%A1%86%E6%9E%B6/image-20201202164717988.png" class title="Trigger">
+
+<p>这个就是withSchedule里边的参数。</p>
+<p>代码：</p>
+<figure class="highlight java"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">QuartzManager</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        QuartzManager quartzManager = <span class="keyword">new</span> QuartzManager();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            quartzManager.schedulerFactory();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> JobDetail <span class="title">newJobDetail</span><span class="params">()</span></span>&#123;</span><br><span class="line">        JobDetail jobDetail = JobBuilder.newJob(HelloJob<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line">                .withDescription("调用jobDetail")</span><br><span class="line">                .withIdentity(<span class="string">"定时任务A1"</span>,<span class="string">"定时任务A组"</span>)</span><br><span class="line">                .build();</span><br><span class="line">        <span class="keyword">return</span> jobDetail;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> Trigger <span class="title">newTrigger</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Trigger trigger = TriggerBuilder.newTrigger()</span><br><span class="line">                    .withDescription(<span class="string">"调用trigger"</span>)</span><br><span class="line">                    .startAt(<span class="keyword">new</span> Date())</span><br><span class="line">                    .withIdentity(<span class="string">"TriggerA1"</span>,<span class="string">"TriggerA组"</span>)</span><br><span class="line"><span class="comment">//                .withSchedule(SimpleScheduleBuilder.repeatSecondlyForTotalCount(10,5))</span></span><br><span class="line">                    <span class="comment">//用Cron，每2秒执行一次</span></span><br><span class="line">                    .withSchedule(CronScheduleBuilder.cronSchedule(<span class="string">"0/2  * * * * ?"</span>))</span><br><span class="line">                    .build();</span><br><span class="line">            <span class="keyword">return</span> trigger;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">schedulerFactory</span><span class="params">()</span> <span class="keyword">throws</span> SchedulerException </span>&#123;</span><br><span class="line">        SchedulerFactory schedulerFactory = <span class="keyword">new</span> StdSchedulerFactory();</span><br><span class="line">        Scheduler scheduler = schedulerFactory.getScheduler();</span><br><span class="line">        <span class="comment">// 把Detail和Trigger加到Scheduler中</span></span><br><span class="line">        scheduler.scheduleJob(newJobDetail(),newTrigger());</span><br><span class="line">        System.out.println(<span class="string">"启动"</span>);</span><br><span class="line">        scheduler.start();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></div></figure>
+
+<p>直接main方法启动，可以看到打印日志已经成功了。</p>
+<img src="/2021/01/18/Quartz/quartz-%E6%A1%86%E6%9E%B6/image-20201202165309798.png" class title="main-log"></div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2021/01/13/RocketMQ/RocketMQ-%E8%A7%92%E8%89%B2/">RocketMQ-角色</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2021-01-13</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2021-01-13</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h1 id="RocketMQ-角色">
+          <a href="#RocketMQ-角色" class="heading-link"><i class="fas fa-link"></i></a>RocketMQ 角色</h1>
+      
+        <h3 id="NameServer：">
+          <a href="#NameServer：" class="heading-link"><i class="fas fa-link"></i></a>NameServer：</h3>
+      <p>搜集其他角色信息。</p>
+<p>比如producer需要寻找一个topic在哪个broker下，直接向NameServer“询问”即可。</p>
+
+        <h3 id="Broker：">
+          <a href="#Broker：" class="heading-link"><i class="fas fa-link"></i></a>Broker：</h3>
+      <ol>
+<li><p>面向producer和consumer接收和发送消息</p>
+</li>
+<li><p>向NameServer提交自己的信息</p>
+</li>
+<li><p>是消息中间件的消息存储，转发服务器</p>
+</li>
+<li><p>每个Broker节点，在启动时，都会遍历NameServer列表，与每个NameServer建立长连接，注册自己的信息，之后定时上报</p>
+</li>
+</ol>
+
+        <h4 id="集群：">
+          <a href="#集群：" class="heading-link"><i class="fas fa-link"></i></a>集群：</h4>
+      <ol>
+<li>Broker高可用，可以配成Master/Slave结构，Master可写可读，Slave只可以读，Master将写入的数据同步给Slave。</li>
+<li>一个Master可以对应多个Slave，但是一个Slave只能对应一个Master。</li>
+<li>Master与Slave的对应关系通过制定相同的BrokerName，不同的BrokerId来定义BrokerId为0表示Master，非0表示Slave。</li>
+<li>Master多机负载，可以部署多个broker</li>
+<li>每个Broker与NameServer集群中的所有节点建立长连接，定时注册Topic信息到所有NameServer。</li>
+</ol>
+
+        <h3 id="Producer：">
+          <a href="#Producer：" class="heading-link"><i class="fas fa-link"></i></a>Producer：</h3>
+      <ol>
+<li>消息的生产者</li>
+<li>通过NameServer集群中的其中一个节点（随机选择）建立长连接，获得Topic的路由信息，包括Topic下面有哪些Queue，这些Queue分布在哪些Broker上等。</li>
+</ol>
+
+        <h3 id="Consumer：">
+          <a href="#Consumer：" class="heading-link"><i class="fas fa-link"></i></a>Consumer：</h3>
+      <ol>
+<li>消息的消费者，通过NameSrever集群获得Topic路由信息，连接到对应的Broker上消费信息。</li>
+<li>注意，由于Master和Slave都可以读取消息，因此Consumer会与Master与Slave都建立连接</li>
+</ol>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2021/01/13/RocketMQ/RocketMQ-API/">RocketMQ-API</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2021-01-13</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2021-01-13</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h1 id="RocketMQ-API">
+          <a href="#RocketMQ-API" class="heading-link"><i class="fas fa-link"></i></a>RocketMQ API</h1>
+      
+        <h3 id="producer：">
+          <a href="#producer：" class="heading-link"><i class="fas fa-link"></i></a>producer：</h3>
+      <figure class="highlight java"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建一个生产者并启动</span></span><br><span class="line">DefaultMQProducer producer = <span class="keyword">new</span> DefaultMQProducer(<span class="string">"xxoo"</span>);</span><br><span class="line">producer.setNamesrvAddr(<span class="string">"xx.xx.xx.xx:9876"</span>);</span><br><span class="line">producer.start();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建一个消息体，两个参数，第一个是topic，第二个是写入的值</span></span><br><span class="line">Message msg = <span class="keyword">new</span> Message(<span class="string">"producer-test"</span>,<span class="string">"test1"</span>.getBytes());</span><br><span class="line"><span class="comment">// 发送消息</span></span><br><span class="line">producer.send(msg);</span><br></pre></td></tr></table></div></figure>
+
+<p>这里注意，我自己是阿里云服务器，用官网启动broker的步骤，在这是连不上broker，需要在broker的conf里加上以下配置：</p>
+<figure class="highlight properties"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">brokerIP1</span>=<span class="string">xx.xx.xx.xx   # 这个是服务器的公网IP</span></span><br><span class="line"><span class="attr">autoCreateTopicEnable</span>=<span class="string">true # 配置自动创建topic</span></span><br></pre></td></tr></table></div></figure>
+
+
+        <h3 id="consumer：">
+          <a href="#consumer：" class="heading-link"><i class="fas fa-link"></i></a>consumer：</h3>
+      <figure class="highlight java"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">DefaultMQPushConsumer consumer = <span class="keyword">new</span> DefaultMQPushConsumer(<span class="string">"xxoocsm"</span>);</span><br><span class="line">consumer.setNamesrvAddr(<span class="string">"101.200.84.242:9876"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 每个consumer只能关注一个topic</span></span><br><span class="line"><span class="comment">// topic 关注的消息地址</span></span><br><span class="line"><span class="comment">// 过滤器，用 “*” 的时候，不进行过滤</span></span><br><span class="line">consumer.subscribe(<span class="string">"producer-test"</span>,<span class="string">"*"</span>);</span><br><span class="line">consumer.registerMessageListener(<span class="keyword">new</span> MessageListenerConcurrently() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ConsumeConcurrentlyStatus <span class="title">consumeMessage</span><span class="params">(List&lt;MessageExt&gt; msgs, ConsumeConcurrentlyContext context)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (MessageExt msg : msgs)&#123;</span><br><span class="line">            System.out.println(<span class="keyword">new</span> String(msg.getBody()));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// ConsumeConcurrentlyStatus有两个状态</span></span><br><span class="line">        <span class="comment">// CONSUME_SUCCESS 消费成功</span></span><br><span class="line">        <span class="comment">// RECONSUME_LATER 消费失败，MQ受到消费失败后，会再推送一遍，一般内部抛异常，会返回RECONSUME_LATER</span></span><br><span class="line">        <span class="keyword">return</span> ConsumeConcurrentlyStatus.CONSUME_SUCCESS;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line">consumer.start();</span><br></pre></td></tr></table></div></figure>
+
+<p>这时会打印出之前的produce的消息“test1“，再改变以下producer推送的消息，consumer会监听到新的消息。</p>
+<p><img src="/13/RocketMQ/RocketMQ-API/D:%5Cstudy%5CMarkdown%5CRocketMQ%5Cimages%5Cimage-20201222170445661.png" alt="image-20201222170445661"></p>
+<img src="/2021/01/13/RocketMQ/RocketMQ-API/image-20201222170445661.png" class title="pic">
+
+
+        <h3 id="批量消息发送：">
+          <a href="#批量消息发送：" class="heading-link"><i class="fas fa-link"></i></a>批量消息发送：</h3>
+      <figure class="highlight java"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Message msg1 = <span class="keyword">new</span> Message(<span class="string">"producer-test"</span>,<span class="string">"test1"</span>.getBytes());</span><br><span class="line">Message msg2= <span class="keyword">new</span> Message(<span class="string">"producer-test"</span>,<span class="string">"test2"</span>.getBytes());</span><br><span class="line">Message msg3= <span class="keyword">new</span> Message(<span class="string">"producer-test"</span>,<span class="string">"test3"</span>.getBytes());</span><br><span class="line">List&lt;Message&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">list.add(msg1);</span><br><span class="line">list.add(msg2);</span><br><span class="line">list.add(msg3);</span><br><span class="line">producer.send(list);</span><br></pre></td></tr></table></div></figure>
+
+<p>放到list里，统一发送。减少网络交互。</p>
+
+        <h3 id="异步消息：">
+          <a href="#异步消息：" class="heading-link"><i class="fas fa-link"></i></a>异步消息：</h3>
+      <figure class="highlight java"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建一个消息体，两个参数，第一个是topic，第二个是写入的值</span></span><br><span class="line">Message msg = <span class="keyword">new</span> Message(<span class="string">"producer-test"</span>,<span class="string">"test-异步1"</span>.getBytes());</span><br><span class="line"><span class="comment">// 异步发送，无返回值</span></span><br><span class="line">producer.send(msg, <span class="keyword">new</span> SendCallback() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onSuccess</span><span class="params">(SendResult sendResult)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 成功</span></span><br><span class="line">        System.out.println(<span class="string">"消息发送成功"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onException</span><span class="params">(Throwable e)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 失败</span></span><br><span class="line">        e.printStackTrace();</span><br><span class="line">        System.out.println(<span class="string">"消息发送失败"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></div></figure></div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/08/25/Mysql/Mysql-%E9%94%81%E6%9C%BA%E5%88%B6/">Mysql锁机制</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-08-25</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-08-25</span></span></div></header><div class="post-body"><div class="post-excerpt">
         <h1 id="Mysql-锁机制">
           <a href="#Mysql-锁机制" class="heading-link"><i class="fas fa-link"></i></a>Mysql 锁机制</h1>
       
@@ -262,92 +374,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.0"></he
 
         <h2 id="解释器">
           <a href="#解释器" class="heading-link"><i class="fas fa-link"></i></a>解释器</h2>
-      <img src="/2020/08/05/JVM/JVM-%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB/image-20200707231850298.png" class title="This is an example image"></div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/08/01/JVM/JVM-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/">JAVA内存模型</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-08-01</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-08-01</span></span></div></header><div class="post-body"><div class="post-excerpt">
-        <h1 id="JAVA内存模型">
-          <a href="#JAVA内存模型" class="heading-link"><i class="fas fa-link"></i></a>JAVA内存模型</h1>
-      
-        <h2 id="硬件层并发优化基础">
-          <a href="#硬件层并发优化基础" class="heading-link"><i class="fas fa-link"></i></a>硬件层并发优化基础</h2>
-      
-        <h3 id="存储器的层次结构">
-          <a href="#存储器的层次结构" class="heading-link"><i class="fas fa-link"></i></a>存储器的层次结构</h3>
-      <img src="/2020/08/01/JVM/JVM-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/image-20200707234920046.png" class title="存储器的层次结构">
-
-
-        <h3 id="cache-line-padding">
-          <a href="#cache-line-padding" class="heading-link"><i class="fas fa-link"></i></a>cache line padding</h3>
-      <p>利用MESI（缓存一致性协议），对齐cpu缓存头，不被其他数据干扰，提高效率，在变量前后增加 public long p1,p2,p3…..p7</p>
-<img src="/2020/08/01/JVM/JVM-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/image-20200708001829005.png" class title="缓存一致性">
-
-
-        <h2 id="CPU乱序">
-          <a href="#CPU乱序" class="heading-link"><i class="fas fa-link"></i></a>CPU乱序</h2>
-      <p>CPU为了提高执行执行效率，会在一条执行执行过程中，去同时执行另一条指令，前提是，两条指令没依赖关系。</p>
-<p>如何保证不乱序：volatile</p>
-<p>volatile:</p>
-<pre><code>1.    有序性保障
-            1.    intel lock ，汇编指令
-         2.    CPU内存屏障
-             1.    sfence：存屏障，在sfence指令前的写操作必须在sfence写操作后的操作前完成。
-             2.    lfence：读屏障，同sfence。
-             3.    mfence：读写屏障，同sfence。</code></pre>
-        <h2 id="volatile的实现细节">
-          <a href="#volatile的实现细节" class="heading-link"><i class="fas fa-link"></i></a>volatile的实现细节</h2>
-      <p>字节码层面：ACC_VOLATILE</p>
-<p>JVM层面：volatile内存区的读写都加屏障</p>
-<p>OS和硬件层面：lock 指令</p>
-
-        <h2 id="synchronize的实现细节">
-          <a href="#synchronize的实现细节" class="heading-link"><i class="fas fa-link"></i></a>synchronize的实现细节</h2>
-      <p>字节码层面：加入monitorenter monitorexit  </p>
-<p>JVM层面：C   C++调用了操作系统提供的同步机制</p>
-<p>OS和硬件层面：lock 指令</p>
-
-        <h2 id="java并发内存模型">
-          <a href="#java并发内存模型" class="heading-link"><i class="fas fa-link"></i></a>java并发内存模型</h2>
-      
-
-
-        <h2 id="对象的创建过程">
-          <a href="#对象的创建过程" class="heading-link"><i class="fas fa-link"></i></a>对象的创建过程</h2>
-      <ol>
-<li>class loading</li>
-<li>class linking（verif，prepar，resolu）</li>
-<li>init   静态变量设初始值，同时执行静态语句块</li>
-<li>申请对象内存</li>
-<li>成员变量赋默认值</li>
-<li>调用构造方法<ol>
-<li>成员变量顺序赋初始值</li>
-<li>执行构造方法语句</li>
-</ol>
-</li>
-</ol>
-
-        <h3 id="对象在内存中的布局">
-          <a href="#对象在内存中的布局" class="heading-link"><i class="fas fa-link"></i></a>对象在内存中的布局</h3>
-      <p>普通对象：</p>
-<pre><code>1.    对象头：markword 8，标识一些对象的状态
-
-   2.    ClassPointer指针：指向XX.class，为4字节，如果不开启jvm的UseCompreessedClassointers为8字节
-            3.    实例数据：成员变量，引用类型，开启Oops为4字节，不开启为8字节
-         4.    Padding对齐，8的倍数。</code></pre><p>数组对象：</p>
-<p>​    比普通对象多个数组长度（4字节）</p>
-
-        <h3 id="对象头具体包括什么">
-          <a href="#对象头具体包括什么" class="heading-link"><i class="fas fa-link"></i></a>对象头具体包括什么</h3>
-      <p>markword 8个字节 64位</p>
-<p>有1位代表是不是偏向锁</p>
-<p>有两位代表对象有没有被锁定（sync）</p>
-<p>4位代表GC分代年龄</p>
-<p>其他的是根据锁的不同，存储不同的东西。</p>
-
-        <h3 id="对象定位">
-          <a href="#对象定位" class="heading-link"><i class="fas fa-link"></i></a>对象定位</h3>
-      <ol>
-<li>句柄池</li>
-<li>直接指针 ClassPointer</li>
-</ol>
-</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/08/01/JVM/JVM-GC-%E8%B0%83%E4%BC%98/">JVM-GC调优</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-08-01</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-08-01</span></span></div></header><div class="post-body"><div class="post-excerpt">
+      <img src="/2020/08/05/JVM/JVM-%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB/image-20200707231850298.png" class title="This is an example image"></div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/08/01/JVM/JVM-GC-%E8%B0%83%E4%BC%98/">JVM-GC调优</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-08-01</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-08-01</span></span></div></header><div class="post-body"><div class="post-excerpt">
         <h1 id="JVM-GC-Collector">
           <a href="#JVM-GC-Collector" class="heading-link"><i class="fas fa-link"></i></a>JVM-GC Collector</h1>
       
@@ -439,7 +466,92 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.0"></he
       
         <h3 id="三色标记算法-CMS-incrementtal-Update">
           <a href="#三色标记算法-CMS-incrementtal-Update" class="heading-link"><i class="fas fa-link"></i></a>三色标记算法-CMS + incrementtal Update</h3>
-      </div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/07/29/%E5%8C%BA%E5%9D%97%E9%93%BE/%E5%8C%BA%E5%9D%97%E9%93%BE-%E5%8E%9F%E7%90%86/">区块链-原理</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-07-29</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-07-29</span></span></div></header><div class="post-body"><div class="post-excerpt">
+      </div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/08/01/JVM/JVM-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/">JAVA内存模型</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-08-01</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-08-01</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h1 id="JAVA内存模型">
+          <a href="#JAVA内存模型" class="heading-link"><i class="fas fa-link"></i></a>JAVA内存模型</h1>
+      
+        <h2 id="硬件层并发优化基础">
+          <a href="#硬件层并发优化基础" class="heading-link"><i class="fas fa-link"></i></a>硬件层并发优化基础</h2>
+      
+        <h3 id="存储器的层次结构">
+          <a href="#存储器的层次结构" class="heading-link"><i class="fas fa-link"></i></a>存储器的层次结构</h3>
+      <img src="/2020/08/01/JVM/JVM-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/image-20200707234920046.png" class title="存储器的层次结构">
+
+
+        <h3 id="cache-line-padding">
+          <a href="#cache-line-padding" class="heading-link"><i class="fas fa-link"></i></a>cache line padding</h3>
+      <p>利用MESI（缓存一致性协议），对齐cpu缓存头，不被其他数据干扰，提高效率，在变量前后增加 public long p1,p2,p3…..p7</p>
+<img src="/2020/08/01/JVM/JVM-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/image-20200708001829005.png" class title="缓存一致性">
+
+
+        <h2 id="CPU乱序">
+          <a href="#CPU乱序" class="heading-link"><i class="fas fa-link"></i></a>CPU乱序</h2>
+      <p>CPU为了提高执行执行效率，会在一条执行执行过程中，去同时执行另一条指令，前提是，两条指令没依赖关系。</p>
+<p>如何保证不乱序：volatile</p>
+<p>volatile:</p>
+<pre><code>1.    有序性保障
+            1.    intel lock ，汇编指令
+         2.    CPU内存屏障
+             1.    sfence：存屏障，在sfence指令前的写操作必须在sfence写操作后的操作前完成。
+             2.    lfence：读屏障，同sfence。
+             3.    mfence：读写屏障，同sfence。</code></pre>
+        <h2 id="volatile的实现细节">
+          <a href="#volatile的实现细节" class="heading-link"><i class="fas fa-link"></i></a>volatile的实现细节</h2>
+      <p>字节码层面：ACC_VOLATILE</p>
+<p>JVM层面：volatile内存区的读写都加屏障</p>
+<p>OS和硬件层面：lock 指令</p>
+
+        <h2 id="synchronize的实现细节">
+          <a href="#synchronize的实现细节" class="heading-link"><i class="fas fa-link"></i></a>synchronize的实现细节</h2>
+      <p>字节码层面：加入monitorenter monitorexit  </p>
+<p>JVM层面：C   C++调用了操作系统提供的同步机制</p>
+<p>OS和硬件层面：lock 指令</p>
+
+        <h2 id="java并发内存模型">
+          <a href="#java并发内存模型" class="heading-link"><i class="fas fa-link"></i></a>java并发内存模型</h2>
+      
+
+
+        <h2 id="对象的创建过程">
+          <a href="#对象的创建过程" class="heading-link"><i class="fas fa-link"></i></a>对象的创建过程</h2>
+      <ol>
+<li>class loading</li>
+<li>class linking（verif，prepar，resolu）</li>
+<li>init   静态变量设初始值，同时执行静态语句块</li>
+<li>申请对象内存</li>
+<li>成员变量赋默认值</li>
+<li>调用构造方法<ol>
+<li>成员变量顺序赋初始值</li>
+<li>执行构造方法语句</li>
+</ol>
+</li>
+</ol>
+
+        <h3 id="对象在内存中的布局">
+          <a href="#对象在内存中的布局" class="heading-link"><i class="fas fa-link"></i></a>对象在内存中的布局</h3>
+      <p>普通对象：</p>
+<pre><code>1.    对象头：markword 8，标识一些对象的状态
+
+   2.    ClassPointer指针：指向XX.class，为4字节，如果不开启jvm的UseCompreessedClassointers为8字节
+            3.    实例数据：成员变量，引用类型，开启Oops为4字节，不开启为8字节
+         4.    Padding对齐，8的倍数。</code></pre><p>数组对象：</p>
+<p>​    比普通对象多个数组长度（4字节）</p>
+
+        <h3 id="对象头具体包括什么">
+          <a href="#对象头具体包括什么" class="heading-link"><i class="fas fa-link"></i></a>对象头具体包括什么</h3>
+      <p>markword 8个字节 64位</p>
+<p>有1位代表是不是偏向锁</p>
+<p>有两位代表对象有没有被锁定（sync）</p>
+<p>4位代表GC分代年龄</p>
+<p>其他的是根据锁的不同，存储不同的东西。</p>
+
+        <h3 id="对象定位">
+          <a href="#对象定位" class="heading-link"><i class="fas fa-link"></i></a>对象定位</h3>
+      <ol>
+<li>句柄池</li>
+<li>直接指针 ClassPointer</li>
+</ol>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/07/29/%E5%8C%BA%E5%9D%97%E9%93%BE/%E5%8C%BA%E5%9D%97%E9%93%BE-%E5%8E%9F%E7%90%86/">区块链-原理</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-07-29</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-07-29</span></span></div></header><div class="post-body"><div class="post-excerpt">
         <h1 id="区块链-比特币、挖矿、抄币的原理">
           <a href="#区块链-比特币、挖矿、抄币的原理" class="heading-link"><i class="fas fa-link"></i></a>区块链-比特币、挖矿、抄币的原理</h1>
       <p>去中心化的、匿名的、安全的、不可篡改的、开放的下一代互联网</p>
@@ -473,124 +585,4 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.0"></he
 <li>匿名</li>
 <li>去中心</li>
 </ol>
-</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/07/03/Mysql/Mysql-%E7%B4%A2%E5%BC%95/">Mysql索引</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-07-03</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-07-03</span></span></div></header><div class="post-body"><div class="post-excerpt">
-        <h1 id="Mysql索引数据结构">
-          <a href="#Mysql索引数据结构" class="heading-link"><i class="fas fa-link"></i></a>Mysql索引数据结构</h1>
-      
-        <h2 id="哈希表作为索引">
-          <a href="#哈希表作为索引" class="heading-link"><i class="fas fa-link"></i></a>哈希表作为索引</h2>
-      <p>哈希表可以完成索引的存储，每次在添加索引的时候需要计算指定列的hash值，取模运算后计算出下标，将元素插入下标位置即可。</p>
-<p>适合场景：</p>
-<p>​    等值查询</p>
-<p>​    表中的数据是无序数据（范围查找的时候比较浪费时间，需要挨个进行遍历操作）</p>
-<p>​    在实际应用中，范围查询使用比较多，所以此时hash表不是特别合适</p>
-<p>​    且hash表再使用的时候，需要将全部的数据加载到内存，比较耗费内存的空间，也不是很合适。</p>
-
-        <h2 id="树">
-          <a href="#树" class="heading-link"><i class="fas fa-link"></i></a>树</h2>
-      <p>目前树有的结构：多叉树、二叉树、avl树、红黑树。</p>
-<p>多叉树（B树）：在树的结构中，左子树必须小于根节点，右子树必须大于根节点，从左到右必须有序。</p>
-<p>二叉树：二分查找树，比多叉树效率高，但很容易出现单方向子节点连续增加，变成链表。</p>
-<p>avl平衡树：要求左右子树必须严格一致，最高子树和最低子树高度差不超过1，若超过1，树就要进行旋转，数据量大时，树会频繁进行旋转，影响性能。</p>
-<p>红黑树：基于AVL树的升级，损失部分查询性能，来提升插入的性能，在红黑树种最低子树和最高子树高度差小于2倍即可。在插入的时候不需要进行N多次的旋转，而且还加入了变色的特性，来满足插入和查询性能的平衡。</p>
-<p>以上二叉树的变种都不适合作为mysql的索引</p>
-<p>​    一：树的深度无法控制，哪怕是红黑树，在最低深度为8时，也可能会进行16次的查询，严重影响性能。</p>
-<p>​    二：在插入数据这方面的性能都比较低。</p>
-<p>目前来看，B树是作为索引的最佳数据结构。</p>
-<p>B树的特点：</p>
-<p>​    1.所有的键值分布在整颗树种；</p>
-<p>​    2.搜索有可能在非叶子节点结束，在关键字全集内做一次查找，性能逼近二分查找；</p>
-<p>​    3.每个节点最多有m个子树；</p>
-<p>​    4.根节点至少有2个子树；</p>
-<p>​    5.分支节点至少拥有m/2个子树（除根节点和叶子节点之外都是分支节点）；</p>
-<p>​    6.所有叶子节点都在同一层，每个节点最多有m-1个key，并且升序排列；</p>
-<p>缺点：</p>
-<p>​    每个节点都有key值，同时也包含data，而每个页存储空间有限，如果data比较大会导致每个节点存储的key数量变小。</p>
-<p>​    当存储的数据量很大时，会导致树的深度较大，增大查询时磁盘IO次数，影响查询性能。</p>
-<p>B+树：</p>
-<p>​    1.每个节点可以包含更多的节点，这样做有两个原因，一个是树的高度降低，第二个原因是数据范围变成多个区间，区间越多，数据检索越快。</p>
-<p>​    2.非叶子节点存储key，叶子节点存储key和数据。</p>
-<p>​    3.叶子节点两两指针互相连接，顺序查询性能更高。</p>
-</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/06/27/Mysql/Mysql-%E8%B0%83%E4%BC%98/">Mysq-调优</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-06-27</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-06-27</span></span></div></header><div class="post-body"><div class="post-excerpt">
-        <h1 id="sql调优">
-          <a href="#sql调优" class="heading-link"><i class="fas fa-link"></i></a>sql调优</h1>
-      
-        <h2 id="性能监控">
-          <a href="#性能监控" class="heading-link"><i class="fas fa-link"></i></a>性能监控</h2>
-      <p>通过 show profile和show profiles命令，查看sql在各节点执行的效率。</p>
-
-        <h2 id="schema与数据类型优化">
-          <a href="#schema与数据类型优化" class="heading-link"><i class="fas fa-link"></i></a>schema与数据类型优化</h2>
-      
-        <h3 id="数据类型优化">
-          <a href="#数据类型优化" class="heading-link"><i class="fas fa-link"></i></a>数据类型优化</h3>
-      <p>更小的数据类型更好，选用更合适的数据类型，占用内存缓存硬盘空间更小。</p>
-<p>字符串类型：</p>
-<p>char:存储最大值为255，会自动删除数据后边的空格，是固定长度的，适合存储固定长度的数据，比如MD5摘要等等，比varchar稍微快一些。</p>
-<p>varchar:占用空间根据实际使用长度占用，会在超过255长度后额外占用1个字节。</p>
-<p>blob:大容量数据使用，存储方式为二进制。</p>
-<p>text:大容量数据使用，存储方式为字符串。过大的数据可以保存到磁盘，写磁盘路径，再代码中读取文件。</p>
-<p>时间类型：</p>
-<p>datetime：占用8个字节。时间范围为0-0-0-1-9999-12-31，不会随mysql设置的时区进行变更，可以保存到毫秒。</p>
-<p>date：占用3个字节，使用date可以用日期函数进行计算</p>
-<p>timestamp：占用4个字节。精确到秒，时间范围是1970-01-01到2038-1-19.使用整形存储，依赖数据库时区，自动更新timestamp列的值。</p>
-<p>枚举类型：</p>
-<p>在创建表时创建一个枚举的数组，mysql会把枚举类中的数据创建一个整形的数据，做映射。还会把该数据做压缩。</p>
-<p>比如(‘男’,’女’)，可以在语句中用where sex=1；进行查询后就是男，也可以进行排序。</p>
-
-        <h3 id="主键的选择">
-          <a href="#主键的选择" class="heading-link"><i class="fas fa-link"></i></a>主键的选择</h3>
-      <p>代理主键：无意义的数字序列。</p>
-<p>自然主键：带有业务逻辑的主键规则。</p>
-<p>推荐自然主键：与业务不耦合，更容易维护，通用的主键策略能减少源码的编写数量，减少系统的总体拥有成本。</p>
-
-        <h3 id="字符集的选择">
-          <a href="#字符集的选择" class="heading-link"><i class="fas fa-link"></i></a>字符集的选择</h3>
-      <p>utf-8：只能存储2个字符的中文。</p>
-<p>utf-8mb4：没这个问题，通常用这个。</p>
-
-        <h3 id="存储引擎的选择">
-          <a href="#存储引擎的选择" class="heading-link"><i class="fas fa-link"></i></a>存储引擎的选择</h3>
-      <p>innodb和myisam的区别：myisam不支持事务，行锁和外键。适合大量select。</p>
-
-        <h3 id="适当的数据冗余">
-          <a href="#适当的数据冗余" class="heading-link"><i class="fas fa-link"></i></a>适当的数据冗余</h3>
-      <p>被频繁引用且只能通过join多张表（大表）获取的独立小字段，加到查询的表中，要保证数据的一致性不会有问题，这样是以空间换时间的方式增加效率。</p>
-
-        <h3 id="适当拆分">
-          <a href="#适当拆分" class="heading-link"><i class="fas fa-link"></i></a>适当拆分</h3>
-      <p>把存储了大容量数据的字段，迁移到新的表，避免每次查询表的时候会有大量的io</p>
-</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/06/26/Mysql/Mysql-%E7%BB%84%E4%BB%B6/">Mysql组件</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-06-26</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-06-26</span></span></div></header><div class="post-body"><div class="post-excerpt">
-        <h1 id="Mysql架构">
-          <a href="#Mysql架构" class="heading-link"><i class="fas fa-link"></i></a>Mysql架构</h1>
-      
-        <h2 id="连接器">
-          <a href="#连接器" class="heading-link"><i class="fas fa-link"></i></a>连接器</h2>
-      <p>负责和客户端建立连接，获取权限、维持和管理连接</p>
-<p>​    -用户名密码验证</p>
-<p>​    -查询权限信息，分配对应的权限</p>
-<p>​    -可以使用processlist查看现在的连接</p>
-<p>​    -如果太长时间没有动静，就会自动断开，通过wait——timeout控制，默认8小时。</p>
-<p>连接可以分为两类：</p>
-<p>​    -长连接：推荐使用，但是要周期性断开长连接。</p>
-<p>​    -短连接</p>
-<p>​    数据库连接池属于长连接，连接池中会一直保有一些长连接。</p>
-
-        <h2 id="分析器">
-          <a href="#分析器" class="heading-link"><i class="fas fa-link"></i></a>分析器</h2>
-      <p>词法分析：mysql需要把输入的字符串进行识别每个部分代表什么意思。</p>
-<p>​    -把字符串T识别成表名T</p>
-<p>​    -把字符串ID识别成列ID</p>
-<p>语法分析：</p>
-<p>​    根据语法规则判断这个sql语句是否满足mysql的语法，如果不符合就会报错。</p>
-
-        <h2 id="优化器">
-          <a href="#优化器" class="heading-link"><i class="fas fa-link"></i></a>优化器</h2>
-      <p>在具体执行SQL语句之前，要先经过优化器的处理。</p>
-<p>​    -当表中有多个索引的时候，决定用哪个索引。</p>
-<p>​    -当SQL语句需要多表关联的时候，决定表的连接顺序</p>
-<p>不同的执行方式对SQL语句的执行效率影响很大。</p>
-<p>​    -RBO:基于规则的优化</p>
-<p>​    -CBO:基于成本的优化</p>
-<p>一般使用CBO比较多，主要考虑性能问题的时候较多。</p>
-</div></div></article></section><nav class="paginator"><div class="paginator-inner"><span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fas fa-angle-right"></i></a></div></nav></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><section class="sidebar-toc hide"></section><!-- ov = overview--><section class="sidebar-ov"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/assets/author.png" alt="avatar"></div></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">30</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">8</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">12</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2020</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>zhen wu</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v4.2.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.0.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="/js/utils.js?v=2.0.0"></script><script src="/js/stun-boot.js?v=2.0.0"></script><script src="/js/scroll.js?v=2.0.0"></script><script src="/js/header.js?v=2.0.0"></script><script src="/js/sidebar.js?v=2.0.0"></script></body></html>
+</div></div></article></section><nav class="paginator"><div class="paginator-inner"><span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/"><i class="fas fa-angle-right"></i></a></div></nav></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><section class="sidebar-toc hide"></section><!-- ov = overview--><section class="sidebar-ov"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/assets/author.png" alt="avatar"></div></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">33</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">10</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">15</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2021</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>zhen wu</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v4.2.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.0.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="/js/utils.js?v=2.0.0"></script><script src="/js/stun-boot.js?v=2.0.0"></script><script src="/js/scroll.js?v=2.0.0"></script><script src="/js/header.js?v=2.0.0"></script><script src="/js/sidebar.js?v=2.0.0"></script></body></html>

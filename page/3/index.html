@@ -27,7 +27,84 @@ var CONFIG = {
   sourcePath: {"js":"js","css":"css","images":"images"},
 };
 
-window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">O ever youthful O ever weeping</div><div class="header-banner-info__subtitle"></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content content-home" id="content"><section class="postlist"><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/02/21/Redis/Redis-%E5%87%BB%E7%A9%BF%E7%A9%BF%E9%80%8F%E9%9B%AA%E5%B4%A9/">Redis缓存击穿穿透雪崩</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-02-21</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-02-21</span></span></div></header><div class="post-body"><div class="post-excerpt">
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">O ever youthful O ever weeping</div><div class="header-banner-info__subtitle"></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content content-home" id="content"><section class="postlist"><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/03/15/kafka/kafka-%E4%BB%8B%E7%BB%8D/">kafka介绍</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-03-15</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-03-15</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h1 id="kafka介绍">
+          <a href="#kafka介绍" class="heading-link"><i class="fas fa-link"></i></a>kafka介绍</h1>
+      <p>提供了消息的订阅与发布的消息队列，用作系统间解耦、异步通信、削峰填谷等作用</p>
+
+        <h2 id="常见的消息队列工作模式分为两种">
+          <a href="#常见的消息队列工作模式分为两种" class="heading-link"><i class="fas fa-link"></i></a>常见的消息队列工作模式分为两种</h2>
+      
+        <h3 id="一：">
+          <a href="#一：" class="heading-link"><i class="fas fa-link"></i></a>一：</h3>
+      <p>至多一次，消息生产者将数据写入消息系统，然后由消费者负责去拉消息服务器中的消息，一旦消息被确认消费后，由消息服务器主动删除队列中的数据，这种消费方式一般只允许被一个消费者消费，并且消息队列中的数据不允许被重复消费。</p>
+
+        <h3 id="二：">
+          <a href="#二：" class="heading-link"><i class="fas fa-link"></i></a>二：</h3>
+      <p>没有限制，同上诉消费形式不同，生产者发布完数据以后，该消息可以被多个消费者同时消费，并且同一个消费者可以多次消费消息服务器中的同一个记录，主要是因为消息服务器一般可以长时间存储海量消息</p>
+
+        <h2 id="kafka集群">
+          <a href="#kafka集群" class="heading-link"><i class="fas fa-link"></i></a>kafka集群</h2>
+      <p>是以Topic形式负责分类集群中的Record，没一个Record属于一个Topic，每个Topic底层都会对应一族分区的日志用于持久化Topic中的Record。</p>
+
+        <h2 id="分区">
+          <a href="#分区" class="heading-link"><i class="fas fa-link"></i></a>分区</h2>
+      <p>生产者把key进行hash运算，把消息均匀的分散到不同分区，可以把相同的key的消息发送到相同的分区</p>
+<p>每个Topic都有一个Broker，负责存储Topic的分区数据，每个Topic会有多个副本（备份），多个Broker会根据设置的副本数量，互相备份。</p>
+<p>如果集群中的某个Broker宕机了，集群中的剩余Broker进行选举。</p>
+<p><img src="/15/kafka/kafka-%E4%BB%8B%E7%BB%8D/kafka%5Cimg1.png" alt="img1"></p>
+
+        <h2 id="生产者-amp-消费者">
+          <a href="#生产者-amp-消费者" class="heading-link"><i class="fas fa-link"></i></a>生产者&amp;消费者</h2>
+      <p>消费者对单个分区也是分别独立的，每个消费者会有自己的消费偏移量（序号）</p>
+<p>消费者使用Consumer  Group名称标记自己，Topic中的每条记录都会传递到每个Consumer Group中的一个消费者实例，如果所有消费者都具有相同的ConsumerGroup。</p>
+<p><img src="/15/kafka/kafka-%E4%BB%8B%E7%BB%8D/kafka%5Cimage-20200710210219279.png" alt="image-20200710210219279"></p>
+<p>分区会根据消费组和组内的消费者实例进行均分</p>
+<p>如果消费者实例有个挂掉了。那这时候如果有空闲实例，则会连接空闲的消费者实例</p>
+
+        <h2 id="高性能-顺序写-amp-mmap">
+          <a href="#高性能-顺序写-amp-mmap" class="heading-link"><i class="fas fa-link"></i></a>高性能-顺序写&amp;mmap</h2>
+      <p>高吞吐量，所有的消息是以日志是以保存或者缓存在磁盘上的，可以支持百万级的写入请求</p>
+<p>为了优化写入速度，采用了技术顺序写入和MMFile。</p>
+<p>技术顺序写入：因为硬盘是机械结构，每次读写都会寻址-&gt;写入，寻址的动作是非常耗时的，如果采用顺序I/O，会省去大量的内存开销和寻址时间，但kafka的数据并不是实时的写入硬盘中的。</p>
+<p>利用OS中的Pagecache提高IO效率。MMF是直接调用的一个进程和内核共享的内存区域，直接把数据写到这个内存区域，然后由OS去把内存中的数据持久化到磁盘。</p>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/02/24/Redis/Redis-%E9%9B%86%E7%BE%A4%E6%A6%82%E5%BF%B5/">Redis集群概念</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-02-24</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-02-24</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h1 id="Redis集群">
+          <a href="#Redis集群" class="heading-link"><i class="fas fa-link"></i></a>Redis集群</h1>
+      <p>单机的问题：</p>
+<pre><code>1.    单点故障
+
+   2.    容量有限
+      3.    压力</code></pre>
+        <h2 id="AKF">
+          <a href="#AKF" class="heading-link"><i class="fas fa-link"></i></a>AKF</h2>
+      <p>区分XYZ轴</p>
+<p>X轴：横向扩展多个redis服务，把查询和增删改分开。全量镜像数据。</p>
+<p>Y轴：纵向扩展，每个redis服务存储不同的数据。</p>
+<p>Z轴：按照优先级逻辑，再拆分。</p>
+
+        <h2 id="CAP">
+          <a href="#CAP" class="heading-link"><i class="fas fa-link"></i></a>CAP</h2>
+      <p>保证高可用，分区容错，弱一致性</p>
+<p>弱一致性：异步方式向其他redis同步数据。</p>
+<p>分区容错：各种原因导致与主机断开连接，采用选举的方式，选择新的主机，最好使用奇数台机器，方便选举。</p>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/02/23/Redis/Redis-%E6%8C%81%E4%B9%85%E5%8C%96/">Redis持久化</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-02-23</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-02-23</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h1 id="Redis">
+          <a href="#Redis" class="heading-link"><i class="fas fa-link"></i></a>Redis</h1>
+      
+        <h2 id="RedisDB持久化">
+          <a href="#RedisDB持久化" class="heading-link"><i class="fas fa-link"></i></a>RedisDB持久化</h2>
+      <p>时点性的进行快照</p>
+<p>使用内核的fork(copy on write)指令，创建一个子进程，子进程执行持久化到db.file，这样做的原因是父子进程对数据的修改，互相都看不到，是因为key是存在虚拟内存中，但value是放在物理内存中的，如果主进程在子进程备份过程中修改了value，主进程的key会指向新的物理内存中的值，但子进程还是指向原来的value。</p>
+<p>以上说的是bgsave，redis是可以正常使用的。</p>
+<p>redis还提供了普通save，会导致redis不可用，这种情况下就是关机维护之类的，确定不用了。就用这个save。</p>
+
+        <h2 id="AOF">
+          <a href="#AOF" class="heading-link"><i class="fas fa-link"></i></a>AOF</h2>
+      <p>因为DB还是会丢失数据，所以有了AOF的技术。</p>
+<p>redis的写操作记录到文件中，如果rdb和aof同时开启，只会用aof恢复。</p>
+<p>redis4.0之后，因为全量恢复aof日志，会慢，所以会先把时间节点最近的rdb重写到aof日志中，再把增量的数据append到aof中。</p>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/02/21/Redis/Redis-%E5%87%BB%E7%A9%BF%E7%A9%BF%E9%80%8F%E9%9B%AA%E5%B4%A9/">Redis缓存击穿穿透雪崩</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-02-21</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-02-21</span></span></div></header><div class="post-body"><div class="post-excerpt">
         <h1 id="Redis三大问题">
           <a href="#Redis三大问题" class="heading-link"><i class="fas fa-link"></i></a>Redis三大问题</h1>
       
@@ -343,189 +420,4 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.0"></he
       <p>​    指令重排序是指编译器会把指令重新进行一次排序，提升效率。比如 a=1,b=2,b=3，重排后可能会变成b=2,a=1,b=3，就是指令重排</p>
 <p>为什么在懒汉式单例中要加入volatile关键字：</p>
 <p>​    就是禁止指令重排序，导致同时new对象的问题。</p>
-</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/01/15/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E5%A4%9A%E7%BA%BF%E7%A8%8B-%E9%94%81/">多线程-锁</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-01-15</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-01-15</span></span></div></header><div class="post-body"><div class="post-excerpt">
-        <h2 id="锁">
-          <a href="#锁" class="heading-link"><i class="fas fa-link"></i></a>锁</h2>
-      <p>synchronize是可重入锁，在同一个类中，在调用有锁的方法时，发现自己已经有这把锁，就是可重入。</p>
-<p>程序发生异常，默认锁会被释放。</p>
-<p>synchronized底层实现</p>
-<p>JDK早期是重量级OS</p>
-<p>后来的改进有了锁升级的概念：</p>
-<ol>
-<li><p>sync（object），markword并没有在object上加锁，只记录了线程ID，偏向锁。</p>
-</li>
-<li><p>如果有线程争用，则升级为自旋锁（CAS）。自旋锁是在发现另一个线程已经占用了锁，则会产生等待循环申请锁资源，默认是进行10次自旋，若还得不到锁资源，则升级为重量级锁-OS。</p>
-<p>自旋锁的优点是锁的竞争是在用户态，缺点是会占用CPU。</p>
-<p>重量级锁会在内核态。</p>
-<p>执行时间短选择用自旋锁。</p>
-<p>执行时间长，线程多用系统锁。</p>
-</li>
-</ol>
-
-        <h2 id="jdk中提供的锁">
-          <a href="#jdk中提供的锁" class="heading-link"><i class="fas fa-link"></i></a>jdk中提供的锁</h2>
-      
-        <h2 id="ntrantLock">
-          <a href="#ntrantLock" class="heading-link"><i class="fas fa-link"></i></a>ntrantLock</h2>
-      <p>可重入锁：锁一次之后对同样的锁再锁一次。</p>
-<p>可以替代synchronize。但是必须使用try finally，进行unlock。</p>
-<p> 比sync强大的地方：</p>
-<p>​    可以使用trylock，可尝试进行获取锁，若没得到锁，程序则继续运行。</p>
-<p>​    可以使用lockInterruptibly接收线程外的interrupt命令，打断该线程的等待。</p>
-<p>​    可以在创建ReentrantLock对象时对fair属性赋值为true，表示该锁是公平锁。公平锁就是线程不会直接争夺CPU资源，而是先在队列中看前面有没有正在等待的线程，排队执行。</p>
-
-        <h2 id="ConuntDownLatch">
-          <a href="#ConuntDownLatch" class="heading-link"><i class="fas fa-link"></i></a>ConuntDownLatch</h2>
-      <p>门栓，控制线程阻塞，比join灵活。</p>
-
-        <h2 id="CyclicBarrier">
-          <a href="#CyclicBarrier" class="heading-link"><i class="fas fa-link"></i></a>CyclicBarrier</h2>
-      <p>控制线程数，当线程数到指定数(parties)的时候，线程同时启动。未达到指定数，则线程会阻塞。比如启动100个线程，parties设置20，那每到20个线程的时候，同时解除20个线程的阻塞。</p>
-
-        <h2 id="ReadWriteLock">
-          <a href="#ReadWriteLock" class="heading-link"><i class="fas fa-link"></i></a>ReadWriteLock</h2>
-      <p>共享锁（读锁）和排他锁（写锁）</p>
-<p>实现ReetrantReadWriteLock。</p>
-<p>读锁：如果在申请锁资源时，发现是读锁，那就可以直接运行，不需要进行锁资源的争夺。</p>
-<p>写锁：与读锁相反，就是必须要进行等待锁资源释放。</p>
-
-        <h2 id="Semaphore">
-          <a href="#Semaphore" class="heading-link"><i class="fas fa-link"></i></a>Semaphore</h2>
-      <p>限流作用，设置Semaphore的数量，线程调用时，执行acquire方法，会从Semaphore的数量中-1，如果Semaphore的数量是0，则后续线程阻塞，直到其他线程结束，并调用release方法释放资源。</p>
-<p>也可以设置Semaphore是否为公平锁。</p>
-
-        <h2 id="LockSupport">
-          <a href="#LockSupport" class="heading-link"><i class="fas fa-link"></i></a>LockSupport</h2>
-      <p>使用LockSupport.park阻塞线程，unpark唤醒线程，相对于线程本身使用的wait、notify方法，很灵活。<br>unpark可以在park之前使用，可以直接放行，不在阻塞。<br>LockSupport是用c或者c++实现的</p>
-</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/01/15/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E5%A4%9A%E7%BA%BF%E7%A8%8B-%E5%90%AF%E5%8A%A8%E4%B8%8E%E6%8E%A5%E5%8F%A3/">多线程-启动与接口</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-01-15</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-01-15</span></span></div></header><div class="post-body"><div class="post-excerpt">
-        <h2 id="启动线程的三种方式">
-          <a href="#启动线程的三种方式" class="heading-link"><i class="fas fa-link"></i></a>启动线程的三种方式</h2>
-      <p>1.new Thread</p>
-<p>2.实现Runnable接口</p>
-<p>3.通过线程池启动</p>
-
-        <h2 id="Thread类中的接口">
-          <a href="#Thread类中的接口" class="heading-link"><i class="fas fa-link"></i></a>Thread类中的接口</h2>
-      <p>sleep：停止指定时间的CPU争夺。</p>
-<p>yield：让出一次CPU争夺，或者可以理解为线程返回到就绪状态</p>
-<p>join：等待另一个线程执行完，再进行。</p>
-
-        <h2 id="线程状态迁移图">
-          <a href="#线程状态迁移图" class="heading-link"><i class="fas fa-link"></i></a>线程状态迁移图</h2>
-      <img src="/2020/01/15/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E5%A4%9A%E7%BA%BF%E7%A8%8B-%E5%90%AF%E5%8A%A8%E4%B8%8E%E6%8E%A5%E5%8F%A3/image-20200703214401286.png" class title="This is an example image"></div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2019/12/12/Java/Java-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">Java-设计模式</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2019-12-12</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2019-12-12</span></span></div></header><div class="post-body"><div class="post-excerpt">
-        <h1 id="JAVA设计模式">
-          <a href="#JAVA设计模式" class="heading-link"><i class="fas fa-link"></i></a>JAVA设计模式</h1>
-      
-        <h2 id="单例模式-Singleton">
-          <a href="#单例模式-Singleton" class="heading-link"><i class="fas fa-link"></i></a>单例模式 Singleton</h2>
-      <p>单例模式是只有一个实例对象，分为饿汉式和懒汉式。最简单的单例是饿汉式，在项目启动时，就生成一个实例对象。</p>
-<p>懒汉式是只想在使用时才生成实例对象，但会带来线程不安全的问题，可使用双重校验方式判断当前是否已存在实例对象，再进行创建或直接使用，双重校验是指外层校验先判断实例是否为空，然后对当前类加锁，再进行一次空判断，可保证在多线程情况下依旧只有一个实例。但该方式会导致执行效率的下降。</p>
-<p>也可使用枚举单例，枚举类型不仅可以解决线程同步问题，还可以防止反序列化。</p>
-
-        <h2 id="策略模式-Strategy">
-          <a href="#策略模式-Strategy" class="heading-link"><i class="fas fa-link"></i></a>策略模式 Strategy</h2>
-      <p>策略模式其实是把if或者switch进行了封装，主要是用于算法族方面，让程序结构更灵活，有更好的扩展性。</p>
-
-        <h2 id="工厂模式-Factory">
-          <a href="#工厂模式-Factory" class="heading-link"><i class="fas fa-link"></i></a>工厂模式 Factory</h2>
-      <p>普通工厂模式是把new对象的代码封装到了类中。</p>
-
-        <h2 id="门面模式-Facade-amp-调停者-Mediator">
-          <a href="#门面模式-Facade-amp-调停者-Mediator" class="heading-link"><i class="fas fa-link"></i></a>门面模式 Facade &amp; 调停者 Mediator</h2>
-      <p>两个模式其实意思是一样的，在多个模块中，可以每个模块与其他模块都有互相的访问请求，这个模式就是抽出一个专用的地，作为其他模块的中间模块，处理或转发请求。也就是消息中间件MQ。</p>
-
-        <h2 id="装饰器-Decorator">
-          <a href="#装饰器-Decorator" class="heading-link"><i class="fas fa-link"></i></a>装饰器 Decorator</h2>
-      <p>装饰器模式是为某个对象添加单一的职责，比如new两杯咖啡，一杯咖啡加糖，一杯咖啡加水，装饰器的职责就是加糖或加水的行为等等。</p>
-
-        <h2 id="责任链-ChainOfResponsibility">
-          <a href="#责任链-ChainOfResponsibility" class="heading-link"><i class="fas fa-link"></i></a>责任链 ChainOfResponsibility</h2>
-      <p>责任链模式是把一串动作添加到一个列表中依次执行，比如喝水的动作，首先要开瓶盖，然后拿到嘴边，倒水，合上瓶盖这四个动作，那这四个动作就是四个方法，在需要进行喝水时，把这四个方法添加到一个list中，依次执行，就是责任链。</p>
-
-        <h2 id="观察者-Observer">
-          <a href="#观察者-Observer" class="heading-link"><i class="fas fa-link"></i></a>观察者 Observer</h2>
-      <p>观察者模式是在某个被观察的对象中，加入观察者对象，如果被观察对象的某个方法被调用，观察者会进行一系列动作。</p>
-
-        <h2 id="组合模式-Composite">
-          <a href="#组合模式-Composite" class="heading-link"><i class="fas fa-link"></i></a>组合模式 Composite</h2>
-      <p>组合模式就是模拟树状结构。。。</p>
-
-        <h2 id="享元模式-Flyweight">
-          <a href="#享元模式-Flyweight" class="heading-link"><i class="fas fa-link"></i></a>享元模式 Flyweight</h2>
-      <p>这个模式主要是一个池的概念，把可能会重用的对象放到一个池子中，若再调用直接从池子中获取，不再新生成对象，类似于jvm的常量池。</p>
-
-        <h2 id="代理模式-Proxy">
-          <a href="#代理模式-Proxy" class="heading-link"><i class="fas fa-link"></i></a>代理模式 Proxy</h2>
-      <p>静态代理：代理一个类，可通过代理类直接访问被代理的类</p>
-<p>动态代理：用Proxy类的newProxyInstance方法生成代理对象，newProxyInstance有三个参数：</p>
-<p>​    ClassLoader：类加载器</p>
-<p>​    Class[]：要实现的接口类</p>
-<p>​    InvocationHandler：重写该接口中的invoke方法，目的是在该接口中的方法被调用时，被调用前后可插入一些相关代码，比如记录调用日志等。</p>
-<p>或者可以用cglib实现动态代理。cglib不需要代理接口，但不能代理final类，jdk的动态代理可以代理final类。</p>
-<p>两种方式底层都是通过asm解析class二进制码生成代理类的。</p>
-<p>AOP也是基于动态代理实现</p>
-
-        <h2 id="迭代器-Iterator">
-          <a href="#迭代器-Iterator" class="heading-link"><i class="fas fa-link"></i></a>迭代器 Iterator</h2>
-      <p>迭代器模式是遍历数组或链表使用，实现了iterator接口的类，都可以使用iterator进行遍历。</p>
-
-        <h2 id="访问者-visitor">
-          <a href="#访问者-visitor" class="heading-link"><i class="fas fa-link"></i></a>访问者 visitor</h2>
-      <p>在结构不变的情况下动态改变对于内部元素的动作。</p>
-<p>主要用于编译器上。</p>
-
-        <h2 id="构建器-Builder">
-          <a href="#构建器-Builder" class="heading-link"><i class="fas fa-link"></i></a>构建器 Builder</h2>
-      <p>主要负责构建复杂对象。</p>
-<p>比如一个创建一个电脑对象，需要new键盘，new鼠标，new显示器等等，如果一个一个new，会很麻烦，可以使用构建器模式，实现Computer c = create.mouse().create.keyboard().create();这样的方式，实现类中要创建Computer对象。</p>
-<p><img src="/12/Java/Java-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/C:%5CUsers%5C92048%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200701014928832.png" alt="image-20200701014928832"></p>
-
-        <h2 id="适配器-Adapter">
-          <a href="#适配器-Adapter" class="heading-link"><i class="fas fa-link"></i></a>适配器 Adapter</h2>
-      <p>简称接口转换器，如果一个接口不能直接访问一个另外一个类，加入这个类，就是Adapter。</p>
-
-        <h2 id="桥接-Bridge">
-          <a href="#桥接-Bridge" class="heading-link"><i class="fas fa-link"></i></a>桥接 Bridge</h2>
-      <p>双纬度扩展，分离抽象与具体，用聚合的方式连接抽象与具体。</p>
-
-        <h2 id="命令模式-Command">
-          <a href="#命令模式-Command" class="heading-link"><i class="fas fa-link"></i></a>命令模式 Command</h2>
-      <p>封装命令，主要是在对一个对象的属性改变时，会记录改变的内容，并可以调用undo方法，撤回本次改变。</p>
-
-        <h2 id="原型模式-Prototype">
-          <a href="#原型模式-Prototype" class="heading-link"><i class="fas fa-link"></i></a>原型模式 Prototype</h2>
-      <p>java中自带原型模式，实现原型模式需要实现标记型接口Cloneable，一般会重写clone方法。需要区分深克隆和浅克隆。</p>
-
-        <h2 id="备忘录-Memento">
-          <a href="#备忘录-Memento" class="heading-link"><i class="fas fa-link"></i></a>备忘录 Memento</h2>
-      <p>记录状态，便于回滚，主要用于记录快照（瞬时状态）、存盘。可以用于游戏的存档。</p>
-<p>需要实现序列化接口，使用ObjectOutputStream方法把要保存的属性存到磁盘，在通过input方法载入。</p>
-
-        <h2 id="模版方法-TemplateMethod">
-          <a href="#模版方法-TemplateMethod" class="heading-link"><i class="fas fa-link"></i></a>模版方法 TemplateMethod</h2>
-      <p>钩子函数</p>
-
-        <h2 id="状态模式-State">
-          <a href="#状态模式-State" class="heading-link"><i class="fas fa-link"></i></a>状态模式 State</h2>
-      <p>根据状态决定行为，如果一个类中的逻辑，需要根据某个状态做出不同的行为，比如一个开瓶盖的动作，矿泉水需要用拧的，听装可乐需要用扣的。可以把矿泉水和可乐抽象出一个水的类，在调用开瓶盖的动作时，会根据当前是什么水，做出不同行为。</p>
-
-        <h2 id="解释器-Intepreter">
-          <a href="#解释器-Intepreter" class="heading-link"><i class="fas fa-link"></i></a>解释器 Intepreter</h2>
-      <p>用来解释脚本语言，比如模拟一个正则表达式</p>
-
-        <h2 id="设计模式列表">
-          <a href="#设计模式列表" class="heading-link"><i class="fas fa-link"></i></a>设计模式列表</h2>
-      <p><img src="/12/Java/Java-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/C:%5CUsers%5C92048%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200701225038088.png" alt="image-20200701225038088"></p>
-
-        <h2 id="面向对象六大原则">
-          <a href="#面向对象六大原则" class="heading-link"><i class="fas fa-link"></i></a>面向对象六大原则</h2>
-      <p>可维护性：修改功能，需要改动的地方越少，可维护性就越好。</p>
-<p>可复用性：代码可以被以后重复使用，写出自己总结的类库。</p>
-<p>可扩展性：添加功能无需修改原来代码。</p>
-<p>灵活性：代码接口可以灵活调用。</p>
-<p>单一职责原则：一个类别太大，负责单一的职责。高内聚，低耦合。</p>
-<p>开闭原则：对扩展开放，对修改关闭，抽象化，多态是开闭原则的关键。</p>
-<p>里式替换原则：所有使用父类的地方，必须能够透明的使用子类对象。</p>
-<p>依赖倒置原则：依赖抽象，不依赖具体。面向抽象编程。</p>
-<p>接口隔离原则：每个接口应该承担独立的角色，不干不该自己干的事。避免子类实现不需要实现的方法。</p>
-</div></div></article></section><nav class="paginator"><div class="paginator-inner"><a class="extend prev" rel="prev" href="/page/2/"><i class="fas fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span></div></nav></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><section class="sidebar-toc hide"></section><!-- ov = overview--><section class="sidebar-ov"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/assets/author.png" alt="avatar"></div></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">30</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">8</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">12</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2020</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>zhen wu</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v4.2.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.0.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="/js/utils.js?v=2.0.0"></script><script src="/js/stun-boot.js?v=2.0.0"></script><script src="/js/scroll.js?v=2.0.0"></script><script src="/js/header.js?v=2.0.0"></script><script src="/js/sidebar.js?v=2.0.0"></script></body></html>
+</div></div></article></section><nav class="paginator"><div class="paginator-inner"><a class="extend prev" rel="prev" href="/page/2/"><i class="fas fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/"><i class="fas fa-angle-right"></i></a></div></nav></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><section class="sidebar-toc hide"></section><!-- ov = overview--><section class="sidebar-ov"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/assets/author.png" alt="avatar"></div></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">33</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">10</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">15</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2021</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>zhen wu</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v4.2.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.0.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="/js/utils.js?v=2.0.0"></script><script src="/js/stun-boot.js?v=2.0.0"></script><script src="/js/scroll.js?v=2.0.0"></script><script src="/js/header.js?v=2.0.0"></script><script src="/js/sidebar.js?v=2.0.0"></script></body></html>

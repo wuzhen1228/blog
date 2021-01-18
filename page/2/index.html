@@ -27,7 +27,127 @@ var CONFIG = {
   sourcePath: {"js":"js","css":"css","images":"images"},
 };
 
-window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">O ever youthful O ever weeping</div><div class="header-banner-info__subtitle"></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content content-home" id="content"><section class="postlist"><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/06/13/Mysql/Mysql-%E7%B4%A2%E5%BC%95%E5%88%86%E7%B1%BB/">Mysql索引分类</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-06-13</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-06-13</span></span></div></header><div class="post-body"><div class="post-excerpt">
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">O ever youthful O ever weeping</div><div class="header-banner-info__subtitle"></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content content-home" id="content"><section class="postlist"><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/07/03/Mysql/Mysql-%E7%B4%A2%E5%BC%95/">Mysql索引</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-07-03</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-07-03</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h1 id="Mysql索引数据结构">
+          <a href="#Mysql索引数据结构" class="heading-link"><i class="fas fa-link"></i></a>Mysql索引数据结构</h1>
+      
+        <h2 id="哈希表作为索引">
+          <a href="#哈希表作为索引" class="heading-link"><i class="fas fa-link"></i></a>哈希表作为索引</h2>
+      <p>哈希表可以完成索引的存储，每次在添加索引的时候需要计算指定列的hash值，取模运算后计算出下标，将元素插入下标位置即可。</p>
+<p>适合场景：</p>
+<p>​    等值查询</p>
+<p>​    表中的数据是无序数据（范围查找的时候比较浪费时间，需要挨个进行遍历操作）</p>
+<p>​    在实际应用中，范围查询使用比较多，所以此时hash表不是特别合适</p>
+<p>​    且hash表再使用的时候，需要将全部的数据加载到内存，比较耗费内存的空间，也不是很合适。</p>
+
+        <h2 id="树">
+          <a href="#树" class="heading-link"><i class="fas fa-link"></i></a>树</h2>
+      <p>目前树有的结构：多叉树、二叉树、avl树、红黑树。</p>
+<p>多叉树（B树）：在树的结构中，左子树必须小于根节点，右子树必须大于根节点，从左到右必须有序。</p>
+<p>二叉树：二分查找树，比多叉树效率高，但很容易出现单方向子节点连续增加，变成链表。</p>
+<p>avl平衡树：要求左右子树必须严格一致，最高子树和最低子树高度差不超过1，若超过1，树就要进行旋转，数据量大时，树会频繁进行旋转，影响性能。</p>
+<p>红黑树：基于AVL树的升级，损失部分查询性能，来提升插入的性能，在红黑树种最低子树和最高子树高度差小于2倍即可。在插入的时候不需要进行N多次的旋转，而且还加入了变色的特性，来满足插入和查询性能的平衡。</p>
+<p>以上二叉树的变种都不适合作为mysql的索引</p>
+<p>​    一：树的深度无法控制，哪怕是红黑树，在最低深度为8时，也可能会进行16次的查询，严重影响性能。</p>
+<p>​    二：在插入数据这方面的性能都比较低。</p>
+<p>目前来看，B树是作为索引的最佳数据结构。</p>
+<p>B树的特点：</p>
+<p>​    1.所有的键值分布在整颗树种；</p>
+<p>​    2.搜索有可能在非叶子节点结束，在关键字全集内做一次查找，性能逼近二分查找；</p>
+<p>​    3.每个节点最多有m个子树；</p>
+<p>​    4.根节点至少有2个子树；</p>
+<p>​    5.分支节点至少拥有m/2个子树（除根节点和叶子节点之外都是分支节点）；</p>
+<p>​    6.所有叶子节点都在同一层，每个节点最多有m-1个key，并且升序排列；</p>
+<p>缺点：</p>
+<p>​    每个节点都有key值，同时也包含data，而每个页存储空间有限，如果data比较大会导致每个节点存储的key数量变小。</p>
+<p>​    当存储的数据量很大时，会导致树的深度较大，增大查询时磁盘IO次数，影响查询性能。</p>
+<p>B+树：</p>
+<p>​    1.每个节点可以包含更多的节点，这样做有两个原因，一个是树的高度降低，第二个原因是数据范围变成多个区间，区间越多，数据检索越快。</p>
+<p>​    2.非叶子节点存储key，叶子节点存储key和数据。</p>
+<p>​    3.叶子节点两两指针互相连接，顺序查询性能更高。</p>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/06/27/Mysql/Mysql-%E8%B0%83%E4%BC%98/">Mysq-调优</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-06-27</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-06-27</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h1 id="sql调优">
+          <a href="#sql调优" class="heading-link"><i class="fas fa-link"></i></a>sql调优</h1>
+      
+        <h2 id="性能监控">
+          <a href="#性能监控" class="heading-link"><i class="fas fa-link"></i></a>性能监控</h2>
+      <p>通过 show profile和show profiles命令，查看sql在各节点执行的效率。</p>
+
+        <h2 id="schema与数据类型优化">
+          <a href="#schema与数据类型优化" class="heading-link"><i class="fas fa-link"></i></a>schema与数据类型优化</h2>
+      
+        <h3 id="数据类型优化">
+          <a href="#数据类型优化" class="heading-link"><i class="fas fa-link"></i></a>数据类型优化</h3>
+      <p>更小的数据类型更好，选用更合适的数据类型，占用内存缓存硬盘空间更小。</p>
+<p>字符串类型：</p>
+<p>char:存储最大值为255，会自动删除数据后边的空格，是固定长度的，适合存储固定长度的数据，比如MD5摘要等等，比varchar稍微快一些。</p>
+<p>varchar:占用空间根据实际使用长度占用，会在超过255长度后额外占用1个字节。</p>
+<p>blob:大容量数据使用，存储方式为二进制。</p>
+<p>text:大容量数据使用，存储方式为字符串。过大的数据可以保存到磁盘，写磁盘路径，再代码中读取文件。</p>
+<p>时间类型：</p>
+<p>datetime：占用8个字节。时间范围为0-0-0-1-9999-12-31，不会随mysql设置的时区进行变更，可以保存到毫秒。</p>
+<p>date：占用3个字节，使用date可以用日期函数进行计算</p>
+<p>timestamp：占用4个字节。精确到秒，时间范围是1970-01-01到2038-1-19.使用整形存储，依赖数据库时区，自动更新timestamp列的值。</p>
+<p>枚举类型：</p>
+<p>在创建表时创建一个枚举的数组，mysql会把枚举类中的数据创建一个整形的数据，做映射。还会把该数据做压缩。</p>
+<p>比如(‘男’,’女’)，可以在语句中用where sex=1；进行查询后就是男，也可以进行排序。</p>
+
+        <h3 id="主键的选择">
+          <a href="#主键的选择" class="heading-link"><i class="fas fa-link"></i></a>主键的选择</h3>
+      <p>代理主键：无意义的数字序列。</p>
+<p>自然主键：带有业务逻辑的主键规则。</p>
+<p>推荐自然主键：与业务不耦合，更容易维护，通用的主键策略能减少源码的编写数量，减少系统的总体拥有成本。</p>
+
+        <h3 id="字符集的选择">
+          <a href="#字符集的选择" class="heading-link"><i class="fas fa-link"></i></a>字符集的选择</h3>
+      <p>utf-8：只能存储2个字符的中文。</p>
+<p>utf-8mb4：没这个问题，通常用这个。</p>
+
+        <h3 id="存储引擎的选择">
+          <a href="#存储引擎的选择" class="heading-link"><i class="fas fa-link"></i></a>存储引擎的选择</h3>
+      <p>innodb和myisam的区别：myisam不支持事务，行锁和外键。适合大量select。</p>
+
+        <h3 id="适当的数据冗余">
+          <a href="#适当的数据冗余" class="heading-link"><i class="fas fa-link"></i></a>适当的数据冗余</h3>
+      <p>被频繁引用且只能通过join多张表（大表）获取的独立小字段，加到查询的表中，要保证数据的一致性不会有问题，这样是以空间换时间的方式增加效率。</p>
+
+        <h3 id="适当拆分">
+          <a href="#适当拆分" class="heading-link"><i class="fas fa-link"></i></a>适当拆分</h3>
+      <p>把存储了大容量数据的字段，迁移到新的表，避免每次查询表的时候会有大量的io</p>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/06/26/Mysql/Mysql-%E7%BB%84%E4%BB%B6/">Mysql组件</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-06-26</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-06-26</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h1 id="Mysql架构">
+          <a href="#Mysql架构" class="heading-link"><i class="fas fa-link"></i></a>Mysql架构</h1>
+      
+        <h2 id="连接器">
+          <a href="#连接器" class="heading-link"><i class="fas fa-link"></i></a>连接器</h2>
+      <p>负责和客户端建立连接，获取权限、维持和管理连接</p>
+<p>​    -用户名密码验证</p>
+<p>​    -查询权限信息，分配对应的权限</p>
+<p>​    -可以使用processlist查看现在的连接</p>
+<p>​    -如果太长时间没有动静，就会自动断开，通过wait——timeout控制，默认8小时。</p>
+<p>连接可以分为两类：</p>
+<p>​    -长连接：推荐使用，但是要周期性断开长连接。</p>
+<p>​    -短连接</p>
+<p>​    数据库连接池属于长连接，连接池中会一直保有一些长连接。</p>
+
+        <h2 id="分析器">
+          <a href="#分析器" class="heading-link"><i class="fas fa-link"></i></a>分析器</h2>
+      <p>词法分析：mysql需要把输入的字符串进行识别每个部分代表什么意思。</p>
+<p>​    -把字符串T识别成表名T</p>
+<p>​    -把字符串ID识别成列ID</p>
+<p>语法分析：</p>
+<p>​    根据语法规则判断这个sql语句是否满足mysql的语法，如果不符合就会报错。</p>
+
+        <h2 id="优化器">
+          <a href="#优化器" class="heading-link"><i class="fas fa-link"></i></a>优化器</h2>
+      <p>在具体执行SQL语句之前，要先经过优化器的处理。</p>
+<p>​    -当表中有多个索引的时候，决定用哪个索引。</p>
+<p>​    -当SQL语句需要多表关联的时候，决定表的连接顺序</p>
+<p>不同的执行方式对SQL语句的执行效率影响很大。</p>
+<p>​    -RBO:基于规则的优化</p>
+<p>​    -CBO:基于成本的优化</p>
+<p>一般使用CBO比较多，主要考虑性能问题的时候较多。</p>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/06/13/Mysql/Mysql-%E7%B4%A2%E5%BC%95%E5%88%86%E7%B1%BB/">Mysql索引分类</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-06-13</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-06-13</span></span></div></header><div class="post-body"><div class="post-excerpt">
         <h1 id="索引的分类">
           <a href="#索引的分类" class="heading-link"><i class="fas fa-link"></i></a>索引的分类</h1>
       <p>主键索引：唯一性索引，他必须指定为PRIMARY KEY，每个表只能有一个主键。</p>
@@ -469,81 +589,4 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.0"></he
 <td>荣盛家园小区</td>
 </tr>
 </tbody></table></div>
-</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/03/15/kafka/kafka-%E4%BB%8B%E7%BB%8D/">kafka介绍</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-03-15</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-03-15</span></span></div></header><div class="post-body"><div class="post-excerpt">
-        <h1 id="kafka介绍">
-          <a href="#kafka介绍" class="heading-link"><i class="fas fa-link"></i></a>kafka介绍</h1>
-      <p>提供了消息的订阅与发布的消息队列，用作系统间解耦、异步通信、削峰填谷等作用</p>
-
-        <h2 id="常见的消息队列工作模式分为两种">
-          <a href="#常见的消息队列工作模式分为两种" class="heading-link"><i class="fas fa-link"></i></a>常见的消息队列工作模式分为两种</h2>
-      
-        <h3 id="一：">
-          <a href="#一：" class="heading-link"><i class="fas fa-link"></i></a>一：</h3>
-      <p>至多一次，消息生产者将数据写入消息系统，然后由消费者负责去拉消息服务器中的消息，一旦消息被确认消费后，由消息服务器主动删除队列中的数据，这种消费方式一般只允许被一个消费者消费，并且消息队列中的数据不允许被重复消费。</p>
-
-        <h3 id="二：">
-          <a href="#二：" class="heading-link"><i class="fas fa-link"></i></a>二：</h3>
-      <p>没有限制，同上诉消费形式不同，生产者发布完数据以后，该消息可以被多个消费者同时消费，并且同一个消费者可以多次消费消息服务器中的同一个记录，主要是因为消息服务器一般可以长时间存储海量消息</p>
-
-        <h2 id="kafka集群">
-          <a href="#kafka集群" class="heading-link"><i class="fas fa-link"></i></a>kafka集群</h2>
-      <p>是以Topic形式负责分类集群中的Record，没一个Record属于一个Topic，每个Topic底层都会对应一族分区的日志用于持久化Topic中的Record。</p>
-
-        <h2 id="分区">
-          <a href="#分区" class="heading-link"><i class="fas fa-link"></i></a>分区</h2>
-      <p>生产者把key进行hash运算，把消息均匀的分散到不同分区，可以把相同的key的消息发送到相同的分区</p>
-<p>每个Topic都有一个Broker，负责存储Topic的分区数据，每个Topic会有多个副本（备份），多个Broker会根据设置的副本数量，互相备份。</p>
-<p>如果集群中的某个Broker宕机了，集群中的剩余Broker进行选举。</p>
-<p><img src="/15/kafka/kafka-%E4%BB%8B%E7%BB%8D/kafka%5Cimg1.png" alt="img1"></p>
-
-        <h2 id="生产者-amp-消费者">
-          <a href="#生产者-amp-消费者" class="heading-link"><i class="fas fa-link"></i></a>生产者&amp;消费者</h2>
-      <p>消费者对单个分区也是分别独立的，每个消费者会有自己的消费偏移量（序号）</p>
-<p>消费者使用Consumer  Group名称标记自己，Topic中的每条记录都会传递到每个Consumer Group中的一个消费者实例，如果所有消费者都具有相同的ConsumerGroup。</p>
-<p><img src="/15/kafka/kafka-%E4%BB%8B%E7%BB%8D/kafka%5Cimage-20200710210219279.png" alt="image-20200710210219279"></p>
-<p>分区会根据消费组和组内的消费者实例进行均分</p>
-<p>如果消费者实例有个挂掉了。那这时候如果有空闲实例，则会连接空闲的消费者实例</p>
-
-        <h2 id="高性能-顺序写-amp-mmap">
-          <a href="#高性能-顺序写-amp-mmap" class="heading-link"><i class="fas fa-link"></i></a>高性能-顺序写&amp;mmap</h2>
-      <p>高吞吐量，所有的消息是以日志是以保存或者缓存在磁盘上的，可以支持百万级的写入请求</p>
-<p>为了优化写入速度，采用了技术顺序写入和MMFile。</p>
-<p>技术顺序写入：因为硬盘是机械结构，每次读写都会寻址-&gt;写入，寻址的动作是非常耗时的，如果采用顺序I/O，会省去大量的内存开销和寻址时间，但kafka的数据并不是实时的写入硬盘中的。</p>
-<p>利用OS中的Pagecache提高IO效率。MMF是直接调用的一个进程和内核共享的内存区域，直接把数据写到这个内存区域，然后由OS去把内存中的数据持久化到磁盘。</p>
-</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/02/24/Redis/Redis-%E9%9B%86%E7%BE%A4%E6%A6%82%E5%BF%B5/">Redis集群概念</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-02-24</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-02-24</span></span></div></header><div class="post-body"><div class="post-excerpt">
-        <h1 id="Redis集群">
-          <a href="#Redis集群" class="heading-link"><i class="fas fa-link"></i></a>Redis集群</h1>
-      <p>单机的问题：</p>
-<pre><code>1.    单点故障
-
-   2.    容量有限
-      3.    压力</code></pre>
-        <h2 id="AKF">
-          <a href="#AKF" class="heading-link"><i class="fas fa-link"></i></a>AKF</h2>
-      <p>区分XYZ轴</p>
-<p>X轴：横向扩展多个redis服务，把查询和增删改分开。全量镜像数据。</p>
-<p>Y轴：纵向扩展，每个redis服务存储不同的数据。</p>
-<p>Z轴：按照优先级逻辑，再拆分。</p>
-
-        <h2 id="CAP">
-          <a href="#CAP" class="heading-link"><i class="fas fa-link"></i></a>CAP</h2>
-      <p>保证高可用，分区容错，弱一致性</p>
-<p>弱一致性：异步方式向其他redis同步数据。</p>
-<p>分区容错：各种原因导致与主机断开连接，采用选举的方式，选择新的主机，最好使用奇数台机器，方便选举。</p>
-</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/02/23/Redis/Redis-%E6%8C%81%E4%B9%85%E5%8C%96/">Redis持久化</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-02-23</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-02-23</span></span></div></header><div class="post-body"><div class="post-excerpt">
-        <h1 id="Redis">
-          <a href="#Redis" class="heading-link"><i class="fas fa-link"></i></a>Redis</h1>
-      
-        <h2 id="RedisDB持久化">
-          <a href="#RedisDB持久化" class="heading-link"><i class="fas fa-link"></i></a>RedisDB持久化</h2>
-      <p>时点性的进行快照</p>
-<p>使用内核的fork(copy on write)指令，创建一个子进程，子进程执行持久化到db.file，这样做的原因是父子进程对数据的修改，互相都看不到，是因为key是存在虚拟内存中，但value是放在物理内存中的，如果主进程在子进程备份过程中修改了value，主进程的key会指向新的物理内存中的值，但子进程还是指向原来的value。</p>
-<p>以上说的是bgsave，redis是可以正常使用的。</p>
-<p>redis还提供了普通save，会导致redis不可用，这种情况下就是关机维护之类的，确定不用了。就用这个save。</p>
-
-        <h2 id="AOF">
-          <a href="#AOF" class="heading-link"><i class="fas fa-link"></i></a>AOF</h2>
-      <p>因为DB还是会丢失数据，所以有了AOF的技术。</p>
-<p>redis的写操作记录到文件中，如果rdb和aof同时开启，只会用aof恢复。</p>
-<p>redis4.0之后，因为全量恢复aof日志，会慢，所以会先把时间节点最近的rdb重写到aof日志中，再把增量的数据append到aof中。</p>
-</div></div></article></section><nav class="paginator"><div class="paginator-inner"><a class="extend prev" rel="prev" href="/"><i class="fas fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/"><i class="fas fa-angle-right"></i></a></div></nav></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><section class="sidebar-toc hide"></section><!-- ov = overview--><section class="sidebar-ov"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/assets/author.png" alt="avatar"></div></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">30</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">8</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">12</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2020</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>zhen wu</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v4.2.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.0.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="/js/utils.js?v=2.0.0"></script><script src="/js/stun-boot.js?v=2.0.0"></script><script src="/js/scroll.js?v=2.0.0"></script><script src="/js/header.js?v=2.0.0"></script><script src="/js/sidebar.js?v=2.0.0"></script></body></html>
+</div></div></article></section><nav class="paginator"><div class="paginator-inner"><a class="extend prev" rel="prev" href="/"><i class="fas fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/"><i class="fas fa-angle-right"></i></a></div></nav></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><section class="sidebar-toc hide"></section><!-- ov = overview--><section class="sidebar-ov"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/assets/author.png" alt="avatar"></div></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">33</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">10</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">15</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2021</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>zhen wu</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v4.2.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.0.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="/js/utils.js?v=2.0.0"></script><script src="/js/stun-boot.js?v=2.0.0"></script><script src="/js/scroll.js?v=2.0.0"></script><script src="/js/header.js?v=2.0.0"></script><script src="/js/sidebar.js?v=2.0.0"></script></body></html>
