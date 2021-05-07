@@ -27,7 +27,114 @@ var CONFIG = {
   sourcePath: {"js":"js","css":"css","images":"images"},
 };
 
-window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">O ever youthful O ever weeping</div><div class="header-banner-info__subtitle"></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content content-home" id="content"><section class="postlist"><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/03/15/kafka/kafka-%E4%BB%8B%E7%BB%8D/">kafka介绍</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-03-15</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-03-15</span></span></div></header><div class="post-body"><div class="post-excerpt">
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">O ever youthful O ever weeping</div><div class="header-banner-info__subtitle"></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content content-home" id="content"><section class="postlist"><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/04/06/ELK/%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E5%92%8C%E5%8E%9F%E7%90%86/">核心概念和原理</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-04-06</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-04-06</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h2 id="念和原理">
+          <a href="#念和原理" class="heading-link"><i class="fas fa-link"></i></a>念和原理</h2>
+      <p>1.什么是搜索：通过一个关键词或一段描述，得到你想要的结果。</p>
+<p>2.如何实现搜索功能：</p>
+<p>​    关系型数据库：性能差，不可靠，结果不准确（相关度低）</p>
+<p>3.倒排索引、Lucene和全文检索？</p>
+<p>​    倒排索引的数据结构：</p>
+<p>​        1.包含这个关键词的document list</p>
+<p>​        2.关键词在每个doc中出现的次数</p>
+<p>​        3.关键词在整个索引中出现的次数</p>
+<p>​        4.关键词在当前doc中出现的次数</p>
+<p>​        5.每个doc的长度，越长相关度越低</p>
+<p>​        6.包含这个关键词的所有doc的平均长度</p>
+<p>​    Lucene： jar包，帮我们创建倒排索引，提供了复杂的API。</p>
+<p>​    如果Lucene做集群实现搜索：    </p>
+<p>​        1.节点一旦宕机，数据丢失。</p>
+<p>​        2.自己维护。（自己创建管理索引）单台节点的承载请求的能力是有限的，需要人工做负载。</p>
+<p>4.Elasticsearch：分布式、高性能、高可用、可伸缩、易维护。</p>
+<p>​    分布式的搜索和数据分析引擎：</p>
+<p>​    优点：</p>
+<p>​        1.面向开发者友好，屏蔽了Lucene的复杂特性，集群自动发现（cluster discovery）</p>
+<p>​        2.自动维护数据在多个节点上建立</p>
+<p>​        3.会帮我做搜索请求的负载均衡</p>
+<p>​        4.自动维护冗余副本，保证了部分节点宕机的情况下仍然不会有任何数据丢失</p>
+<p>​        5.基于Lucene提供了很多高级功能：符合查询、聚合分析、基于地理位置。</p>
+<p>​        6.对于大公司可以构建几百台服务器的大型分布式集群，处理PB级别数据。</p>
+<p>​        7.相对于传统数据库，提供了全文检索，同义词处理，相关度排名，聚合分析以及海量数据的近实时处理，这些传统数据库做不到。</p>
+<p>​    应用领域：</p>
+<p>​        1.百度（全文检索、高亮、搜索推荐）</p>
+<p>​        2.各大网站的用户行为日志（用户点击、浏览、收藏、评论）</p>
+<p>​        3. BI系统，数据分析，数据挖掘统计</p>
+<p>​        4.Github：代码托管凭证，几千亿行代码</p>
+<p>​        5.ELK：（Elasticsearch（数据存储）Logstash（日志采集）Kibana（可视化））</p>
+<p>5.ES核心概念：</p>
+<p>​    1.Cluster：集群，每个集群至少包含两个节点。</p>
+<p>​    2.Node：集群中的每个节点，一个节点不代表一台服务器。</p>
+<p>​    3.Field：一个数据字段，与index和type一起，可以定位一个doc</p>
+<p>​    4.Document： ES最小的数据单元  Json格式</p>
+<p>​    5.Type ： 逻辑上的数据分类</p>
+<p>​    6.Index ：一类相同或者类型的doc，比如一个员工索引，商品索引</p>
+<p>Shard分片：</p>
+<pre><code>1. 一个index包含多个shard，默认5P，默认每个P分配一个R，P的数量在创建索引的时候设置，如果想修改，需要重建索引。
+
+   2. 每个Shard都是一个Lucene实例，有完整的创建索引的处理请求能力。
+   3. ES会自动为nodes上为我们做shard均衡。
+   4. 一个doc是不可能同时存在多个Pshard中的，但是可以存在多个RShard中。
+   5. P和对应的R不能同时存在同一个节点。所以最低的可用配置是两台节点，互为主备。</code></pre></div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/04/02/Mysql/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E4%B8%89%E8%8C%83%E5%BC%8F/">数据库设计三范式</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-04-02</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-04-02</span></span></div></header><div class="post-body"><div class="post-excerpt">
+        <h2 id="数据库设计三范式">
+          <a href="#数据库设计三范式" class="heading-link"><i class="fas fa-link"></i></a>数据库设计三范式</h2>
+      <p>三范式的主要作用是减少数据库中数据冗余。</p>
+<p><strong>第一范式：确认每列保持原子性，例如收货地址，把省、市、区拆分成三个字段，分别保存相应数据。</strong></p>
+<p>现在有一个地址字段：北京市丰台区荣盛小区。对其进行拆分</p>
+<p>订单表</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th>订单ID</th>
+<th>省</th>
+<th>市</th>
+<th>区</th>
+<th>小区名称</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>10001</td>
+<td>北京</td>
+<td>北京</td>
+<td>朝阳</td>
+<td>荣盛家园小区</td>
+</tr>
+</tbody></table></div>
+<p><strong>第二范式：确保表中每列和主键相关，列必须直接依赖主键</strong>。</p>
+<p><strong>第三范式：需要确保表中每列数据都和主键直接相关，而不是间接相关。就是说表里面的列不能出现其他表的非主键字段</strong></p>
+<p>以下表设计为第二范式和第三范式结合。</p>
+<p>订单表</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th>订单ID</th>
+<th>地址</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>10001</td>
+<td>001</td>
+</tr>
+</tbody></table></div>
+<p>地址表</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th>地址ID</th>
+<th>省</th>
+<th>市</th>
+<th>区</th>
+<th>小区</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>001</td>
+<td>北京</td>
+<td>北京</td>
+<td>朝阳</td>
+<td>荣盛家园小区</td>
+</tr>
+</tbody></table></div>
+</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/03/15/kafka/kafka-%E4%BB%8B%E7%BB%8D/">kafka介绍</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-03-15</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-03-15</span></span></div></header><div class="post-body"><div class="post-excerpt">
         <h1 id="kafka介绍">
           <a href="#kafka介绍" class="heading-link"><i class="fas fa-link"></i></a>kafka介绍</h1>
       <p>提供了消息的订阅与发布的消息队列，用作系统间解耦、异步通信、削峰填谷等作用</p>
@@ -389,35 +496,4 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.0"></he
         <h2 id="take">
           <a href="#take" class="heading-link"><i class="fas fa-link"></i></a>take</h2>
       <p>移除并返回队列头部的元素 </p>
-</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/01/17/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E5%A4%9A%E7%BA%BF%E7%A8%8B-CAS/">多线程-CAS</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-01-17</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-01-17</span></span></div></header><div class="post-body"><div class="post-excerpt">
-        <h2 id="CAS">
-          <a href="#CAS" class="heading-link"><i class="fas fa-link"></i></a>CAS</h2>
-      
-        <h3 id="概念">
-          <a href="#概念" class="heading-link"><i class="fas fa-link"></i></a>概念</h3>
-      <p>无锁优化 自旋。</p>
-<p>atomXX类都是用CAS保证线程的类，比如AtomicInteger。</p>
-
-        <h4 id="实现思路">
-          <a href="#实现思路" class="heading-link"><i class="fas fa-link"></i></a>实现思路</h4>
-      <p>cas（期望值，更新值）</p>
-<p>m=0</p>
-<p>m++</p>
-<p>cas(0,1){</p>
-<p>​    for(;;)如果当前m值==0  m==1</p>
-<p>}</p>
-</div></div></article><article class="postlist-item post"><header class="post-header"><h1 class="post-title"><a class="post-title__link" href="/2020/01/16/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E5%A4%9A%E7%BA%BF%E7%A8%8B-volatile/">多线程-volatile</a></h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-01-16</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-01-16</span></span></div></header><div class="post-body"><div class="post-excerpt">
-        <h2 id="volatile">
-          <a href="#volatile" class="heading-link"><i class="fas fa-link"></i></a>volatile</h2>
-      
-        <h3 id="保证线程可见性：">
-          <a href="#保证线程可见性：" class="heading-link"><i class="fas fa-link"></i></a>保证线程可见性：</h3>
-      <p>​    两个线程在jvm中分别有不同的副本，如果没有volatile，则修改主线程的状态，其他线程不知道什么时候会得知这个状态变更，如果加了volatile，主线程状态改变，会即时通知给其他线程。</p>
-<p>volatile怎么实现的：使用CPU中MESI缓存一致性协议。</p>
-
-        <h3 id="禁止指令重排序">
-          <a href="#禁止指令重排序" class="heading-link"><i class="fas fa-link"></i></a>禁止指令重排序</h3>
-      <p>​    指令重排序是指编译器会把指令重新进行一次排序，提升效率。比如 a=1,b=2,b=3，重排后可能会变成b=2,a=1,b=3，就是指令重排</p>
-<p>为什么在懒汉式单例中要加入volatile关键字：</p>
-<p>​    就是禁止指令重排序，导致同时new对象的问题。</p>
-</div></div></article></section><nav class="paginator"><div class="paginator-inner"><a class="extend prev" rel="prev" href="/page/2/"><i class="fas fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/"><i class="fas fa-angle-right"></i></a></div></nav></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><section class="sidebar-toc hide"></section><!-- ov = overview--><section class="sidebar-ov"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/assets/author.png" alt="avatar"></div></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">33</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">10</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">15</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2021</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>zhen wu</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v4.2.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.0.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="/js/utils.js?v=2.0.0"></script><script src="/js/stun-boot.js?v=2.0.0"></script><script src="/js/scroll.js?v=2.0.0"></script><script src="/js/header.js?v=2.0.0"></script><script src="/js/sidebar.js?v=2.0.0"></script></body></html>
+</div></div></article></section><nav class="paginator"><div class="paginator-inner"><a class="extend prev" rel="prev" href="/page/2/"><i class="fas fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/"><i class="fas fa-angle-right"></i></a></div></nav></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><section class="sidebar-toc hide"></section><!-- ov = overview--><section class="sidebar-ov"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/assets/author.png" alt="avatar"></div></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">35</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">10</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">15</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2021</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>zhen wu</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v4.2.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.0.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="/js/utils.js?v=2.0.0"></script><script src="/js/stun-boot.js?v=2.0.0"></script><script src="/js/scroll.js?v=2.0.0"></script><script src="/js/header.js?v=2.0.0"></script><script src="/js/sidebar.js?v=2.0.0"></script></body></html>

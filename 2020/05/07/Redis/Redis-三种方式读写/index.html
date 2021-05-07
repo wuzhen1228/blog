@@ -1,0 +1,96 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/assets/icon16.png?v=2.0.0" type="image/png" sizes="16x16"><link rel="icon" href="/assets/icon32.png?v=2.0.0" type="image/png" sizes="32x32"><meta name="description" content="Redis-三种方式读写                           前言：       写篇这个是也是业务相关，正好梳理下这方面的东西。 以下三种方法都是通过spring-data-redis框架提供访问redis服务，也是spring家族一部分，该框架通过一些简单配置，就能对redis一顿操作，可以说是非常好用了。像配置什么的也不是这次我想说的，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis三种方式读写">
+<meta property="og:url" content="www.lutongtian.club/2020/05/07/Redis/Redis-%E4%B8%89%E7%A7%8D%E6%96%B9%E5%BC%8F%E8%AF%BB%E5%86%99/index.html">
+<meta property="og:site_name" content="O ever youthful O ever weeping">
+<meta property="og:description" content="Redis-三种方式读写                           前言：       写篇这个是也是业务相关，正好梳理下这方面的东西。 以下三种方法都是通过spring-data-redis框架提供访问redis服务，也是spring家族一部分，该框架通过一些简单配置，就能对redis一顿操作，可以说是非常好用了。像配置什么的也不是这次我想说的，">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="/07/Redis/Redis-%E4%B8%89%E7%A7%8D%E6%96%B9%E5%BC%8F%E8%AF%BB%E5%86%99/image-20210430173209146.png">
+<meta property="og:image" content="/07/Redis/Redis-%E4%B8%89%E7%A7%8D%E6%96%B9%E5%BC%8F%E8%AF%BB%E5%86%99/image-20210507155908789.png">
+<meta property="og:image" content="/07/Redis/Redis-%E4%B8%89%E7%A7%8D%E6%96%B9%E5%BC%8F%E8%AF%BB%E5%86%99/image-20210507165109067.png">
+<meta property="article:published_time" content="2020-05-07T09:37:54.000Z">
+<meta property="article:modified_time" content="2020-05-07T09:37:54.000Z">
+<meta property="article:author" content="zhen wu">
+<meta property="article:tag" content="Redis">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="/07/Redis/Redis-%E4%B8%89%E7%A7%8D%E6%96%B9%E5%BC%8F%E8%AF%BB%E5%86%99/image-20210430173209146.png"><meta name="keywords" content="zhen wu, O ever youthful O ever weeping"><meta name="description" content=""><title>Redis三种方式读写 | O ever youthful O ever weeping</title><link ref="canonical" href="www.lutongtian.club/2020/05/07/Redis/Redis-%E4%B8%89%E7%A7%8D%E6%96%B9%E5%BC%8F%E8%AF%BB%E5%86%99/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.0.0"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">O ever youthful O ever weeping</div><div class="header-banner-info__subtitle"></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">Redis三种方式读写</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-05-07</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-05-07</span></span></div></header><div class="post-body">
+        <h1 id="Redis-三种方式读写">
+          <a href="#Redis-三种方式读写" class="heading-link"><i class="fas fa-link"></i></a>Redis-三种方式读写</h1>
+      
+        <h5 id="前言：">
+          <a href="#前言：" class="heading-link"><i class="fas fa-link"></i></a>前言：</h5>
+      <p>写篇这个是也是业务相关，正好梳理下这方面的东西。</p>
+<p>以下三种方法都是通过spring-data-redis框架提供访问redis服务，也是spring家族一部分，该框架通过一些简单配置，就能对redis一顿操作，可以说是非常好用了。像配置什么的也不是这次我想说的，写个前言就直接正题吧。</p>
+
+        <h5 id="业务场景：">
+          <a href="#业务场景：" class="heading-link"><i class="fas fa-link"></i></a>业务场景：</h5>
+      <p>首先我准备了一个csv文件，里边有50W条数据。通过redis队列，获取到文件id，到阿里oss上获取文件到该csv，通过流存到list中，再做循环保存到redis。</p>
+
+        <h2 id="一-redisTemplate">
+          <a href="#一-redisTemplate" class="heading-link"><i class="fas fa-link"></i></a>一. redisTemplate</h2>
+      <p>这个是spring家族搞的访问的redis实现，底层也是用了池化技术。直接开整。</p>
+<p>数据量有点大，我做了拆分，每个线程处理2000条数据。那么看下2000条用redisTemplate处理用多久吧。</p>
+<p>先上个部分代码：</p>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">for (String userId : list) &#123;</span><br><span class="line">    redisHandler.set(RedisConstant.REDIS_AD_USER + userId,&quot;,&quot; + value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+
+<p>我电脑配置能同时跑12个线程</p>
+<p><img src="/07/Redis/Redis-%E4%B8%89%E7%A7%8D%E6%96%B9%E5%BC%8F%E8%AF%BB%E5%86%99/image-20210430173209146.png" alt="Redis三种方式读写"></p>
+<p>基本每个线程处理2000条append的时间是35秒左右。</p>
+
+        <h2 id="二-jedis">
+          <a href="#二-jedis" class="heading-link"><i class="fas fa-link"></i></a>二.jedis</h2>
+      <p>jedis是官方提供的java客户端开发包，这个在使用上比redisTemplate更简单。</p>
+<p>在研究jedis的过程中，我发现我直接用项目中的jedisUtil（相信用jedis的都会从别的地方cv过来这个工具类）对性能提升并不大。</p>
+<p>jedisUtil代码片段：</p>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public String get(String key,int indexdb) &#123;</span><br><span class="line">        Jedis jedis &#x3D; null;</span><br><span class="line">        String value &#x3D; null;</span><br><span class="line">        try &#123;</span><br><span class="line">            jedis &#x3D; jedisPool.getResource();</span><br><span class="line">            jedis.select(indexdb);</span><br><span class="line">            value &#x3D; jedis.get(key);</span><br><span class="line">            log.info(value);</span><br><span class="line">        &#125; catch (Exception e) &#123;</span><br><span class="line"></span><br><span class="line">            log.error(e.getMessage());</span><br><span class="line">        &#125; finally &#123;</span><br><span class="line">            returnResource(jedisPool, jedis);</span><br><span class="line">        &#125;</span><br><span class="line">        return value;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></div></figure>
+
+<p>因为作为工具类，每个方法结束后，都会强行释放掉jedisPool，那我每次调这个工具类的方法的效率，不是和redisTemplate一样了吗。</p>
+<p>我认为jedis的使用不应该再做工具类的封装了，起码不能get、set这些操作也封装，jedis的使用应该是需要对redis连续操作的时候，效率会更高。</p>
+<p>等这个方法或者说业务逻辑结束后，再释放掉jedisPool。</p>
+<p>jedis部分代码：</p>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">try (Jedis jedis &#x3D; jedisPool.getResource()) &#123;</span><br><span class="line">    for (String userId : list) &#123;</span><br><span class="line">        jedis.append(RedisConstant.REDIS_USER_AD + userId, &quot;,&quot; + id.toString());</span><br><span class="line">    &#125;</span><br><span class="line">&#125; catch (Exception e) &#123;</span><br><span class="line">    log.error(e.getMessage());</span><br><span class="line">&#125; finally &#123;</span><br><span class="line">    jedisPool.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+
+<p>环境和之前一样，这个稳定27秒，稍微快了一些，如果是多次操作，redisTemplate可能时间要翻很多倍，jedis可能只会增加一点时间。</p>
+<p><img src="/07/Redis/Redis-%E4%B8%89%E7%A7%8D%E6%96%B9%E5%BC%8F%E8%AF%BB%E5%86%99/image-20210507155908789.png" alt="Redis三种方式读写"></p>
+
+        <h2 id="三-pipeline">
+          <a href="#三-pipeline" class="heading-link"><i class="fas fa-link"></i></a>三.pipeline</h2>
+      <p>这个就牛逼了，首先redis有两个内存缓冲区域，一个叫sendBuffer，一个叫recvBuffer，redis接收的请求，都会先到sendBuffer里，处理完的结果，会放到recvBuffer中。那这个pipeline就是一次把所有请求全塞到sendBuffer里，然后也不管你执行结果，我直接溜了。这个就适用于大批量数据get、set数据时候用。</p>
+<p>要注意的是，缓冲区大小是有限制的，是8192字节。但是jedis在创建输出流的时候已经设定了这个大小，自己是不用管的。</p>
+<p>pipeline主要代码：</p>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 这里做了一下拆分，50W条数据按1000条一组进行拆分</span><br><span class="line">List&lt;List&lt;String&gt;&gt; userList &#x3D; ListUtils.averageAssign(list,1000);</span><br><span class="line">String value &#x3D; &quot;heihei&quot;;</span><br><span class="line">for(List&lt;String&gt; execList : userList)&#123;</span><br><span class="line">    String[] keys &#x3D; execList.toArray(new String[0]);</span><br><span class="line">    String[] strings &#x3D; new String[execList.size() * 2];</span><br><span class="line">    &#x2F;&#x2F; 这里必须按redis的文本格式来做</span><br><span class="line">    for (int i &#x3D; 0; i &lt; execList.size(); i++) &#123;</span><br><span class="line">        strings[2 * i] &#x3D; RedisConstant.REDIS_USER_AD_CROWD + keys[i];</span><br><span class="line">        strings[2 * i + 1] &#x3D; value;</span><br><span class="line">    &#125;</span><br><span class="line">    jedisUtils.mset(strings);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+
+<p>以下是执行50W条数据的结果：</p>
+<p><img src="/07/Redis/Redis-%E4%B8%89%E7%A7%8D%E6%96%B9%E5%BC%8F%E8%AF%BB%E5%86%99/image-20210507165109067.png" alt="Redis三种方式读写"></p>
+<p>单位是纳秒，所以得除个1000，等于14秒多。速度比其他两种快太多了。其他两个执行50W条需要几十分钟。</p>
+<p>但是这个也有一些缺陷，只能先把数据准备好，再用这个，有一些局限性，但是适用于大部分场景吧。用年月日做key，把用户ID转成不同的bit位数，如果登录过，就设置为1，然后用bitop做或运算，取值范围就是一年的key，然后用bitcount取出所有destkey的值</p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="www.lutongtian.club">zhen wu</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="www.lutongtian.club/2020/05/07/Redis/Redis-%E4%B8%89%E7%A7%8D%E6%96%B9%E5%BC%8F%E8%AF%BB%E5%86%99/">www.lutongtian.club/2020/05/07/Redis/Redis-%E4%B8%89%E7%A7%8D%E6%96%B9%E5%BC%8F%E8%AF%BB%E5%86%99/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="www.lutongtian.club/tags/Redis/">Redis</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2020/06/03/Mysql/Mysql-%E6%97%A5%E5%BF%97/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">Mysql日志</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2020/05/06/Mysql/Mysql-%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E6%80%A7/"><span class="paginator-prev__text">mysql事务隔离性</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Redis-三种方式读写"><span class="toc-number">1.</span> <span class="toc-text">
+          Redis-三种方式读写</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#前言："><span class="toc-number">1.0.0.0.1.</span> <span class="toc-text">
+          前言：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#业务场景："><span class="toc-number">1.0.0.0.2.</span> <span class="toc-text">
+          业务场景：</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一-redisTemplate"><span class="toc-number">1.1.</span> <span class="toc-text">
+          一. redisTemplate</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二-jedis"><span class="toc-number">1.2.</span> <span class="toc-text">
+          二.jedis</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三-pipeline"><span class="toc-number">1.3.</span> <span class="toc-text">
+          三.pipeline</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/assets/author.png" alt="avatar"></div></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">35</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">10</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">15</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2021</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>zhen wu</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v4.2.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.0.0</span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="/js/utils.js?v=2.0.0"></script><script src="/js/stun-boot.js?v=2.0.0"></script><script src="/js/scroll.js?v=2.0.0"></script><script src="/js/header.js?v=2.0.0"></script><script src="/js/sidebar.js?v=2.0.0"></script></body></html>
